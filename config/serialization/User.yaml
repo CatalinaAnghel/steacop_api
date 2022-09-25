@@ -1,0 +1,7 @@
+App\Entity\User:
+  attributes:
+    email:
+      groups: ['user:input', 'user:output']
+    plainPassword:
+      groups: ['user:input']
+      serialized_name: 'password'

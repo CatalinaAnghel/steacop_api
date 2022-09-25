@@ -1,0 +1,23 @@
+resources:
+  App\Entity\User:
+    processor: App\State\UserStateProcessor
+    shortName: 'Users'
+    denormalizationContext:
+      groups: [ 'user:input' ]
+    normalizationContext:
+      groups: [ 'user:output' ]
+#    collectionOperations:
+#      post:
+#        path: '/register'
+#        openapi_context:
+#          summary: 'Create an account'
+#          description: 'Create an account'
+#    itemOperations:
+#      get: ~
+    operations:
+      ApiPlatform\Metadata\Get: ~
+      ApiPlatform\Metadata\Post:
+        uriTemplate: '/register'
+        openapiContext:
+          summary: 'Create an account'
+          description: 'Create an account'
