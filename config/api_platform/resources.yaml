@@ -2,8 +2,6 @@ resources:
   App\Entity\User:
     processor: App\State\UserStateProcessor
     shortName: 'Users'
-    denormalizationContext:
-      groups: [ 'user:input' ]
     normalizationContext:
       groups: [ 'user:output' ]
 #    collectionOperations:
@@ -15,9 +13,13 @@ resources:
 #    itemOperations:
 #      get: ~
     operations:
-      ApiPlatform\Metadata\Get: ~
+      ApiPlatform\Metadata\Get:
+        provider: App\State\Provider\UserStateProvider
+        uriTemplate: '/users/{code}'
       ApiPlatform\Metadata\Post:
         uriTemplate: '/register'
         openapiContext:
           summary: 'Create an account'
           description: 'Create an account'
+        denormalizationContext:
+          groups: [ 'user:create' ]

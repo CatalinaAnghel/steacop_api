@@ -26,6 +26,6 @@ services:
         decorates: 'api_platform.openapi.factory'
         arguments: [ '@.inner' ]
 
-    App\State\UserStateProcessor:
+    App\State\Processor\UserStateProcessor:
         bind:
             $decorated: '@api_platform.doctrine.orm.state.persist_processor'

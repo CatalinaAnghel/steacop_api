@@ -1,7 +1,18 @@
 App\Entity\User:
   attributes:
+    code:
+      groups: [ 'user:create', 'user:output' ]
+#      identifier: true
+#    id:
+#      identifier: false
     email:
-      groups: ['user:input', 'user:output']
+      groups: [ 'user:create', 'user:output' ]
     plainPassword:
-      groups: ['user:input']
+      groups: [ 'user:create' ]
       serialized_name: 'password'
+    firstName:
+      groups: [ 'user:create', 'user:output' ]
+    lastName:
+      groups: [ 'user:create', 'user:output' ]
+    roles:
+      groups: [ 'user:create', 'user:output' ]
