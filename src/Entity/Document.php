@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\DocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
-class Document
-{
+class Document {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -23,42 +24,35 @@ class Document
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getAssignment(): ?Assignment
-    {
+    public function getAssignment(): ?Assignment {
         return $this->assignment;
     }
 
-    public function setAssignment(?Assignment $assignment): self
-    {
+    public function setAssignment(?Assignment $assignment): self {
         $this->assignment = $assignment;
 
         return $this;
     }
 
-    public function getPath(): ?string
-    {
+    public function getPath(): ?string {
         return $this->path;
     }
 
-    public function setPath(string $path): self
-    {
+    public function setPath(string $path): self {
         $this->path = $path;
 
         return $this;
     }
 
-    public function getName(): ?string
-    {
+    public function getName(): ?string {
         return $this->name;
     }
 
-    public function setName(string $name): self
-    {
+    public function setName(string $name): self {
         $this->name = $name;
 
         return $this;

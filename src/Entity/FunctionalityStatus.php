@@ -8,8 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FunctionalityStatusRepository::class)]
-class FunctionalityStatus
-{
+class FunctionalityStatus {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -21,23 +20,19 @@ class FunctionalityStatus
     #[ORM\OneToMany(mappedBy: 'FunctionalityStatus', targetEntity: Functionality::class, orphanRemoval: true)]
     private Collection $functionalities;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->functionalities = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
+    public function getName(): ?string {
         return $this->name;
     }
 
-    public function setName(string $name): self
-    {
+    public function setName(string $name): self {
         $this->name = $name;
 
         return $this;
@@ -46,13 +41,11 @@ class FunctionalityStatus
     /**
      * @return Collection<int, Functionality>
      */
-    public function getFunctionalities(): Collection
-    {
+    public function getFunctionalities(): Collection {
         return $this->functionalities;
     }
 
-    public function addFunctionality(Functionality $functionality): self
-    {
+    public function addFunctionality(Functionality $functionality): self {
         if (!$this->functionalities->contains($functionality)) {
             $this->functionalities->add($functionality);
             $functionality->setFunctionalityStatus($this);
@@ -61,8 +54,7 @@ class FunctionalityStatus
         return $this;
     }
 
-    public function removeFunctionality(Functionality $functionality): self
-    {
+    public function removeFunctionality(Functionality $functionality): self {
         if ($this->functionalities->removeElement($functionality)) {
             // set the owning side to null (unless already changed)
             if ($functionality->getFunctionalityStatus() === $this) {

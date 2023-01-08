@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\RatingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
-class Rating
-{
+class Rating {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -25,42 +26,35 @@ class Rating
     #[ORM\JoinColumn(nullable: false)]
     private ?GuidanceMeeting $meeting = null;
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getUser(): ?User
-    {
+    public function getUser(): ?User {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
-    {
+    public function setUser(?User $user): self {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getValue(): ?float
-    {
+    public function getValue(): ?float {
         return $this->value;
     }
 
-    public function setValue(float $value): self
-    {
+    public function setValue(float $value): self {
         $this->value = $value;
 
         return $this;
     }
 
-    public function getMeeting(): ?GuidanceMeeting
-    {
+    public function getMeeting(): ?GuidanceMeeting {
         return $this->meeting;
     }
 
-    public function setMeeting(?GuidanceMeeting $meeting): self
-    {
+    public function setMeeting(?GuidanceMeeting $meeting): self {
         $this->meeting = $meeting;
 
         return $this;

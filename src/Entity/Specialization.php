@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SpecializationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SpecializationRepository::class)]
+#[ApiResource]
 class Specialization {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,7 +23,7 @@ class Specialization {
     #[ORM\JoinColumn(nullable: false)]
     private ?Department $department = null;
 
-    #[ORM\OneToMany(mappedBy: 'Specialization', targetEntity: Student::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'specialization', targetEntity: Student::class, orphanRemoval: true)]
     private Collection $students;
 
     public function __construct() {

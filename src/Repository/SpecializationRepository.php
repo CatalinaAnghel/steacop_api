@@ -21,7 +21,7 @@ class SpecializationRepository extends ServiceEntityRepository
         parent::__construct($registry, Specialization::class);
     }
 
-    public function add(Specialization $entity, bool $flush = false): void
+    public function save(Specialization $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 

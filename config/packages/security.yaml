@@ -39,6 +39,10 @@ security:
         - { path: ^/docs, roles: PUBLIC_ACCESS } # Allows accessing API documentations and Swagger UI
         - { path: ^/authentication_token, roles: PUBLIC_ACCESS }
 
+    role_hierarchy:
+        ROLE_STUDENT: [ROLE_USER, ROLE_SUPERVISEE]
+        ROLE_TEACHER: [ROLE_USER, ROLE_SUPERVISOR]
+        ROLE_ADMIN: ROLE_USER
 when@test:
     security:
         password_hashers:

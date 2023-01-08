@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
-class Project
-{
+class Project {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -41,29 +42,25 @@ class Project
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Assignment::class, orphanRemoval: true)]
     private Collection $assignments;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->student = new ArrayCollection();
         $this->functionalities = new ArrayCollection();
         $this->meetings = new ArrayCollection();
         $this->assignments = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
     /**
      * @return Collection<int, Student>
      */
-    public function getStudent(): Collection
-    {
+    public function getStudent(): Collection {
         return $this->student;
     }
 
-    public function addStudent(Student $student): self
-    {
+    public function addStudent(Student $student): self {
         if (!$this->student->contains($student)) {
             $this->student->add($student);
             $student->setProject($this);
@@ -72,8 +69,7 @@ class Project
         return $this;
     }
 
-    public function removeStudent(Student $student): self
-    {
+    public function removeStudent(Student $student): self {
         if ($this->student->removeElement($student)) {
             // set the owning side to null (unless already changed)
             if ($student->getProject() === $this) {
@@ -84,49 +80,41 @@ class Project
         return $this;
     }
 
-    public function getSupervisor(): ?Supervisor
-    {
+    public function getSupervisor(): ?Supervisor {
         return $this->supervisor;
     }
 
-    public function setSupervisor(Supervisor $supervisor): self
-    {
+    public function setSupervisor(Supervisor $supervisor): self {
         $this->supervisor = $supervisor;
 
         return $this;
     }
 
-    public function getTitle(): ?string
-    {
+    public function getTitle(): ?string {
         return $this->title;
     }
 
-    public function setTitle(string $title): self
-    {
+    public function setTitle(string $title): self {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
+    public function getDescription(): ?string {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
-    {
+    public function setDescription(?string $description): self {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getRepositoryUrl(): ?string
-    {
+    public function getRepositoryUrl(): ?string {
         return $this->repositoryUrl;
     }
 
-    public function setRepositoryUrl(?string $repositoryUrl): self
-    {
+    public function setRepositoryUrl(?string $repositoryUrl): self {
         $this->repositoryUrl = $repositoryUrl;
 
         return $this;
@@ -135,13 +123,11 @@ class Project
     /**
      * @return Collection<int, Functionality>
      */
-    public function getFunctionalities(): Collection
-    {
+    public function getFunctionalities(): Collection {
         return $this->functionalities;
     }
 
-    public function addFunctionality(Functionality $functionality): self
-    {
+    public function addFunctionality(Functionality $functionality): self {
         if (!$this->functionalities->contains($functionality)) {
             $this->functionalities->add($functionality);
             $functionality->setProject($this);
@@ -150,8 +136,7 @@ class Project
         return $this;
     }
 
-    public function removeFunctionality(Functionality $functionality): self
-    {
+    public function removeFunctionality(Functionality $functionality): self {
         if ($this->functionalities->removeElement($functionality)) {
             // set the owning side to null (unless already changed)
             if ($functionality->getProject() === $this) {
@@ -165,13 +150,11 @@ class Project
     /**
      * @return Collection<int, Meeting>
      */
-    public function getMeetings(): Collection
-    {
+    public function getMeetings(): Collection {
         return $this->meetings;
     }
 
-    public function addMeeting(Meeting $meeting): self
-    {
+    public function addMeeting(Meeting $meeting): self {
         if (!$this->meetings->contains($meeting)) {
             $this->meetings->add($meeting);
             $meeting->setProject($this);
@@ -180,8 +163,7 @@ class Project
         return $this;
     }
 
-    public function removeMeeting(Meeting $meeting): self
-    {
+    public function removeMeeting(Meeting $meeting): self {
         if ($this->meetings->removeElement($meeting)) {
             // set the owning side to null (unless already changed)
             if ($meeting->getProject() === $this) {
@@ -195,13 +177,11 @@ class Project
     /**
      * @return Collection<int, Assignment>
      */
-    public function getAssignments(): Collection
-    {
+    public function getAssignments(): Collection {
         return $this->assignments;
     }
 
-    public function addAssignment(Assignment $assignment): self
-    {
+    public function addAssignment(Assignment $assignment): self {
         if (!$this->assignments->contains($assignment)) {
             $this->assignments->add($assignment);
             $assignment->setProject($this);
@@ -210,8 +190,7 @@ class Project
         return $this;
     }
 
-    public function removeAssignment(Assignment $assignment): self
-    {
+    public function removeAssignment(Assignment $assignment): self {
         if ($this->assignments->removeElement($assignment)) {
             // set the owning side to null (unless already changed)
             if ($assignment->getProject() === $this) {

@@ -1,4 +1,4 @@
-App\Entity\User:
+App\ApiResource\User:
   attributes:
     code:
       groups: [ 'user:create', 'user:output' ]
@@ -15,4 +15,6 @@ App\Entity\User:
     lastName:
       groups: [ 'user:create', 'user:output' ]
     roles:
+      groups: [ 'user:create', 'user:output' ]
+    discriminator:
       groups: [ 'user:create', 'user:output' ]

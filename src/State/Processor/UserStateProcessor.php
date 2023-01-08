@@ -4,6 +4,9 @@ namespace App\State\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Entity\User;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserStateProcessor implements ProcessorInterface {
@@ -28,6 +31,12 @@ class UserStateProcessor implements ProcessorInterface {
             // erase the credentials that are temporarily stored
             $data->eraseCredentials();
         }
-        $this->decorated->process($data, $operation, $uriVariables, $context);
+
+        // create the new user
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\App\ApiResource\User::class, 'App\\Entity\\' . $data->getDiscriminator());
+        $mapper = new AutoMapper($config);
+        $newUser = $mapper->map($data, 'App\\Entity\\' . $data->getDiscriminator());
+        $this->decorated->process($newUser, $operation, $uriVariables, $context);
     }
 }

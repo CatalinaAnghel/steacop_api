@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\PersonTrait;
 use App\Repository\SupervisorRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: SupervisorRepository::class)]
 class Supervisor extends User {
     #[ORM\Id]
