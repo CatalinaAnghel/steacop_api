@@ -29,3 +29,7 @@ services:
     App\State\Processor\UserStateProcessor:
         bind:
             $decorated: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\Service\UploadFileService: ~
+
+    App\Service\Contract\UploadFileServiceInterface: '@App\Service\UploadFileService'
