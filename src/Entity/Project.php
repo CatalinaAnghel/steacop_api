@@ -20,7 +20,7 @@ class Project {
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Student::class, orphanRemoval: true)]
     private Collection $student;
 
-    #[ORM\OneToOne(inversedBy: 'project', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Supervisor $supervisor = null;
 

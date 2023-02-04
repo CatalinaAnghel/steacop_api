@@ -10,6 +10,10 @@ use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserStateProcessor implements ProcessorInterface {
+    public const ROLES = [
+        'student' => 'ROLE_STUDENT',
+        'supervisor' => 'ROLE_TEACHER'
+    ];
     private ProcessorInterface $decorated;
     private UserPasswordHasherInterface $userPasswordHasher;
 
@@ -34,9 +38,11 @@ class UserStateProcessor implements ProcessorInterface {
 
         // create the new user
         $config = new AutoMapperConfig();
-        $config->registerMapping(\App\ApiResource\User::class, 'App\\Entity\\' . $data->getDiscriminator());
+        $config->registerMapping(\App\ApiResource\User::class,
+            'App\\Entity\\' . $data->getDiscriminator());
         $mapper = new AutoMapper($config);
         $newUser = $mapper->map($data, 'App\\Entity\\' . $data->getDiscriminator());
+
         $this->decorated->process($newUser, $operation, $uriVariables, $context);
     }
 }

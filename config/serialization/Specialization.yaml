@@ -1,0 +1,10 @@
+App\Entity\Specialization:
+  attributes:
+    id:
+      groups: [ 'specialization:output' ]
+    name:
+      groups: [ 'specialization:create', 'specialization:output' ]
+    department:
+      groups: [ 'specialization:create', 'specialization:output' ]
+    students:
+      groups: [ 'specialization:output' ]

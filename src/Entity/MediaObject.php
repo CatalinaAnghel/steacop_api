@@ -2,14 +2,10 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Post;
-use App\Controller\CreateMediaObjectAction;
 use App\Repository\MediaObjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -17,20 +13,43 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity(repositoryClass: MediaObjectRepository::class)]
 #[ApiResource]
 class MediaObject {
+    /**
+     * @var int|null $id
+     */
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ApiProperty(types: ['https://schema.org/contentUrl'])]
-    #[Groups(['media_object:read'])]
+    /**
+     * @var string|null $contentUrl
+     */
     private ?string $contentUrl = null;
 
+    /**
+     * @var File|null $file
+     */
     #[Vich\UploadableField(mapping: "media_object", fileNameProperty: "filePath")]
-    #[Assert\NotNull(groups: ['media_object_create'])]
+    #[Assert\NotNull(groups: ['media_object:input'])]
     private ?File $file = null;
 
+    /**
+     * @var string|null $filePath
+     */
     #[ORM\Column(nullable: true)]
     private ?string $filePath = null;
 
+    /**
+     * @var \DateTimeImmutable|null $createdAt
+     */
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    public function __construct() {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int {
         return $this->id;
     }
@@ -75,5 +94,12 @@ class MediaObject {
      */
     public function setFilePath(?string $filePath): void {
         $this->filePath = $filePath;
+    }
+
+    /**
+     * @return \DateTimeImmutable|null
+     */
+    public function getCreatedAt(): ?\DateTimeImmutable {
+        return $this->createdAt;
     }
 }

@@ -5,21 +5,12 @@ namespace App\ApiResource;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Post;
-use App\Dto\User\Output\UserOutputDto;
-use App\State\Processor\UserStateProcessor;
-use App\State\Provider\UserStateProvider;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ApiResource]
-//#[Post(processor: UserStateProcessor::class)]
-//#[Get(output: UserOutputDto::class, provider: UserStateProvider::class)]
-class User implements PasswordAuthenticatedUserInterface{
+class User{
     /**
      * @var string $code
      */
-    #[ApiProperty(identifier: true)]
     private string $code;
 
     /**
@@ -37,17 +28,22 @@ class User implements PasswordAuthenticatedUserInterface{
      */
     private ?string $plainPassword;
 
-    /**
-     * @var string|null $password
-     * The hashed password
-     */
-    private ?string $password = null;
+//    /**
+//     * @var string|null $password
+//     * The hashed password
+//     */
+//    private ?string $password = null;
 
     /**
      * @var string|null $discriminator
      * The user's type (if any)
      */
     private ?string $discriminator = null;
+
+    /**
+     * @var bool $isStudent
+     */
+    private bool $isStudent = false;
 
     /**
      * @return string
@@ -96,19 +92,19 @@ class User implements PasswordAuthenticatedUserInterface{
 
         return $this;
     }
-
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self {
-        $this->password = $password;
-
-        return $this;
-    }
+//
+//    /**
+//     * @see PasswordAuthenticatedUserInterface
+//     */
+//    public function getPassword(): string {
+//        return $this->password;
+//    }
+//
+//    public function setPassword(string $password): self {
+//        $this->password = $password;
+//
+//        return $this;
+//    }
 
     /**
      * @return string
@@ -145,5 +141,19 @@ class User implements PasswordAuthenticatedUserInterface{
      */
     public function setDiscriminator(?string $discriminator): void {
         $this->discriminator = $discriminator;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStudent(): bool {
+        return $this->isStudent;
+    }
+
+    /**
+     * @param bool $isStudent
+     */
+    public function setIsStudent(bool $isStudent): void {
+        $this->isStudent = $isStudent;
     }
 }

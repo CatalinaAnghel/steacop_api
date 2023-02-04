@@ -1,6 +1,7 @@
 App\ApiResource\User:
   attributes:
     code:
+      identifier: true
       groups: [ 'user:create', 'user:output' ]
 #      identifier: true
 #    id:
@@ -15,6 +16,8 @@ App\ApiResource\User:
     lastName:
       groups: [ 'user:create', 'user:output' ]
     roles:
-      groups: [ 'user:create', 'user:output' ]
+      groups: [ 'user:output' ]
     discriminator:
-      groups: [ 'user:create', 'user:output' ]
+      groups: [ 'user:output' ]
+    isStudent:
+      groups: ['user:create']

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Serializer;
+namespace App\Serializer\Normalizer;
 
-use App\ApiResource\MediaObject;
+use App\Entity\MediaObject;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,7 +20,7 @@ final class MediaObjectNormalizer implements NormalizerInterface, NormalizerAwar
     public function normalize($object, ?string $format = null, array $context = []):
     array|string|int|float|bool|\ArrayObject|null {
         $context[self::ALREADY_CALLED] = true;
-        $object->contentUrl = $this->storage->resolveUri($object, 'file');
+        $object->setContentUrl($this->storage->resolveUri($object, 'file'));
         return $this->normalizer->normalize($object, $format, $context);
     }
 

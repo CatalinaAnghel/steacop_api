@@ -16,14 +16,14 @@ resources:
         provider: App\State\Provider\UserStateProvider
 #        output: App\Dto\User\Output\UserOutputDto
         uriTemplate: '/users/{code}'
-      ApiPlatform\Metadata\Post:
-        processor: App\State\Processor\UserStateProcessor
-        uriTemplate: '/register'
-        openapiContext:
-          summary: 'Create an account'
-          description: 'Create an account'
-        denormalizationContext:
-          groups: [ 'user:create' ]
+#      ApiPlatform\Metadata\Post:
+#        processor: App\State\Processor\UserStateProcessor
+#        uriTemplate: '/register'
+#        openapiContext:
+#          summary: 'Create an account'
+#          description: 'Create an account'
+#        denormalizationContext:
+#          groups: [ 'user:create' ]
 
   App\Entity\Student:
     shortName: 'Students'
@@ -41,14 +41,15 @@ resources:
 
   App\Entity\MediaObject:
     normalizationContext:
-      groups: ['media_object:read'],
+      groups: ['media_object:output'],
     types: ['https://schema.org/MediaObject']
     operations:
       ApiPlatform\Metadata\Post:
-        controller: App\Controller\CreateMediaObjectAction
-        deserialize: false
+        processor: App\State\Processor\MediaObjectStateProcessor
+#        controller: App\Controller\CreateMediaObjectAction
+#        deserialize: false
         validationContext:
-          groups: ['Default', 'media_object_create']]
+          groups: ['Default', 'media_object:input']]
         openapiContext:
           requestBody:
             content:
@@ -59,3 +60,15 @@ resources:
                     file:
                       type: string
                       format: binary
+
+  App\Entity\Department:
+    normalizationContext:
+      groups: ['department:output']
+    denormalizationContext:
+      groups: ['department:input']
+
+  App\Entity\Specialization:
+    normalizationContext:
+      groups: [ 'specialization:output' ]
+    denormalizationContext:
+      groups: [ 'specialization:create' ]

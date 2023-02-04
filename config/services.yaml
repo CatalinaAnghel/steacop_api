@@ -4,7 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-
+    app.admin_email_address: '%env(APP_ADMIN_EMAIL_ADDRESS)%'
+    app.admin_password: '%env(APP_ADMIN_PASSWORD)%'
+    app.admin_code: '%env(APP_ADMIN_CODE)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -30,6 +32,12 @@ services:
         bind:
             $decorated: '@api_platform.doctrine.orm.state.persist_processor'
 
-    App\Service\UploadFileService: ~
+    App\State\Processor\MediaObjectStateProcessor:
+        bind:
+            $decorated: '@api_platform.doctrine.orm.state.persist_processor'
 
-    App\Service\Contract\UploadFileServiceInterface: '@App\Service\UploadFileService'
+    App\DataFixtures\AdminAccountFixture:
+        bind:
+            $adminEmail: '%app.admin_email_address%'
+            $adminPassword: '%app.admin_password%'
+            $adminCode: '%app.admin_code%'

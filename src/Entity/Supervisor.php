@@ -5,11 +5,13 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\PersonTrait;
 use App\Repository\SupervisorRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: SupervisorRepository::class)]
-class Supervisor extends User {
+class Supervisor {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -24,8 +26,16 @@ class Supervisor extends User {
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToOne(mappedBy: 'supervisor', cascade: ['persist', 'remove'])]
-    private ?Project $project = null;
+    #[ORM\OneToMany(mappedBy: 'supervisor', targetEntity: Project::class, orphanRemoval: true)]
+    private Collection $projects;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    public function __construct() {
+        $this->projects = new ArrayCollection();
+    }
 
     public function getId(): ?int {
         return $this->id;
@@ -61,17 +71,34 @@ class Supervisor extends User {
         return $this;
     }
 
-    public function getProject(): ?Project {
-        return $this->project;
+    public function getProjects(): Collection {
+        return $this->projects;
     }
 
-    public function setProject(Project $project): self {
-        // set the owning side of the relation if necessary
-        if ($project->getSupervisor() !== $this) {
+    public function addProject(Project $project): void
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
             $project->setSupervisor($this);
         }
+    }
 
-        $this->project = $project;
+    public function removeRating(Project $project): void
+    {
+        if ($this->projects->removeElement($project)) {
+            // set the owning side to null (unless already changed)
+            if ($project->getSupervisor() === $this) {
+                $project->setSupervisor(null);
+            }
+        }
+    }
+
+    public function getUser(): ?User {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self {
+        $this->user = $user;
 
         return $this;
     }

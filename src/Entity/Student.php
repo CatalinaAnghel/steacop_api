@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
-class Student extends User {
+class Student {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -26,6 +26,10 @@ class Student extends User {
     #[ORM\JoinColumn(nullable: false)]
     private ?Specialization $specialization = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?int {
         return $this->id;
     }
@@ -34,21 +38,23 @@ class Student extends User {
         return $this->project;
     }
 
-    public function setProject(?Project $project): self {
+    public function setProject(?Project $project): void {
         $this->project = $project;
-
-        return $this;
     }
 
-    public function getSpecialization(): ?Specialization
-    {
+    public function getSpecialization(): ?Specialization {
         return $this->specialization;
     }
 
-    public function setSpecialization(?Specialization $specialization): self
-    {
+    public function setSpecialization(?Specialization $specialization): void {
         $this->specialization = $specialization;
+    }
 
-        return $this;
+    public function getUser(): ?User {
+        return $this->user;
+    }
+
+    public function setUser(User $user): void {
+        $this->user = $user;
     }
 }

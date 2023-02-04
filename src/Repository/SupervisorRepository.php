@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Supervisor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,29 @@ class SupervisorRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Selects the supervisor based on the code
+     *
+     * @param string $code
+     * @return Supervisor|null
+     */
+    public function findByCode(string $code): Supervisor|null{
+        try{
+            $supervisor =  $this->createQueryBuilder('supervisor')
+                ->innerJoin('supervisor.user', 'user')
+                ->andWhere('user.code = :code')
+                ->setParameter('code', $code)
+                ->getQuery()
+                ->getOneOrNullResult();
+        }catch (NonUniqueResultException $exception){
+            dd($exception->getMessage());
+        }catch (\Exception $exception){
+            dd($exception->getMessage());
+        }
+
+        return $supervisor?? null;
     }
 
 //    /**

@@ -4,7 +4,12 @@ vich_uploader:
     type: attribute
   mappings:
     media_object:
-      uri_prefix: /media
-      upload_destination: '%kernel.project_dir%/public/media'
+      uri_prefix: /media/students
+      upload_destination: '%kernel.project_dir%/public/media/students'
+      # Will rename uploaded files using a uniqueid as a prefix.
+      namer: Vich\UploaderBundle\Naming\OrignameNamer
+    supervisor_media_object:
+      uri_prefix: /media/supervisors
+      upload_destination: '%kernel.project_dir%/public/media/supervisors'
       # Will rename uploaded files using a uniqueid as a prefix.
       namer: Vich\UploaderBundle\Naming\OrignameNamer
