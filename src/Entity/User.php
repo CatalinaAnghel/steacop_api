@@ -35,7 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     private ?string $plainPassword;
 
     /**
-     * @var string The hashed password
+     * @var string|null The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
@@ -43,8 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rating::class, orphanRemoval: true)]
     private Collection $ratings;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->ratings = new ArrayCollection();
     }
 
@@ -70,10 +69,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this->email;
     }
 
-    public function setEmail(string $email): self {
+    public function setEmail(string $email): void {
         $this->email = $email;
-
-        return $this;
     }
 
     /**
@@ -90,16 +87,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
      */
     public function getRoles(): array {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self {
+    public function setRoles(array $roles): void {
         $this->roles = $roles;
-
-        return $this;
     }
 
     /**
@@ -109,10 +102,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this->password;
     }
 
-    public function setPassword(string $password): self {
+    public function setPassword(string $password): void {
         $this->password = $password;
-
-        return $this;
     }
 
     /**
@@ -133,7 +124,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * @see UserInterface
      */
-    public function eraseCredentials():void {
+    public function eraseCredentials(): void {
         // If you store any temporary, sensitive data on the user, clear it here
         $this->plainPassword = null;
     }
@@ -141,30 +132,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * @return Collection<int, Rating>
      */
-    public function getRatings(): Collection
-    {
+    public function getRatings(): Collection {
         return $this->ratings;
     }
 
-    public function addRating(Rating $rating): self
-    {
+    public function addRating(Rating $rating): void {
         if (!$this->ratings->contains($rating)) {
             $this->ratings->add($rating);
             $rating->setUser($this);
         }
-
-        return $this;
     }
 
-    public function removeRating(Rating $rating): self
-    {
-        if ($this->ratings->removeElement($rating)) {
-            // set the owning side to null (unless already changed)
-            if ($rating->getUser() === $this) {
-                $rating->setUser(null);
-            }
+    public function removeRating(Rating $rating): void {
+        if ($this->ratings->removeElement($rating) && $rating->getUser() === $this) {
+            $rating->setUser(null);
         }
-
-        return $this;
     }
 }

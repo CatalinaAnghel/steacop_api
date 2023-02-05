@@ -16,6 +16,7 @@ resources:
         provider: App\State\Provider\UserStateProvider
 #        output: App\Dto\User\Output\UserOutputDto
         uriTemplate: '/users/{code}'
+        security: 'is_granted("ROLE_USER")'
 #      ApiPlatform\Metadata\Post:
 #        processor: App\State\Processor\UserStateProcessor
 #        uriTemplate: '/register'
@@ -45,6 +46,7 @@ resources:
     types: ['https://schema.org/MediaObject']
     operations:
       ApiPlatform\Metadata\Post:
+        security: 'is_granted("ROLE_ADMIN")'
         processor: App\State\Processor\MediaObjectStateProcessor
 #        controller: App\Controller\CreateMediaObjectAction
 #        deserialize: false
@@ -66,9 +68,23 @@ resources:
       groups: ['department:output']
     denormalizationContext:
       groups: ['department:input']
+    operations:
+      ApiPlatform\Metadata\Post:
+        security: 'is_granted("ROLE_ADMIN")'
+      ApiPlatform\Metadata\Put:
+        security: 'is_granted("ROLE_ADMIN")'
+      ApiPlatform\Metadata\Delete:
+        security: 'is_granted("ROLE_ADMIN")'
 
   App\Entity\Specialization:
     normalizationContext:
       groups: [ 'specialization:output' ]
     denormalizationContext:
       groups: [ 'specialization:create' ]
+    operations:
+      ApiPlatform\Metadata\Post:
+        security: 'is_granted("ROLE_ADMIN")'
+      ApiPlatform\Metadata\Put:
+        security: 'is_granted("ROLE_ADMIN")'
+      ApiPlatform\Metadata\Delete:
+        security: 'is_granted("ROLE_ADMIN")'
