@@ -114,11 +114,11 @@ final class JwtDecorator implements OpenApiFactoryInterface {
                     'type' => 'string',
                     'readOnly' => true,
                 ],
-                'refresh_token' => [
+                'refreshToken' => [
                     'type' => 'string',
                     'readOnly' => true
                 ],
-                'refresh_token_expiration' => [
+                'refreshTokenExpiration' => [
                     'type' => 'integer'
                 ]
             ],
@@ -126,7 +126,7 @@ final class JwtDecorator implements OpenApiFactoryInterface {
         $schemas['RefreshToken'] = new \ArrayObject([
             'type' => 'object',
             'properties' => [
-                'refresh_token' => [
+                'refreshToken' => [
                     'type' => 'string'
                 ]
             ],
