@@ -7,6 +7,7 @@ use App\Repository\SupervisoryPlanRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: SupervisoryPlanRepository::class)]
@@ -28,6 +29,16 @@ class SupervisoryPlan {
     #[ORM\OneToMany(mappedBy: 'supervisoryPlan', targetEntity: Student::class)]
     private Collection $students;
 
+    #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(1)]
+    #[Assert\GreaterThanOrEqual(10)]
+    private ?int $numberOfAssignments = null;
+
+    #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(1)]
+    #[Assert\GreaterThanOrEqual(10)]
+    private ?int $numberOfGuidanceMeetings = null;
+
     public function __construct() {
         $this->students = new ArrayCollection();
     }
@@ -44,30 +55,24 @@ class SupervisoryPlan {
         return $this->name;
     }
 
-    public function setName(string $name): self {
+    public function setName(string $name): void {
         $this->name = $name;
-
-        return $this;
     }
 
     public function isHasLowStructure(): ?bool {
         return $this->hasLowStructure;
     }
 
-    public function setHasLowStructure(bool $hasLowStructure): self {
+    public function setHasLowStructure(bool $hasLowStructure): void {
         $this->hasLowStructure = $hasLowStructure;
-
-        return $this;
     }
 
     public function isHasLowSupport(): ?bool {
         return $this->hasLowSupport;
     }
 
-    public function setHasLowSupport(bool $hasLowSupport): self {
+    public function setHasLowSupport(bool $hasLowSupport): void {
         $this->hasLowSupport = $hasLowSupport;
-
-        return $this;
     }
 
     /**
@@ -77,23 +82,35 @@ class SupervisoryPlan {
         return $this->students;
     }
 
-    public function addStudent(Student $student): self {
+    public function addStudent(Student $student): void {
         if (!$this->students->contains($student)) {
             $this->students->add($student);
             $student->setSupervisoryPlan($this);
         }
-
-        return $this;
     }
 
-    public function removeStudent(Student $student): self {
+    public function removeStudent(Student $student): void {
         if ($this->students->removeElement($student)) {
             // set the owning side to null (unless already changed)
             if ($student->getSupervisoryPlan() === $this) {
                 $student->setSupervisoryPlan(null);
             }
         }
+    }
 
-        return $this;
+    public function getNumberOfAssignments(): ?int {
+        return $this->numberOfAssignments;
+    }
+
+    public function setNumberOfAssignments(int $numberOfAssignments): void {
+        $this->numberOfAssignments = $numberOfAssignments;
+    }
+
+    public function getNumberOfGuidanceMeetings(): ?int {
+        return $this->numberOfGuidanceMeetings;
+    }
+
+    public function setNumberOfGuidanceMeetings(int $numberOfGuidanceMeetings): void {
+        $this->numberOfGuidanceMeetings = $numberOfGuidanceMeetings;
     }
 }

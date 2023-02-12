@@ -1,0 +1,14 @@
+App\Entity\SupervisoryPlan:
+  attributes:
+    id:
+      groups: [ 'plan:output' ]
+    name:
+      groups: [ 'plan:output' ]
+    hasLowStructure:
+      groups: [ 'plan:output' ]
+    hasLowSupport:
+      groups: [ 'plan:output' ]
+    numberOfAssignments:
+      groups: [ 'plan:input', 'plan:output' ]
+    numberOfGuidanceMeetings:
+      groups: [ 'plan:input', 'plan:output' ]

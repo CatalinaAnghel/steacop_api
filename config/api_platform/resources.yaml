@@ -69,6 +69,10 @@ resources:
     denormalizationContext:
       groups: ['department:input']
     operations:
+      ApiPlatform\Metadata\Get:
+        security: 'is_granted("ROLE_ADMIN")'
+      ApiPlatform\Metadata\GetCollection:
+        security: 'is_granted("ROLE_ADMIN")'
       ApiPlatform\Metadata\Post:
         security: 'is_granted("ROLE_ADMIN")'
       ApiPlatform\Metadata\Put:
@@ -84,6 +88,19 @@ resources:
     operations:
       ApiPlatform\Metadata\Post:
         security: 'is_granted("ROLE_ADMIN")'
+      ApiPlatform\Metadata\Put:
+        security: 'is_granted("ROLE_ADMIN")'
+      ApiPlatform\Metadata\Delete:
+        security: 'is_granted("ROLE_ADMIN")'
+
+  App\Entity\SupervisoryPlan:
+    normalizationContext:
+      groups: [ 'plan:output' ]
+    denormalizationContext:
+      groups: [ 'plan:input' ]
+    operations:
+      ApiPlatform\Metadata\Get: ~
+      ApiPlatform\Metadata\GetCollection: ~
       ApiPlatform\Metadata\Put:
         security: 'is_granted("ROLE_ADMIN")'
       ApiPlatform\Metadata\Delete:
