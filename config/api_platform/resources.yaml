@@ -101,7 +101,18 @@ resources:
     operations:
       ApiPlatform\Metadata\Get: ~
       ApiPlatform\Metadata\GetCollection: ~
-      ApiPlatform\Metadata\Put:
+      ApiPlatform\Metadata\Patch:
         security: 'is_granted("ROLE_ADMIN")'
       ApiPlatform\Metadata\Delete:
         security: 'is_granted("ROLE_ADMIN")'
+
+  App\Entity\ScoreWeight:
+    normalizationContext:
+      groups: ['variable:output']
+    denormalizationContext:
+      groups: ['variable:input']
+    operations:
+      ApiPlatform\Metadata\Get: ~
+      ApiPlatform\Metadata\GetCollection:
+        filters: ['system_variable.search_filter']
+      ApiPlatform\Metadata\Patch: ~

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\Department;
+use App\DataFixtures\Traits\DataSeedingFixtureGroupTrait;
 use App\Entity\Specialization;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
@@ -11,7 +11,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class SpecializationFixture extends Fixture implements DependentFixtureInterface, FixtureGroupInterface {
-
+    use DataSeedingFixtureGroupTrait;
     /**
      * @inheritDoc
      */
@@ -36,14 +36,5 @@ class SpecializationFixture extends Fixture implements DependentFixtureInterface
         $manager->persist($ceSpecialization);
 
         $manager->flush();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function getGroups(): array {
-        return [
-          'data_seeding'
-        ];
     }
 }

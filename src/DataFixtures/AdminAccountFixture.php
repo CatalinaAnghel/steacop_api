@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\DataFixtures\Traits\DataSeedingFixtureGroupTrait;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
@@ -16,6 +17,8 @@ class AdminAccountFixture extends Fixture implements FixtureGroupInterface {
                                 private readonly string $adminCode) {
     }
 
+    use DataSeedingFixtureGroupTrait;
+
     /**
      * @inheritDoc
      */
@@ -27,14 +30,5 @@ class AdminAccountFixture extends Fixture implements FixtureGroupInterface {
         $admin->setPassword($this->userPasswordHasher->hashPassword($admin, $this->adminPassword));
         $manager->persist($admin);
         $manager->flush();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function getGroups(): array {
-        return [
-            'data_seeding'
-        ];
     }
 }

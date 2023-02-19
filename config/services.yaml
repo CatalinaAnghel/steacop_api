@@ -41,3 +41,16 @@ services:
             $adminEmail: '%app.admin_email_address%'
             $adminPassword: '%app.admin_password%'
             $adminCode: '%app.admin_code%'
+
+    # filters
+    system_variable.search_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { name: 'exact'} ]
+        tags: [ 'api_platform.filter' ]
+        autowire: false
+        autoconfigure: false
+        public: false
+
+    App\State\Provider\SystemVariableStateProvider:
+        bind:
+            $decorated: '@api_platform.doctrine.orm.state.collection_provider'

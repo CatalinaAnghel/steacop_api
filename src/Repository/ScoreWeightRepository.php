@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method SystemVariable[]    findAll()
  * @method SystemVariable[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SystemVariableRepository extends ServiceEntityRepository
+class ScoreWeightRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

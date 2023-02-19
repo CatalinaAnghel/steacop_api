@@ -31,12 +31,12 @@ class SupervisoryPlan {
 
     #[ORM\Column]
     #[Assert\GreaterThanOrEqual(1)]
-    #[Assert\GreaterThanOrEqual(10)]
+    #[Assert\LessThanOrEqual(10)]
     private ?int $numberOfAssignments = null;
 
     #[ORM\Column]
     #[Assert\GreaterThanOrEqual(1)]
-    #[Assert\GreaterThanOrEqual(10)]
+    #[Assert\LessThanOrEqual(10)]
     private ?int $numberOfGuidanceMeetings = null;
 
     public function __construct() {

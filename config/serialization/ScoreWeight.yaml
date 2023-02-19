@@ -1,0 +1,10 @@
+App\Entity\ScoreWeight:
+  attributes:
+    name:
+      groups: ['variable:output', 'variable:input']
+    weight:
+      groups: ['variable:output', 'variable:input']
+    module:
+      groups: ['variable:input']
+    id:
+      groups: ['variable:output']
