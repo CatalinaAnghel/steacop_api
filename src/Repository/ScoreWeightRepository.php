@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\SystemVariable;
+use App\Entity\ScoreWeight;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<SystemVariable>
+ * @extends ServiceEntityRepository<ScoreWeight>
  *
- * @method SystemVariable|null find($id, $lockMode = null, $lockVersion = null)
- * @method SystemVariable|null findOneBy(array $criteria, array $orderBy = null)
- * @method SystemVariable[]    findAll()
- * @method SystemVariable[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ScoreWeight|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ScoreWeight|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ScoreWeight[]    findAll()
+ * @method ScoreWeight[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ScoreWeightRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, SystemVariable::class);
+        parent::__construct($registry, ScoreWeight::class);
     }
 
-    public function add(SystemVariable $entity, bool $flush = false): void
+    public function add(ScoreWeight $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class ScoreWeightRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(SystemVariable $entity, bool $flush = false): void
+    public function remove(ScoreWeight $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -38,29 +38,4 @@ class ScoreWeightRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-//    /**
-//     * @return SystemVariable[] Returns an array of SystemVariable objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?SystemVariable
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

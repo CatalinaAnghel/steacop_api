@@ -54,3 +54,6 @@ services:
     App\State\Provider\SystemVariableStateProvider:
         bind:
             $decorated: '@api_platform.doctrine.orm.state.collection_provider'
+
+    App\Service\ScoreWeightsService: ~
+    App\Service\Contract\ScoreWeightsServiceInterface: '@App\Service\ScoreWeightsService'

@@ -107,12 +107,18 @@ resources:
         security: 'is_granted("ROLE_ADMIN")'
 
   App\Entity\ScoreWeight:
-    normalizationContext:
-      groups: ['variable:output']
-    denormalizationContext:
-      groups: ['variable:input']
     operations:
       ApiPlatform\Metadata\Get: ~
       ApiPlatform\Metadata\GetCollection:
         filters: ['system_variable.search_filter']
-      ApiPlatform\Metadata\Patch: ~
+      ApiPlatform\Metadata\Post:
+        class: ApiPlatform\Metadata\Post
+        method: POST
+        uriTemplate: /score-weights/update-multiple
+        controller: App\Controller\UpdateScoreWeightsController
+        input: App\Dto\ScoreWeight\Input\ScoreWeightDto
+        output: App\Dto\ScoreWeight\Output\ScoreWeightsDto
+        security: 'is_granted("ROLE_ADMIN")'
+        openapiContext:
+          summary: 'Update multiple weights'
+          description: 'Update multiple weights'
