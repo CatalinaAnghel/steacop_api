@@ -1,17 +1,8 @@
 App\Entity\Student:
   attributes:
-    code:
-      groups: [ 'student:input', 'student:output' ]
-    email:
-      groups: [ 'student:input', 'student:output' ]
-    plainPassword:
-      groups: [ 'student:input' ]
-      serialized_name: 'password'
     firstName:
       groups: [ 'student:input', 'student:output' ]
     lastName:
       groups: [ 'student:input', 'student:output' ]
-    roles:
-      groups: [ 'student:input', 'student:output' ]
-    discriminator:
-      groups: [ 'student:input', 'student:output' ]
+    phoneNumber:
+      groups: [ 'student:input', 'student:output']

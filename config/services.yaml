@@ -51,9 +51,9 @@ services:
         autoconfigure: false
         public: false
 
-    App\State\Provider\SystemVariableStateProvider:
+    App\State\Provider\StudentsStateProvider:
         bind:
-            $decorated: '@api_platform.doctrine.orm.state.collection_provider'
+            $decoratedProvider: '@api_platform.doctrine.orm.state.collection_provider'
 
     App\Service\ScoreWeightsService: ~
     App\Service\Contract\ScoreWeightsServiceInterface: '@App\Service\ScoreWeightsService'

@@ -36,8 +36,11 @@ class Project {
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Functionality::class, orphanRemoval: true)]
     private Collection $functionalities;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Meeting::class, orphanRemoval: true)]
-    private Collection $meetings;
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: MilestoneMeeting::class, orphanRemoval: true)]
+    private Collection $milestoneMeetings;
+
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: GuidanceMeeting::class, orphanRemoval: true)]
+    private Collection $guidanceMeetings;
 
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Assignment::class, orphanRemoval: true)]
     private Collection $assignments;
@@ -45,7 +48,8 @@ class Project {
     public function __construct() {
         $this->student = new ArrayCollection();
         $this->functionalities = new ArrayCollection();
-        $this->meetings = new ArrayCollection();
+        $this->milestoneMeetings = new ArrayCollection();
+        $this->guidanceMeetings = new ArrayCollection();
         $this->assignments = new ArrayCollection();
     }
 
@@ -69,55 +73,42 @@ class Project {
         return $this;
     }
 
-    public function removeStudent(Student $student): self {
-        if ($this->student->removeElement($student)) {
-            // set the owning side to null (unless already changed)
-            if ($student->getProject() === $this) {
-                $student->setProject(null);
-            }
+    public function removeStudent(Student $student): void {
+        if ($this->student->removeElement($student) && $student->getProject() === $this) {
+            $student->setProject(null);
         }
-
-        return $this;
     }
 
     public function getSupervisor(): ?Supervisor {
         return $this->supervisor;
     }
 
-    public function setSupervisor(Supervisor $supervisor): self {
+    public function setSupervisor(Supervisor $supervisor): void {
         $this->supervisor = $supervisor;
-
-        return $this;
     }
 
     public function getTitle(): ?string {
         return $this->title;
     }
 
-    public function setTitle(string $title): self {
+    public function setTitle(string $title): void {
         $this->title = $title;
-
-        return $this;
     }
 
     public function getDescription(): ?string {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self {
+    public function setDescription(?string $description): void {
         $this->description = $description;
-
-        return $this;
     }
 
     public function getRepositoryUrl(): ?string {
         return $this->repositoryUrl;
     }
 
-    public function setRepositoryUrl(?string $repositoryUrl): self {
+    public function setRepositoryUrl(?string $repositoryUrl): void {
         $this->repositoryUrl = $repositoryUrl;
-
-        return $this;
     }
 
     /**
@@ -127,51 +118,57 @@ class Project {
         return $this->functionalities;
     }
 
-    public function addFunctionality(Functionality $functionality): self {
+    public function addFunctionality(Functionality $functionality): void {
         if (!$this->functionalities->contains($functionality)) {
             $this->functionalities->add($functionality);
             $functionality->setProject($this);
         }
-
-        return $this;
     }
 
-    public function removeFunctionality(Functionality $functionality): self {
-        if ($this->functionalities->removeElement($functionality)) {
-            // set the owning side to null (unless already changed)
-            if ($functionality->getProject() === $this) {
-                $functionality->setProject(null);
-            }
+    public function removeFunctionality(Functionality $functionality): void {
+        if ($this->functionalities->removeElement($functionality) && $functionality->getProject() === $this) {
+            $functionality->setProject(null);
         }
-
-        return $this;
     }
 
     /**
-     * @return Collection<int, Meeting>
+     * @return Collection<int, MilestoneMeeting>
      */
-    public function getMeetings(): Collection {
-        return $this->meetings;
+    public function getMilestoneMeetings(): Collection {
+        return $this->milestoneMeetings;
     }
 
-    public function addMeeting(Meeting $meeting): self {
-        if (!$this->meetings->contains($meeting)) {
-            $this->meetings->add($meeting);
-            $meeting->setProject($this);
+    public function addMilestoneMeeting(MilestoneMeeting $milestoneMeeting): void {
+        if (!$this->milestoneMeetings->contains($milestoneMeeting)) {
+            $this->milestoneMeetings->add($milestoneMeeting);
+            $milestoneMeeting->setProject($this);
         }
-
-        return $this;
     }
 
-    public function removeMeeting(Meeting $meeting): self {
-        if ($this->meetings->removeElement($meeting)) {
-            // set the owning side to null (unless already changed)
-            if ($meeting->getProject() === $this) {
-                $meeting->setProject(null);
-            }
+    public function removeMilestoneMeeting(MilestoneMeeting $milestoneMeeting): void {
+        if ($this->milestoneMeetings->removeElement($milestoneMeeting) && $milestoneMeeting->getProject() === $this) {
+            $milestoneMeeting->setProject(null);
         }
+    }
 
-        return $this;
+    /**
+     * @return Collection<int, GuidanceMeeting>
+     */
+    public function getGuidanceMeetings(): Collection {
+        return $this->guidanceMeetings;
+    }
+
+    public function addGuidanceMeeting(GuidanceMeeting $guidanceMeeting): void {
+        if (!$this->guidanceMeetings->contains($guidanceMeeting)) {
+            $this->guidanceMeetings->add($guidanceMeeting);
+            $guidanceMeeting->setProject($this);
+        }
+    }
+
+    public function removeGuidanceMeeting(GuidanceMeeting $guidanceMeeting): void {
+        if ($this->guidanceMeetings->removeElement($guidanceMeeting) && $guidanceMeeting->getProject() === $this) {
+            $guidanceMeeting->setProject(null);
+        }
     }
 
     /**
@@ -191,11 +188,8 @@ class Project {
     }
 
     public function removeAssignment(Assignment $assignment): self {
-        if ($this->assignments->removeElement($assignment)) {
-            // set the owning side to null (unless already changed)
-            if ($assignment->getProject() === $this) {
-                $assignment->setProject(null);
-            }
+        if ($this->assignments->removeElement($assignment) && $assignment->getProject() === $this) {
+            $assignment->setProject(null);
         }
 
         return $this;

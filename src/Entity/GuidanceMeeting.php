@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Traits\ProjectTraits;
 use App\Repository\GuidanceMeetingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,10 +16,16 @@ class GuidanceMeeting extends Meeting {
     #[ORM\OneToMany(mappedBy: 'meeting', targetEntity: Rating::class, orphanRemoval: true)]
     private Collection $ratings;
 
+    #[ORM\ManyToOne(inversedBy: 'guidanceMeetings')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Project $project = null;
+
     #[Pure] public function __construct() {
         parent::__construct();
         $this->ratings = new ArrayCollection();
     }
+
+    use ProjectTraits;
 
     /**
      * @return Collection<int, Rating>
@@ -27,23 +34,16 @@ class GuidanceMeeting extends Meeting {
         return $this->ratings;
     }
 
-    public function addRating(Rating $rating): self {
+    public function addRating(Rating $rating): void {
         if (!$this->ratings->contains($rating)) {
             $this->ratings->add($rating);
             $rating->setMeeting($this);
         }
-
-        return $this;
     }
 
-    public function removeRating(Rating $rating): self {
-        if ($this->ratings->removeElement($rating)) {
-            // set the owning side to null (unless already changed)
-            if ($rating->getMeeting() === $this) {
-                $rating->setMeeting(null);
-            }
+    public function removeRating(Rating $rating): void {
+        if ($this->ratings->removeElement($rating) && $rating->getMeeting() === $this) {
+            $rating->setMeeting(null);
         }
-
-        return $this;
     }
 }

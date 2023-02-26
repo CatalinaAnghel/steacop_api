@@ -2,22 +2,15 @@ App\ApiResource\User:
   attributes:
     code:
       identifier: true
-      groups: [ 'user:create', 'user:output' ]
-#      identifier: true
-#    id:
-#      identifier: false
+      groups: [ 'user:output' ]
     email:
-      groups: [ 'user:create', 'user:output' ]
-    plainPassword:
-      groups: [ 'user:create' ]
-      serialized_name: 'password'
+      groups: [ 'user:output' ]
+#    plainPassword:
+#      groups: [ 'user:create' ]
+#      serialized_name: 'password'
     firstName:
-      groups: [ 'user:create', 'user:output' ]
+      groups: [ 'user:output' ]
     lastName:
-      groups: [ 'user:create', 'user:output' ]
+      groups: [ 'user:output' ]
     roles:
       groups: [ 'user:output' ]
-    discriminator:
-      groups: [ 'user:output' ]
-    isStudent:
-      groups: ['user:create']

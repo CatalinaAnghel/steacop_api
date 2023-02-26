@@ -16,3 +16,7 @@
 ###< lexik/jwt-authentication-bundle ###
 
 ./public/media/*
+/public/media/students/63de75b8ee7f2_0e0f9ee6-a730-4990-ab0d-5466f690bab8_accounts.xlsx
+/public/media/supervisors/*
+/public/media/students/*
+/migr_bkp/*

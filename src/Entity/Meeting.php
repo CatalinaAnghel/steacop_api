@@ -2,23 +2,17 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\TimestampableTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
-#[ApiResource]
 #[ORM\MappedSuperclass]
-class Meeting {
+abstract class Meeting {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\ManyToOne(inversedBy: 'meetings')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Project $project = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
@@ -39,16 +33,6 @@ class Meeting {
 
     public function getId(): ?int {
         return $this->id;
-    }
-
-    public function getProject(): ?Project {
-        return $this->project;
-    }
-
-    public function setProject(?Project $project): self {
-        $this->project = $project;
-
-        return $this;
     }
 
     public function getDescription(): ?string {
