@@ -32,9 +32,14 @@ services:
         bind:
             $decorated: '@api_platform.doctrine.orm.state.persist_processor'
 
-    App\State\Processor\MediaObjectStateProcessor:
+    App\State\Processor\StudentImportFileStateProcessor:
         bind:
             $decorated: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\State\Processor\SupervisorImportFileStateProcessor:
+        bind:
+            $decorated: '@api_platform.doctrine.orm.state.persist_processor'
+
 
     App\DataFixtures\AdminAccountFixture:
         bind:

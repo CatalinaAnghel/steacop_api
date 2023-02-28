@@ -27,18 +27,39 @@ resources:
     denormalizationContext:
       groups: [ 'supervisor:input' ]
 
-  App\Entity\MediaObject:
+  App\Entity\StudentImportFile:
     normalizationContext:
-      groups: ['media_object:output'],
+      groups: ['student_import_file:output'],
     types: ['https://schema.org/MediaObject']
     operations:
       ApiPlatform\Metadata\Post:
         security: 'is_granted("ROLE_ADMIN")'
-        processor: App\State\Processor\MediaObjectStateProcessor
+        processor: App\State\Processor\StudentImportFileStateProcessor
 #        controller: App\Controller\CreateMediaObjectAction
 #        deserialize: false
         validationContext:
-          groups: ['Default', 'media_object:input']]
+          groups: ['Default', 'student_import_file:input']]
+        openapiContext:
+          requestBody:
+            content:
+              multipart/form-data:
+                schema:
+                  type: object
+                  properties:
+                    file:
+                      type: string
+                      format: binary
+
+  App\Entity\SupervisorImportFile:
+    normalizationContext:
+      groups: [ 'supervisor_import_file:output' ],
+    types: [ 'https://schema.org/MediaObject' ]
+    operations:
+      ApiPlatform\Metadata\Post:
+        security: 'is_granted("ROLE_ADMIN")'
+        processor: App\State\Processor\StudentImportFileStateProcessor
+        validationContext:
+          groups: [ 'Default', 'supervisor_import_file:input' ] ]
         openapiContext:
           requestBody:
             content:

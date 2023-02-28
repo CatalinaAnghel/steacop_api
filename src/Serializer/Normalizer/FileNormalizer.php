@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace App\Serializer\Normalizer;
 
-use App\Entity\MediaObject;
+use App\Entity\StudentImportFile;
+use App\Entity\SupervisorImportFile;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
-final class MediaObjectNormalizer implements NormalizerInterface, NormalizerAwareInterface {
+final class FileNormalizer implements NormalizerInterface, NormalizerAwareInterface {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'MEDIA_OBJECT_NORMALIZER_ALREADY_CALLED';
+    private const ALREADY_CALLED = 'FILE_NORMALIZER_ALREADY_CALLED';
 
     public function __construct(private readonly StorageInterface $storage) {
     }
@@ -29,6 +30,6 @@ final class MediaObjectNormalizer implements NormalizerInterface, NormalizerAwar
             return false;
         }
 
-        return $data instanceof MediaObject;
+        return $data instanceof StudentImportFile || $data instanceof SupervisorImportFile;
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Command\Contracts\AbstractUsersCommand;
-use App\Command\Contracts\ImportUsersCommandInterface;
 use App\Entity\Department;
 use App\Entity\Supervisor;
+use App\Entity\SupervisorImportFile;
 use App\Entity\SupervisoryPlan;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,7 +24,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
     hidden: false
 )]
 class ImportSupervisorsCommand extends AbstractUsersCommand {
-    public const IMPORT_FILE_PATH = '\\..\\..\\..\\public\\media\\supervisors\\';
+    public const IMPORT_FILE_PATH = '\\..\\..\\..\\public\\documents\\supervisors\\';
     protected const DETAILED_DESCRIPTION = 'This command allows you to import the supervisors';
 
     /**
@@ -39,42 +39,58 @@ class ImportSupervisorsCommand extends AbstractUsersCommand {
 
     protected function configure(): void {
         $this->setHelp(self::DETAILED_DESCRIPTION)
-        ->addArgument('fileName', InputArgument::OPTIONAL, 'Provide the file name');
+            ->addArgument('fileName', InputArgument::OPTIONAL, 'Provide the file name');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int {
-        $fileName = ($input->getArgument('fileName')?? 'professors') . '.csv';
-        $this->setFileName($fileName);
-        $userRepo = $this->entityManager->getRepository(User::class);
-        $supervisorsData = $this->mapCSV();
-        foreach ($supervisorsData as $data) {
-            if (null === $userRepo->findOneBy(['code' => $data['Code']])) {
-                $departmentRepo = $this->entityManager->getRepository(Department::class);
-                $department = $departmentRepo->findOneBy(['name' => $data['Department']]);
-
-                $supervisoryStyleRepo = $this->entityManager->getRepository(SupervisoryPlan::class);
-                $supervisoryPlan = $supervisoryStyleRepo->findOneBy(['name' => $data['SupervisoryPlan']]);
-
-                $user = new User();
-                $user->setEmail($data['Email']);
-                $user->setCode($data['Code']);
-                $user->setPassword($this->userPasswordHasher->hashPassword($user, explode('@', $data['Email'])[0]));
-                $user->setRoles(['ROLE_TEACHER']);
-                $this->entityManager->persist($user);
-                $this->entityManager->flush();
-
-                $supervisor = new Supervisor();
-                $supervisor->setLastName($data['LastName']);
-                $supervisor->setFirstName($data['FirstName']);
-                $supervisor->setPhoneNumber($data['PhoneNumber']);
-                $supervisor->setSupervisoryPlan($supervisoryPlan);
-                $supervisor->setDepartment($department);
-                $supervisor->setUser($user);
-                $this->entityManager->persist($supervisor);
-                $this->entityManager->flush();
+        if ($input->getArgument('fileName') === null) {
+            $supervisorImportFileRepo = $this->entityManager->getRepository(SupervisorImportFile::class);
+            try {
+                $fileInfo = $supervisorImportFileRepo->findMostRecentFile();
+            } catch (\Exception $exception) {
+                dd($exception->getMessage());
             }
+
+            if ($fileInfo !== null) {
+                $fileName = $fileInfo->getFilePath();
+            }
+        } else {
+            $fileName = $input->getArgument('fileName');
         }
-        return Command::SUCCESS;
+        if (isset($fileName)) {
+            $this->setFileName($fileName);
+            $userRepo = $this->entityManager->getRepository(User::class);
+            $supervisorsData = $this->mapCSV();
+            foreach ($supervisorsData as $data) {
+                if (null === $userRepo->findOneBy(['code' => $data['Code']])) {
+                    $departmentRepo = $this->entityManager->getRepository(Department::class);
+                    $department = $departmentRepo->findOneBy(['name' => $data['Department']]);
+
+                    $supervisoryStyleRepo = $this->entityManager->getRepository(SupervisoryPlan::class);
+                    $supervisoryPlan = $supervisoryStyleRepo->findOneBy(['name' => $data['SupervisoryPlan']]);
+
+                    $user = new User();
+                    $user->setEmail($data['Email']);
+                    $user->setCode($data['Code']);
+                    $user->setPassword($this->userPasswordHasher->hashPassword($user, explode('@', $data['Email'])[0]));
+                    $user->setRoles(['ROLE_TEACHER']);
+                    $this->entityManager->persist($user);
+                    $this->entityManager->flush();
+
+                    $supervisor = new Supervisor();
+                    $supervisor->setLastName($data['LastName']);
+                    $supervisor->setFirstName($data['FirstName']);
+                    $supervisor->setPhoneNumber($data['PhoneNumber']);
+                    $supervisor->setSupervisoryPlan($supervisoryPlan);
+                    $supervisor->setDepartment($department);
+                    $supervisor->setUser($user);
+                    $this->entityManager->persist($supervisor);
+                    $this->entityManager->flush();
+                }
+            }
+            return Command::SUCCESS;
+        }
+        return Command::FAILURE;
     }
 
 //    public function mapCSV(InputInterface $input): array {

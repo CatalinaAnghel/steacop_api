@@ -20,3 +20,5 @@
 /public/media/supervisors/*
 /public/media/students/*
 /migr_bkp/*
+/public/documents/students/*
+/public/documents/supervisors/*

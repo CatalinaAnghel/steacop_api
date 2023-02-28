@@ -1,9 +1,0 @@
-App\Entity\MediaObject:
-  attributes:
-    contentUrl:
-      types: ['https://schema.org/contentUrl']
-      groups: ['media_object:output']
-    file:
-      groups: ['media_object:input']
-    createdAt:
-      groups: [ 'media_object:input' ]

@@ -1,0 +1,9 @@
+App\Entity\StudentImportFile:
+  attributes:
+    contentUrl:
+      types: ['https://schema.org/contentUrl']
+      groups: ['student_import_file:output']
+    file:
+      groups: ['student_import_file:input']
+    createdAt:
+      groups: [ 'student_import_file:input' ]

@@ -3,13 +3,13 @@ vich_uploader:
   metadata:
     type: attribute
   mappings:
-    media_object:
-      uri_prefix: /media/students
-      upload_destination: '%kernel.project_dir%/public/media/students'
+    student_import_file:
+      uri_prefix: /documents/students
+      upload_destination: '%kernel.project_dir%/public/documents/students'
       # Will rename uploaded files using a uniqueid as a prefix.
       namer: Vich\UploaderBundle\Naming\OrignameNamer
-    supervisor_media_object:
-      uri_prefix: /media/supervisors
-      upload_destination: '%kernel.project_dir%/public/media/supervisors'
+    supervisor_import_file:
+      uri_prefix: /documents/supervisors
+      upload_destination: '%kernel.project_dir%/public/documents/supervisors'
       # Will rename uploaded files using a uniqueid as a prefix.
       namer: Vich\UploaderBundle\Naming\OrignameNamer

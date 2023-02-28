@@ -6,7 +6,7 @@ namespace App\State\Processor;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 
-final class MediaObjectStateProcessor implements ProcessorInterface {
+final class SupervisorImportFileStateProcessor implements ProcessorInterface {
     public function __construct(private readonly ProcessorInterface $decorated) {
     }
 

@@ -1,0 +1,9 @@
+App\Entity\SupervisorImportFile:
+  attributes:
+    contentUrl:
+      types: ['https://schema.org/contentUrl']
+      groups: ['supervisor_import_file:output']
+    file:
+      groups: ['supervisor_import_file:input']
+    createdAt:
+      groups: [ 'supervisor_import_file:input' ]
