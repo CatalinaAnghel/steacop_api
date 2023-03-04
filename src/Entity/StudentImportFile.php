@@ -29,6 +29,7 @@ class StudentImportFile {
      */
     #[Vich\UploadableField(mapping: "student_import_file", fileNameProperty: "filePath")]
     #[Assert\NotNull(groups: ['student_import_file:input'])]
+    #[Assert\File(mimeTypes: ['text/csv'])]
     private ?File $file = null;
 
     /**

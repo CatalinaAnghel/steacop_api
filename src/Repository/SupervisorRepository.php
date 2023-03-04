@@ -6,6 +6,7 @@ use App\Entity\Supervisor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
 
 /**
  * @extends ServiceEntityRepository<Supervisor>
@@ -17,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SupervisorRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly LoggerInterface $logger)
     {
         parent::__construct($registry, Supervisor::class);
     }
@@ -54,10 +55,8 @@ class SupervisorRepository extends ServiceEntityRepository
                 ->setParameter('code', $code)
                 ->getQuery()
                 ->getOneOrNullResult();
-        }catch (NonUniqueResultException $exception){
-            dd($exception->getMessage());
-        }catch (\Exception $exception){
-            dd($exception->getMessage());
+        }catch (NonUniqueResultException|\Exception $exception){
+            $this->logger->error($exception->getMessage());
         }
 
         return $supervisor?? null;

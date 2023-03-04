@@ -7,7 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 
 abstract class AbstractUsersCommand extends Command {
-    public const IMPORT_FILE_PATH = '\\..\\..\\..\\public\\media\\';
+    public const IMPORT_FILE_PATH = '\\..\\..\\..\\public\\documents\\';
 
     /**
      * @var string $fileName

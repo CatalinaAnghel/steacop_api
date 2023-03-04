@@ -10,6 +10,7 @@ use App\Entity\SupervisorImportFile;
 use App\Entity\SupervisoryPlan;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -30,9 +31,11 @@ class ImportSupervisorsCommand extends AbstractUsersCommand {
     /**
      * @param UserPasswordHasherInterface $userPasswordHasher
      * @param EntityManagerInterface $entityManager
+     * @param LoggerInterface $logger
      */
     public function __construct(private readonly UserPasswordHasherInterface $userPasswordHasher,
-                                private readonly EntityManagerInterface      $entityManager
+                                private readonly EntityManagerInterface      $entityManager,
+    private readonly LoggerInterface $logger
     ) {
         parent::__construct();
     }
@@ -48,10 +51,10 @@ class ImportSupervisorsCommand extends AbstractUsersCommand {
             try {
                 $fileInfo = $supervisorImportFileRepo->findMostRecentFile();
             } catch (\Exception $exception) {
-                dd($exception->getMessage());
+                $this->logger->error($exception->getMessage());
             }
 
-            if ($fileInfo !== null) {
+            if (isset($fileInfo)) {
                 $fileName = $fileInfo->getFilePath();
             }
         } else {
@@ -92,25 +95,4 @@ class ImportSupervisorsCommand extends AbstractUsersCommand {
         }
         return Command::FAILURE;
     }
-
-//    public function mapCSV(InputInterface $input): array {
-//        $supervisors = [];
-//        $supervisorDataType = [];
-//        $rowCounter = 0;
-//        $fileName = ($input->getArgument('fileName')?? 'professors') . '.csv';
-//        $handle = fopen($this->getImportFilePath() . $fileName, 'r');
-//        while (false !== ($data = fgetcsv($handle))) {
-//            if (0 === $rowCounter) {
-//                $supervisorDataType = $data;
-//            } else {
-//                $temp = [];
-//                foreach ($data as $key => $value) {
-//                    $temp[$supervisorDataType[$key]] = $value;
-//                }
-//                $supervisors[] = $temp;
-//            }
-//            $rowCounter++;
-//        }
-//        return $supervisors;
-//    }
 }

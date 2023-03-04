@@ -12,12 +12,12 @@ use App\Entity\Supervisor;
 use App\Entity\SupervisoryPlan;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(
@@ -33,9 +33,12 @@ class ImportStudentsCommand extends AbstractUsersCommand {
     /**
      * @param UserPasswordHasherInterface $userPasswordHasher
      * @param EntityManagerInterface $entityManager
+     * @param LoggerInterface $logger
      */
     public function __construct(private readonly UserPasswordHasherInterface $userPasswordHasher,
-                                private readonly EntityManagerInterface      $entityManager) {
+                                private readonly EntityManagerInterface      $entityManager,
+                                private readonly LoggerInterface $logger
+    ) {
         parent::__construct();
     }
 
@@ -44,16 +47,21 @@ class ImportStudentsCommand extends AbstractUsersCommand {
             ->addArgument('fileName', InputArgument::OPTIONAL, 'Provide the file name');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int {
         if($input->getArgument('fileName') === null){
             $studentImportFileRepo = $this->entityManager->getRepository(StudentImportFile::class);
             try{
                 $fileInfo = $studentImportFileRepo->findMostRecentFile();
             }catch (\Exception $exception){
-                dd($exception->getMessage());
+                $this->logger->error($exception->getMessage());
             }
 
-            if($fileInfo !== null){
+            if(isset($fileInfo)){
                 $fileName = $fileInfo->getFilePath();
             }
         }else {
@@ -115,7 +123,7 @@ class ImportStudentsCommand extends AbstractUsersCommand {
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }catch(\Exception $exception){
-            dd($exception->getMessage());
+            $this->logger->error($exception->getMessage());
         }
 
         return $user?? null;
@@ -138,7 +146,7 @@ class ImportStudentsCommand extends AbstractUsersCommand {
                 $this->entityManager->persist($project);
                 $this->entityManager->flush();
             }catch (\Exception $exception){
-                dd($exception->getMessage());
+                $this->logger->error($exception->getMessage());
             }
         }
         return $project?? null;

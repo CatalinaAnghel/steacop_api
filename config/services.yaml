@@ -40,7 +40,6 @@ services:
         bind:
             $decorated: '@api_platform.doctrine.orm.state.persist_processor'
 
-
     App\DataFixtures\AdminAccountFixture:
         bind:
             $adminEmail: '%app.admin_email_address%'
@@ -62,3 +61,7 @@ services:
 
     App\Service\ScoreWeightsService: ~
     App\Service\Contract\ScoreWeightsServiceInterface: '@App\Service\ScoreWeightsService'
+
+    App\State\Provider\SupervisorsStateProvider:
+        bind:
+            $decoratedProvider: '@api_platform.doctrine.orm.state.collection_provider'

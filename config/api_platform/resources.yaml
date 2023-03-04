@@ -11,10 +11,6 @@ resources:
 
   App\Entity\Student:
     shortName: 'Students'
-#    normalizationContext:
-#      groups: ['student:output']
-#    denormalizationContext:
-#      groups: ['student:input']
     operations:
       ApiPlatform\Metadata\GetCollection:
         provider: App\State\Provider\StudentsStateProvider
@@ -22,10 +18,10 @@ resources:
 
   App\Entity\Supervisor:
     shortName: 'Supervisors'
-    normalizationContext:
-      groups: [ 'supervisor:output' ]
-    denormalizationContext:
-      groups: [ 'supervisor:input' ]
+    operations:
+      ApiPlatform\Metadata\GetCollection:
+        provider: App\State\Provider\SupervisorsStateProvider
+        output: App\Dto\Supervisor\Output\SupervisorDto
 
   App\Entity\StudentImportFile:
     normalizationContext:

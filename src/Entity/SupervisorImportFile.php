@@ -26,6 +26,7 @@ class SupervisorImportFile {
 
     #[Vich\UploadableField(mapping: "supervisor_import_file", fileNameProperty: "filePath")]
     #[Assert\NotNull(groups: ['supervisor_import_file:input'])]
+    #[Assert\File(mimeTypes: ['text/csv'])]
     private ?File $file = null;
 
     /**

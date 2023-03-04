@@ -1,36 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Dto\Student\Output;
+namespace App\Dto\Traits;
 
-use App\Dto\Traits\IdentityTrait;
+use App\Dto\Shared\Output\DepartmentDto;
 
-class SpecializationDto {
-    use IdentityTrait;
-
-    /**
-     * @var string $name
-     */
-    private string $name;
-
+trait DepartmentTrait {
     /**
      * @var DepartmentDto $department
      */
     private DepartmentDto $department;
-
-    /**
-     * @return string
-     */
-    public function getName(): string {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void {
-        $this->name = $name;
-    }
 
     /**
      * @return DepartmentDto

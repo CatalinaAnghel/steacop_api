@@ -1,12 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Dto\Student\Output;
+namespace App\Dto\Shared\Output;
 
+use App\Dto\Traits\DepartmentTrait;
 use App\Dto\Traits\IdentityTrait;
 
-class DepartmentDto {
+class SpecializationDto {
     use IdentityTrait;
+    use DepartmentTrait;
 
     /**
      * @var string $name
