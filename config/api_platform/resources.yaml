@@ -15,6 +15,8 @@ resources:
       ApiPlatform\Metadata\GetCollection:
         provider: App\State\Provider\StudentsStateProvider
         output: App\Dto\Student\Output\StudentDto
+        filters: [ 'student.search_filter' ]
+        security: 'is_granted("ROLE_ADMIN")||is_granted("ROLE_TEACHER")'
 
   App\Entity\Supervisor:
     shortName: 'Supervisors'
@@ -22,6 +24,7 @@ resources:
       ApiPlatform\Metadata\GetCollection:
         provider: App\State\Provider\SupervisorsStateProvider
         output: App\Dto\Supervisor\Output\SupervisorDto
+        security: 'is_granted("ROLE_ADMIN")||is_granted("ROLE_STUDENT")'
 
   App\Entity\StudentImportFile:
     normalizationContext:
@@ -31,8 +34,6 @@ resources:
       ApiPlatform\Metadata\Post:
         security: 'is_granted("ROLE_ADMIN")'
         processor: App\State\Processor\StudentImportFileStateProcessor
-#        controller: App\Controller\CreateMediaObjectAction
-#        deserialize: false
         validationContext:
           groups: ['Default', 'student_import_file:input']]
         openapiContext:
@@ -114,7 +115,7 @@ resources:
     operations:
       ApiPlatform\Metadata\Get: ~
       ApiPlatform\Metadata\GetCollection:
-        filters: ['system_variable.search_filter']
+        filters: ['score_weight.search_filter']
       ApiPlatform\Metadata\Post:
         class: ApiPlatform\Metadata\Post
         method: POST
