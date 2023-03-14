@@ -45,6 +45,9 @@ class Project {
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Assignment::class, orphanRemoval: true)]
     private Collection $assignments;
 
+    #[ORM\OneToOne(mappedBy: 'project', cascade: ['persist', 'remove'])]
+    private ?CustomSupervisoryPlan $supervisoryPlan = null;
+
     public function __construct() {
         $this->student = new ArrayCollection();
         $this->functionalities = new ArrayCollection();
@@ -191,6 +194,23 @@ class Project {
         if ($this->assignments->removeElement($assignment) && $assignment->getProject() === $this) {
             $assignment->setProject(null);
         }
+
+        return $this;
+    }
+
+    public function getSupervisoryPlan(): ?CustomSupervisoryPlan
+    {
+        return $this->supervisoryPlan;
+    }
+
+    public function setSupervisoryPlan(CustomSupervisoryPlan $supervisoryPlan): self
+    {
+        // set the owning side of the relation if necessary
+        if ($supervisoryPlan->getProject() !== $this) {
+            $supervisoryPlan->setProject($this);
+        }
+
+        $this->supervisoryPlan = $supervisoryPlan;
 
         return $this;
     }

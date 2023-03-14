@@ -3,20 +3,15 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Contracts\AbstractSupervisoryPlan;
 use App\Repository\SupervisoryPlanRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: SupervisoryPlanRepository::class)]
-class SupervisoryPlan {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
+class SupervisoryPlan extends AbstractSupervisoryPlan {
     #[ORM\Column(length: 32)]
     private ?string $name = null;
 
@@ -29,26 +24,8 @@ class SupervisoryPlan {
     #[ORM\OneToMany(mappedBy: 'supervisoryPlan', targetEntity: Student::class)]
     private Collection $students;
 
-    #[ORM\Column]
-    #[Assert\GreaterThanOrEqual(1)]
-    #[Assert\LessThanOrEqual(10)]
-    private ?int $numberOfAssignments = null;
-
-    #[ORM\Column]
-    #[Assert\GreaterThanOrEqual(1)]
-    #[Assert\LessThanOrEqual(10)]
-    private ?int $numberOfGuidanceMeetings = null;
-
     public function __construct() {
         $this->students = new ArrayCollection();
-    }
-
-    public function setId(int $id): void {
-        $this->id = $id;
-    }
-
-    public function getId(): ?int {
-        return $this->id;
     }
 
     public function getName(): ?string {
@@ -90,27 +67,8 @@ class SupervisoryPlan {
     }
 
     public function removeStudent(Student $student): void {
-        if ($this->students->removeElement($student)) {
-            // set the owning side to null (unless already changed)
-            if ($student->getSupervisoryPlan() === $this) {
-                $student->setSupervisoryPlan(null);
-            }
+        if ($this->students->removeElement($student) && $student->getSupervisoryPlan() === $this) {
+            $student->setSupervisoryPlan(null);
         }
-    }
-
-    public function getNumberOfAssignments(): ?int {
-        return $this->numberOfAssignments;
-    }
-
-    public function setNumberOfAssignments(int $numberOfAssignments): void {
-        $this->numberOfAssignments = $numberOfAssignments;
-    }
-
-    public function getNumberOfGuidanceMeetings(): ?int {
-        return $this->numberOfGuidanceMeetings;
-    }
-
-    public function setNumberOfGuidanceMeetings(int $numberOfGuidanceMeetings): void {
-        $this->numberOfGuidanceMeetings = $numberOfGuidanceMeetings;
     }
 }

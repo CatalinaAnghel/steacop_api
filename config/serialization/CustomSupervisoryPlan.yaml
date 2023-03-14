@@ -1,0 +1,4 @@
+App\ApiResource\ProjectSupervisoryPlan:
+  attributes:
+    projectId:
+      identifier: true

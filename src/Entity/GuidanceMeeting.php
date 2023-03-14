@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Contracts\AbstractMeeting;
 use App\Entity\Traits\ProjectTraits;
 use App\Repository\GuidanceMeetingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,7 +13,7 @@ use JetBrains\PhpStorm\Pure;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: GuidanceMeetingRepository::class)]
-class GuidanceMeeting extends Meeting {
+class GuidanceMeeting extends AbstractMeeting {
     #[ORM\OneToMany(mappedBy: 'meeting', targetEntity: Rating::class, orphanRemoval: true)]
     private Collection $ratings;
 

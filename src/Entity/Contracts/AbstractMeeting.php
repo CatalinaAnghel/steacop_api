@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Contracts;
 
 use App\Entity\Traits\TimestampableTrait;
 use Doctrine\DBAL\Types\Types;
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 #[ORM\MappedSuperclass]
-abstract class Meeting {
+abstract class AbstractMeeting {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

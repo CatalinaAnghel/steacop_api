@@ -28,24 +28,14 @@ services:
         decorates: 'api_platform.openapi.factory'
         arguments: [ '@.inner' ]
 
-    App\State\Processor\UserStateProcessor:
-        bind:
-            $decorated: '@api_platform.doctrine.orm.state.persist_processor'
-
-    App\State\Processor\StudentImportFileStateProcessor:
-        bind:
-            $decorated: '@api_platform.doctrine.orm.state.persist_processor'
-
-    App\State\Processor\SupervisorImportFileStateProcessor:
-        bind:
-            $decorated: '@api_platform.doctrine.orm.state.persist_processor'
-
+    # fixtures
     App\DataFixtures\AdminAccountFixture:
         bind:
             $adminEmail: '%app.admin_email_address%'
             $adminPassword: '%app.admin_password%'
             $adminCode: '%app.admin_code%'
 
+    # event listeners
     acme_api.event.jwt_created_listener:
         class: App\EventListener\JWTCreatedListener
         tags:
@@ -70,13 +60,35 @@ services:
         autoconfigure: false
         public: false
 
+    # processors
+    App\State\Processor\UserStateProcessor:
+        bind:
+            $decorated: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\State\Processor\StudentImportFileStateProcessor:
+        bind:
+            $decorated: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\State\Processor\SupervisorImportFileStateProcessor:
+        bind:
+            $decorated: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\State\Processor\ProjectSupervisoryPlanProcessor: ~
+#        bind:
+#            $requestContext: '@request_stack'
+
+    # providers
     App\State\Provider\StudentsStateProvider:
         bind:
             $decoratedProvider: '@api_platform.doctrine.orm.state.collection_provider'
 
-    App\Service\ScoreWeightsService: ~
-    App\Service\Contract\ScoreWeightsServiceInterface: '@App\Service\ScoreWeightsService'
-
     App\State\Provider\SupervisorsStateProvider:
         bind:
             $decoratedProvider: '@api_platform.doctrine.orm.state.collection_provider'
+
+    App\State\Provider\PatchProjectSupervisoryPlanProvider: ~
+    App\State\Provider\GetProjectSupervisoryPlanProvider: ~
+
+    # services
+    App\Service\ScoreWeightsService: ~
+    App\Service\Contract\ScoreWeightsServiceInterface: '@App\Service\ScoreWeightsService'
