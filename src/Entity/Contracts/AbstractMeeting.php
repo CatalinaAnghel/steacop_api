@@ -55,7 +55,7 @@ abstract class AbstractMeeting {
         return $this;
     }
 
-    public function isIsCompleted(): ?bool {
+    public function isCompleted(): ?bool {
         return $this->isCompleted;
     }
 

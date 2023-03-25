@@ -5,7 +5,7 @@ namespace App\Entity\Traits;
 
 use App\Entity\Project;
 
-trait ProjectTraits {
+trait ProjectTrait {
     public function getProject(): ?Project {
         return $this->project;
     }

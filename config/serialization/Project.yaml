@@ -1,0 +1,4 @@
+App\Entity\Project:
+  attributes:
+    id:
+      identifier: true

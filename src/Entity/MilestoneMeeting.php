@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Contracts\AbstractMeeting;
-use App\Entity\Traits\ProjectTraits;
+use App\Entity\Traits\ProjectTrait;
 use App\Repository\MilestoneMeetingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,7 +18,7 @@ class MilestoneMeeting extends AbstractMeeting {
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 
-    use ProjectTraits;
+    use ProjectTrait;
 
     public function getGrade(): ?float {
         return $this->grade;

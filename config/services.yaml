@@ -60,6 +60,26 @@ services:
         autoconfigure: false
         public: false
 
+    milestone_meeting.search_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { project.id: 'exact', isCompleted: 'exact' } ]
+        tags: [ 'api_platform.filter' ]
+        # The following are mandatory only if a _defaults section is defined with inverted values.
+        # You may want to isolate filters in a dedicated file to avoid adding the following lines (by adding them in the defaults section)
+        autowire: false
+        autoconfigure: false
+        public: false
+
+    milestone_meeting.date_filter:
+        parent: 'api_platform.doctrine.orm.date_filter'
+        arguments: [ { scheduledAt: ~ } ]
+        tags: [ 'api_platform.filter' ]
+        # The following are mandatory only if a _defaults section is defined with inverted values.
+        # You may want to isolate filters in a dedicated file to avoid adding the following lines (by adding them in the defaults section)
+        autowire: false
+        autoconfigure: false
+        public: false
+
     # processors
     App\State\Processor\UserStateProcessor:
         bind:
@@ -74,6 +94,7 @@ services:
             $decorated: '@api_platform.doctrine.orm.state.persist_processor'
 
     App\State\Processor\ProjectSupervisoryPlanProcessor: ~
+    App\State\Processor\CreateMilestoneMeetingStateProcessor: ~
 #        bind:
 #            $requestContext: '@request_stack'
 
@@ -88,6 +109,17 @@ services:
 
     App\State\Provider\PatchProjectSupervisoryPlanProvider: ~
     App\State\Provider\GetProjectSupervisoryPlanProvider: ~
+    App\State\Provider\GetProjectInformationProvider: ~
+
+    App\State\Provider\MilestoneMeeting\MilestoneMeetingsCollectionProvider:
+        bind:
+            $decoratedProvider: '@api_platform.doctrine.orm.state.collection_provider'
+
+    App\State\Provider\MilestoneMeeting\GetMilestoneMeetingItemProvider:
+        bind:
+            $decoratedProvider: '@api_platform.doctrine.orm.state.item_provider'
+
+    App\State\Provider\MilestoneMeeting\PatchMilestoneMeetingItemProvider: ~
 
     # services
     App\Service\ScoreWeightsService: ~

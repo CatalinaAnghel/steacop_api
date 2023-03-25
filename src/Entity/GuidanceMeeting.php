@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Contracts\AbstractMeeting;
-use App\Entity\Traits\ProjectTraits;
+use App\Entity\Traits\ProjectTrait;
 use App\Repository\GuidanceMeetingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,7 +26,7 @@ class GuidanceMeeting extends AbstractMeeting {
         $this->ratings = new ArrayCollection();
     }
 
-    use ProjectTraits;
+    use ProjectTrait;
 
     /**
      * @return Collection<int, Rating>
