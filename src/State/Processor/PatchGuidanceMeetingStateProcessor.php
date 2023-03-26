@@ -33,6 +33,7 @@ class PatchGuidanceMeetingStateProcessor implements ProcessorInterface {
             $guidanceMeeting->setScheduledAt($data->getScheduledAt());
             $guidanceMeeting->setLink($data->getLink());
             $guidanceMeeting->setUpdatedAt(new \DateTime('Now'));
+            $guidanceMeeting->setIsCompleted($data->getIsCompleted());
             $this->entityManager->persist($guidanceMeeting);
 
             try {

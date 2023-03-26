@@ -35,6 +35,7 @@ class PatchMilestoneMeetingProcessor implements ProcessorInterface {
                 $milestoneMeeting->setGrade($data->getGrade());
             }
             $milestoneMeeting->setUpdatedAt(new \DateTime('Now'));
+            $milestoneMeeting->setIsCompleted($data->getIsCompleted());
             $this->entityManager->persist($milestoneMeeting);
 
             try {

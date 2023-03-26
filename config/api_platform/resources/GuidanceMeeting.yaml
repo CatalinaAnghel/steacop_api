@@ -3,17 +3,22 @@ App\Entity\GuidanceMeeting:
     ApiPlatform\Metadata\Get:
       provider: App\State\Provider\GuidanceMeeting\GetGuidanceMeetingItemProvider
       output: App\Dto\Meeting\Output\GuidanceMeetingOutputDto
+      security: 'is_granted("ROLE_USER")'
     ApiPlatform\Metadata\GetCollection:
+      security: 'is_granted("ROLE_USER")'
       filters: [ 'guidance_meeting.search_filter', 'guidance_meeting.date_filter' ]
       provider: App\State\Provider\GuidanceMeeting\GetGuidanceMeetingsCollectionProvider
       output: App\Dto\Meeting\Output\GuidanceMeetingOutputDto
     ApiPlatform\Metadata\Post:
+      security: 'is_granted("ROLE_TEACHER")'
       input: App\Dto\Meeting\Input\CreateMeetingInputDto
       processor: App\State\Processor\CreateGuidanceMeetingStateProcessor
       output: App\Dto\Meeting\Output\GuidanceMeetingOutputDto
     ApiPlatform\Metadata\Patch:
+      security: 'is_granted("ROLE_TEACHER")'
       input: App\Dto\Meeting\Input\PatchGuidanceMeetingInputDto
       output: App\Dto\Meeting\Output\GuidanceMeetingOutputDto
       provider: App\State\Provider\GuidanceMeeting\PatchGuidanceMeetingItemProvider
       processor: App\State\Processor\PatchGuidanceMeetingStateProcessor
-    ApiPlatform\Metadata\Delete: ~
+    ApiPlatform\Metadata\Delete:
+      security: 'is_granted("ROLE_TEACHER")'

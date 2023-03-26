@@ -1,19 +1,24 @@
 App\Entity\MilestoneMeeting:
   operations:
     ApiPlatform\Metadata\Get:
+      security: 'is_granted("ROLE_USER")'
       provider: App\State\Provider\MilestoneMeeting\GetMilestoneMeetingItemProvider
       output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
     ApiPlatform\Metadata\GetCollection:
+      security: 'is_granted("ROLE_USER")'
       filters: [ 'milestone_meeting.search_filter', 'milestone_meeting.date_filter' ]
       provider: App\State\Provider\MilestoneMeeting\MilestoneMeetingsCollectionProvider
       output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
     ApiPlatform\Metadata\Post:
+      security: 'is_granted("ROLE_TEACHER")'
       input: App\Dto\Meeting\Input\CreateMeetingInputDto
       processor: App\State\Processor\CreateMilestoneMeetingStateProcessor
       output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
     ApiPlatform\Metadata\Patch:
+      security: 'is_granted("ROLE_TEACHER")'
       input: App\Dto\Meeting\Input\PatchMilestoneMeetingInputDto
       output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
       provider: App\State\Provider\MilestoneMeeting\PatchMilestoneMeetingItemProvider
       processor: App\State\Processor\PatchMilestoneMeetingProcessor
-    ApiPlatform\Metadata\Delete: ~
+    ApiPlatform\Metadata\Delete:
+      security: 'is_granted("ROLE_TEACHER")'
