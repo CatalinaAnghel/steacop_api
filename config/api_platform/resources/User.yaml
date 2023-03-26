@@ -1,0 +1,8 @@
+App\ApiResource\User:
+  normalizationContext:
+    groups: [ 'user:output' ]
+  operations:
+    ApiPlatform\Metadata\Get:
+      provider: App\State\Provider\UserStateProvider
+      uriTemplate: '/users/{code}'
+      security: 'is_granted("ROLE_USER")'

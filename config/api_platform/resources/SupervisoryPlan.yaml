@@ -1,0 +1,12 @@
+App\Entity\SupervisoryPlan:
+  normalizationContext:
+    groups: [ 'plan:output' ]
+  denormalizationContext:
+    groups: [ 'plan:input' ]
+  operations:
+    ApiPlatform\Metadata\Get: ~
+    ApiPlatform\Metadata\GetCollection: ~
+    ApiPlatform\Metadata\Patch:
+      security: 'is_granted("ROLE_ADMIN")'
+    ApiPlatform\Metadata\Delete:
+      security: 'is_granted("ROLE_ADMIN")'

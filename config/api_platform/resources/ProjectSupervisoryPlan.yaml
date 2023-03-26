@@ -1,0 +1,18 @@
+App\ApiResource\ProjectSupervisoryPlan:
+  operations:
+    ApiPlatform\Metadata\Get:
+      output: App\Dto\CustomSupervisoryPlan\Output\PlanOutputDto
+      uriTemplate: '/project-supervisory-plan/{projectId}'
+      security: 'is_granted("ROLE_USER")'
+      provider: App\State\Provider\GetProjectSupervisoryPlanProvider
+    ApiPlatform\Metadata\Post:
+      security: 'is_granted("ROLE_TEACHER")'
+      output: App\Dto\CustomSupervisoryPlan\Output\PlanOutputDto
+      processor: App\State\Processor\ProjectSupervisoryPlanProcessor
+    ApiPlatform\Metadata\Patch:
+      security: 'is_granted("ROLE_TEACHER")'
+      uriTemplate: '/project-supervisory-plan/{projectId}'
+      input: App\Dto\CustomSupervisoryPlan\Input\PlanInputDto
+      output: App\Dto\CustomSupervisoryPlan\Output\PlanOutputDto
+      processor: App\State\Processor\ProjectSupervisoryPlanProcessor
+      provider: App\State\Provider\PatchProjectSupervisoryPlanProvider

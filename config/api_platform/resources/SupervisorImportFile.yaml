@@ -1,0 +1,20 @@
+App\Entity\SupervisorImportFile:
+  normalizationContext:
+    groups: [ 'supervisor_import_file:output' ],
+  types: [ 'https://schema.org/MediaObject' ]
+  operations:
+    ApiPlatform\Metadata\Post:
+      security: 'is_granted("ROLE_ADMIN")'
+      processor: App\State\Processor\StudentImportFileStateProcessor
+      validationContext:
+        groups: [ 'Default', 'supervisor_import_file:input' ] ]
+      openapiContext:
+        requestBody:
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  file:
+                    type: string
+                    format: binary

@@ -1,0 +1,16 @@
+App\Entity\Department:
+  normalizationContext:
+    groups: [ 'department:output' ]
+  denormalizationContext:
+    groups: [ 'department:input' ]
+  operations:
+    ApiPlatform\Metadata\Get:
+      security: 'is_granted("ROLE_ADMIN")'
+    ApiPlatform\Metadata\GetCollection:
+      security: 'is_granted("ROLE_ADMIN")'
+    ApiPlatform\Metadata\Post:
+      security: 'is_granted("ROLE_ADMIN")'
+    ApiPlatform\Metadata\Put:
+      security: 'is_granted("ROLE_ADMIN")'
+    ApiPlatform\Metadata\Delete:
+      security: 'is_granted("ROLE_ADMIN")'

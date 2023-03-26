@@ -1,0 +1,6 @@
+App\Entity\Project:
+  operations:
+    ApiPlatform\Metadata\Get:
+      output: App\Dto\Project\Output\ProjectInformationOutputDto
+      security: 'is_granted("ROLE_USER")'
+      provider: App\State\Provider\GetProjectInformationProvider

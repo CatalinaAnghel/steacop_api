@@ -1,0 +1,19 @@
+App\Entity\MilestoneMeeting:
+  operations:
+    ApiPlatform\Metadata\Get:
+      provider: App\State\Provider\MilestoneMeeting\GetMilestoneMeetingItemProvider
+      output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
+    ApiPlatform\Metadata\GetCollection:
+      filters: [ 'milestone_meeting.search_filter', 'milestone_meeting.date_filter' ]
+      provider: App\State\Provider\MilestoneMeeting\MilestoneMeetingsCollectionProvider
+      output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
+    ApiPlatform\Metadata\Post:
+      input: App\Dto\Meeting\Input\CreateMilestoneMeetingInputDto
+      processor: App\State\Processor\CreateMilestoneMeetingStateProcessor
+      output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
+    ApiPlatform\Metadata\Patch:
+      input: App\Dto\Meeting\Input\PatchMilestoneMeetingInputDto
+      output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
+      provider: App\State\Provider\MilestoneMeeting\PatchMilestoneMeetingItemProvider
+      processor: App\State\Processor\PatchMilestoneMeetingProcessor
+    ApiPlatform\Metadata\Delete: ~

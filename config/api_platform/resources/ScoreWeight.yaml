@@ -1,0 +1,16 @@
+App\Entity\ScoreWeight:
+  operations:
+    ApiPlatform\Metadata\Get: ~
+    ApiPlatform\Metadata\GetCollection:
+      filters: [ 'score_weight.search_filter' ]
+    ApiPlatform\Metadata\Post:
+      class: ApiPlatform\Metadata\Post
+      method: POST
+      uriTemplate: /score-weights/update-multiple
+      controller: App\Controller\UpdateScoreWeightsController
+      input: App\Dto\ScoreWeight\Input\ScoreWeightDto
+      output: App\Dto\ScoreWeight\Output\ScoreWeightsDto
+      security: 'is_granted("ROLE_ADMIN")'
+      openapiContext:
+        summary: 'Update multiple weights'
+        description: 'Update multiple weights'

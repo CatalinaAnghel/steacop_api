@@ -1,0 +1,12 @@
+App\Entity\Specialization:
+  normalizationContext:
+    groups: [ 'specialization:output' ]
+  denormalizationContext:
+    groups: [ 'specialization:create' ]
+  operations:
+    ApiPlatform\Metadata\Post:
+      security: 'is_granted("ROLE_ADMIN")'
+    ApiPlatform\Metadata\Put:
+      security: 'is_granted("ROLE_ADMIN")'
+    ApiPlatform\Metadata\Delete:
+      security: 'is_granted("ROLE_ADMIN")'

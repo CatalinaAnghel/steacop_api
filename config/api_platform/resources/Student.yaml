@@ -1,0 +1,7 @@
+App\Entity\Student:
+  operations:
+    ApiPlatform\Metadata\GetCollection:
+      provider: App\State\Provider\StudentsStateProvider
+      output: App\Dto\Student\Output\StudentDto
+      filters: [ 'student.search_filter' ]
+      security: 'is_granted("ROLE_ADMIN")||is_granted("ROLE_TEACHER")'

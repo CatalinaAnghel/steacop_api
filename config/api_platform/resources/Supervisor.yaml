@@ -1,0 +1,6 @@
+App\Entity\Supervisor:
+  operations:
+    ApiPlatform\Metadata\GetCollection:
+      provider: App\State\Provider\SupervisorsStateProvider
+      output: App\Dto\Supervisor\Output\SupervisorDto
+      security: 'is_granted("ROLE_ADMIN")||is_granted("ROLE_STUDENT")'
