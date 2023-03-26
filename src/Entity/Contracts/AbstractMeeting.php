@@ -26,6 +26,12 @@ abstract class AbstractMeeting {
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $scheduledAt = null;
 
+    #[ORM\Column]
+    private ?bool $isCanceled = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $canceledAt = null;
+
     #[Pure] public function __construct() {
     }
 
@@ -73,5 +79,21 @@ abstract class AbstractMeeting {
         $this->scheduledAt = $scheduledAt;
 
         return $this;
+    }
+
+    public function isCanceled(): ?bool {
+        return $this->isCanceled;
+    }
+
+    public function setIsCanceled(bool $isCanceled): void {
+        $this->isCanceled = $isCanceled;
+    }
+
+    public function getCanceledAt(): ?\DateTimeImmutable {
+        return $this->canceledAt;
+    }
+
+    public function setCanceledAt(?\DateTimeImmutable $canceledAt): void {
+        $this->canceledAt = $canceledAt;
     }
 }

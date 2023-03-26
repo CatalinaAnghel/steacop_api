@@ -20,5 +20,3 @@ App\Entity\MilestoneMeeting:
       output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
       provider: App\State\Provider\MilestoneMeeting\PatchMilestoneMeetingItemProvider
       processor: App\State\Processor\PatchMilestoneMeetingProcessor
-    ApiPlatform\Metadata\Delete:
-      security: 'is_granted("ROLE_TEACHER")'

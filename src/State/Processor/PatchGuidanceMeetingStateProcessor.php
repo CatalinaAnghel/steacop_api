@@ -8,14 +8,17 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Dto\Meeting\Input\PatchGuidanceMeetingInputDto;
 use App\Dto\Meeting\Output\GuidanceMeetingOutputDto;
 use App\Entity\GuidanceMeeting;
+use App\Validator\Contracts\ValidatorInterface;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class PatchGuidanceMeetingStateProcessor implements ProcessorInterface {
     public function __construct(private readonly EntityManagerInterface $entityManager,
-                                private readonly LoggerInterface        $logger
+                                private readonly LoggerInterface        $logger,
+                                private readonly ValidatorInterface     $meetingValidator
     ) {
     }
 
@@ -29,11 +32,16 @@ class PatchGuidanceMeetingStateProcessor implements ProcessorInterface {
         $guidanceMeetingRepo = $this->entityManager->getRepository(GuidanceMeeting::class);
         $guidanceMeeting = $guidanceMeetingRepo->findOneBy(['id' => $uriVariables['id']]);
         if (null !== $guidanceMeeting) {
+            $this->meetingValidator->validate($data, $guidanceMeeting);
             $guidanceMeeting->setDescription($data->getDescription());
             $guidanceMeeting->setScheduledAt($data->getScheduledAt());
             $guidanceMeeting->setLink($data->getLink());
             $guidanceMeeting->setUpdatedAt(new \DateTime('Now'));
             $guidanceMeeting->setIsCompleted($data->getIsCompleted());
+            if($data->getIsCanceled()){
+                $guidanceMeeting->setIsCanceled(true);
+                $guidanceMeeting->setCanceledAt(new \DateTimeImmutable('Now'));
+            }
             $this->entityManager->persist($guidanceMeeting);
 
             try {
@@ -51,6 +59,8 @@ class PatchGuidanceMeetingStateProcessor implements ProcessorInterface {
             } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
             }
+        } else {
+            throw new UnprocessableEntityHttpException('The meeting is canceled, it cannot be updated');
         }
 
         return $meetingDto ?? null;

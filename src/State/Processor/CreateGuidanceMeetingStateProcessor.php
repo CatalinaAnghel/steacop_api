@@ -44,6 +44,7 @@ class CreateGuidanceMeetingStateProcessor implements ProcessorInterface {
                 $meeting->setUpdatedAt(new \DateTime('Now'));
                 $meeting->setCreatedAt(new \DateTimeImmutable('Now'));
                 $meeting->setIsCompleted(false);
+                $meeting->setIsCanceled(false);
                 $this->entityManager->persist($meeting);
                 $this->entityManager->flush();
 

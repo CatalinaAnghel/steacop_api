@@ -20,5 +20,3 @@ App\Entity\GuidanceMeeting:
       output: App\Dto\Meeting\Output\GuidanceMeetingOutputDto
       provider: App\State\Provider\GuidanceMeeting\PatchGuidanceMeetingItemProvider
       processor: App\State\Processor\PatchGuidanceMeetingStateProcessor
-    ApiPlatform\Metadata\Delete:
-      security: 'is_granted("ROLE_TEACHER")'

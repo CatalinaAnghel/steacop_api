@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Dto\Meeting\Contracts;
 
 use App\Dto\Traits\IdentityTrait;
+use App\Dto\Traits\IsCanceledTrait;
 use App\Dto\Traits\SchedulingTrait;
 
 class AbstractMeetingOutputDto {
@@ -23,6 +24,8 @@ class AbstractMeetingOutputDto {
     private \DateTime $scheduledAt;
 
     use SchedulingTrait;
+
+    use IsCanceledTrait;
 
     /**
      * @return string

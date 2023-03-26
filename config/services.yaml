@@ -155,3 +155,6 @@ services:
     # services
     App\Service\ScoreWeightsService: ~
     App\Service\Contract\ScoreWeightsServiceInterface: '@App\Service\ScoreWeightsService'
+
+    App\Validator\PatchMeetingValidator: ~
+    App\Validator\Contracts\ValidatorInterface $meetingValidator: '@App\Validator\PatchMeetingValidator'

@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\Dto\Meeting\Input;
 
-use App\Dto\Meeting\Contracts\AbstractMeetingInputDto;
+use App\Dto\Meeting\Contracts\AbstractCancellableMeetingInputDto;
 use App\Dto\Traits\IsCompletedTrait;
 use App\Dto\Traits\SchedulingTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PatchMilestoneMeetingInputDto extends AbstractMeetingInputDto {
+class PatchMilestoneMeetingInputDto extends AbstractCancellableMeetingInputDto {
     #[Assert\Type(\DateTimeInterface::class)]
     private \DateTime $scheduledAt;
 
