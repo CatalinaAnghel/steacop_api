@@ -8,7 +8,7 @@ use App\Dto\Traits\SchedulingTrait;
 use App\Validator\FutureDateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateMilestoneMeetingInputDto extends AbstractMeetingInputDto {
+class CreateMeetingInputDto extends AbstractMeetingInputDto {
     #[Assert\Positive]
     private int $projectId;
 

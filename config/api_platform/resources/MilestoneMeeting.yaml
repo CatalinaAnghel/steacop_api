@@ -8,7 +8,7 @@ App\Entity\MilestoneMeeting:
       provider: App\State\Provider\MilestoneMeeting\MilestoneMeetingsCollectionProvider
       output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
     ApiPlatform\Metadata\Post:
-      input: App\Dto\Meeting\Input\CreateMilestoneMeetingInputDto
+      input: App\Dto\Meeting\Input\CreateMeetingInputDto
       processor: App\State\Processor\CreateMilestoneMeetingStateProcessor
       output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
     ApiPlatform\Metadata\Patch:

@@ -6,8 +6,8 @@ namespace App\State\Processor;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Dto\Meeting\Input\CreateMeetingInputDto;
-use App\Dto\Meeting\Output\MilestoneMeetingOutputDto;
-use App\Entity\MilestoneMeeting;
+use App\Dto\Meeting\Output\GuidanceMeetingOutputDto;
+use App\Entity\GuidanceMeeting;
 use App\Entity\Project;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CreateMilestoneMeetingStateProcessor implements ProcessorInterface {
+class CreateGuidanceMeetingStateProcessor implements ProcessorInterface {
     public function __construct(private readonly EntityManagerInterface $entityManager,
                                 private readonly LoggerInterface        $logger) {
     }
@@ -23,9 +23,10 @@ class CreateMilestoneMeetingStateProcessor implements ProcessorInterface {
     /**
      * @inheritDoc
      * @param CreateMeetingInputDto $data
+     * @return ?GuidanceMeetingOutputDto
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
-    ?MilestoneMeetingOutputDto {
+    ?GuidanceMeetingOutputDto {
         date_default_timezone_set('Europe/Bucharest');
         $projectRepo = $this->entityManager->getRepository(Project::class);
         $project = $projectRepo->findOneBy(['id' => $data->getProjectId()]);
@@ -33,33 +34,35 @@ class CreateMilestoneMeetingStateProcessor implements ProcessorInterface {
             try {
                 $config = new AutoMapperConfig();
                 $config->registerMapping(CreateMeetingInputDto::class,
-                    MilestoneMeeting::class);
+                    GuidanceMeeting::class);
                 $mapper = new AutoMapper($config);
                 /**
-                 * @var MilestoneMeeting $meeting
+                 * @var GuidanceMeeting $meeting
                  */
-                $meeting = $mapper->map($data, MilestoneMeeting::class);
+                $meeting = $mapper->map($data, GuidanceMeeting::class);
                 $meeting->setProject($project);
                 $meeting->setUpdatedAt(new \DateTime('Now'));
                 $meeting->setCreatedAt(new \DateTimeImmutable('Now'));
                 $meeting->setIsCompleted(false);
-                $meeting->setScheduledAt($data->getScheduledAt());
                 $this->entityManager->persist($meeting);
                 $this->entityManager->flush();
 
                 $configOutput = new AutoMapperConfig();
-                $configOutput->registerMapping(MilestoneMeeting::class, MilestoneMeetingOutputDto::class);
+                $configOutput->registerMapping(
+                    GuidanceMeeting::class,
+                    GuidanceMeetingOutputDto::class
+                );
                 $mapper = new AutoMapper($configOutput);
 
                 /**
-                 * @var MilestoneMeetingOutputDto $meetingDto
+                 * @var GuidanceMeetingOutputDto $meetingDto
                  */
-                $meetingDto = $mapper->map($meeting, MilestoneMeetingOutputDto::class);
+                $meetingDto = $mapper->map($meeting, GuidanceMeetingOutputDto::class);
                 $meetingDto->setScheduledAt(new \DateTime(($meeting->getScheduledAt())?->format('Y-m-d H:i:s')));
             } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
             }
-        }else{
+        } else {
             throw new NotFoundHttpException('The project could not be found');
         }
 

@@ -1,19 +1,19 @@
 App\Entity\GuidanceMeeting:
   operations:
     ApiPlatform\Metadata\Get:
-      provider: App\State\Provider\MilestoneMeeting\GetMilestoneMeetingItemProvider
-      output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
+      provider: App\State\Provider\GuidanceMeeting\GetGuidanceMeetingItemProvider
+      output: App\Dto\Meeting\Output\GuidanceMeetingOutputDto
     ApiPlatform\Metadata\GetCollection:
-      filters: [ 'milestone_meeting.search_filter', 'milestone_meeting.date_filter' ]
-      provider: App\State\Provider\MilestoneMeeting\MilestoneMeetingsCollectionProvider
-      output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
+      filters: [ 'guidance_meeting.search_filter', 'guidance_meeting.date_filter' ]
+      provider: App\State\Provider\GuidanceMeeting\GetGuidanceMeetingsCollectionProvider
+      output: App\Dto\Meeting\Output\GuidanceMeetingOutputDto
     ApiPlatform\Metadata\Post:
-      input: App\Dto\Meeting\Input\CreateMilestoneMeetingInputDto
-      processor: App\State\Processor\CreateMilestoneMeetingStateProcessor
-      output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
+      input: App\Dto\Meeting\Input\CreateMeetingInputDto
+      processor: App\State\Processor\CreateGuidanceMeetingStateProcessor
+      output: App\Dto\Meeting\Output\GuidanceMeetingOutputDto
     ApiPlatform\Metadata\Patch:
-      input: App\Dto\Meeting\Input\PatchMilestoneMeetingInputDto
-      output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
-      provider: App\State\Provider\MilestoneMeeting\PatchMilestoneMeetingItemProvider
-      processor: App\State\Processor\PatchMilestoneMeetingProcessor
+      input: App\Dto\Meeting\Input\PatchGuidanceMeetingInputDto
+      output: App\Dto\Meeting\Output\GuidanceMeetingOutputDto
+      provider: App\State\Provider\GuidanceMeeting\PatchGuidanceMeetingItemProvider
+      processor: App\State\Processor\PatchGuidanceMeetingStateProcessor
     ApiPlatform\Metadata\Delete: ~

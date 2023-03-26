@@ -80,6 +80,26 @@ services:
         autoconfigure: false
         public: false
 
+    guidance_meeting.search_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { project.id: 'exact', isCompleted: 'exact' } ]
+        tags: [ 'api_platform.filter' ]
+        # The following are mandatory only if a _defaults section is defined with inverted values.
+        # You may want to isolate filters in a dedicated file to avoid adding the following lines (by adding them in the defaults section)
+        autowire: false
+        autoconfigure: false
+        public: false
+
+    guidance_meeting.date_filter:
+        parent: 'api_platform.doctrine.orm.date_filter'
+        arguments: [ { scheduledAt: ~ } ]
+        tags: [ 'api_platform.filter' ]
+        # The following are mandatory only if a _defaults section is defined with inverted values.
+        # You may want to isolate filters in a dedicated file to avoid adding the following lines (by adding them in the defaults section)
+        autowire: false
+        autoconfigure: false
+        public: false
+
     # processors
     App\State\Processor\UserStateProcessor:
         bind:
@@ -95,6 +115,7 @@ services:
 
     App\State\Processor\ProjectSupervisoryPlanProcessor: ~
     App\State\Processor\CreateMilestoneMeetingStateProcessor: ~
+    App\State\Processor\CreateGuidanceMeetingStateProcessor: ~
 #        bind:
 #            $requestContext: '@request_stack'
 
@@ -120,6 +141,16 @@ services:
             $decoratedProvider: '@api_platform.doctrine.orm.state.item_provider'
 
     App\State\Provider\MilestoneMeeting\PatchMilestoneMeetingItemProvider: ~
+
+    App\State\Provider\GuidanceMeeting\PatchGuidanceMeetingItemProvider: ~
+
+    App\State\Provider\GuidanceMeeting\GetGuidanceMeetingsCollectionProvider:
+        bind:
+            $decoratedProvider: '@api_platform.doctrine.orm.state.collection_provider'
+
+    App\State\Provider\GuidanceMeeting\GetGuidanceMeetingItemProvider:
+        bind:
+            $decoratedProvider: '@api_platform.doctrine.orm.state.item_provider'
 
     # services
     App\Service\ScoreWeightsService: ~
