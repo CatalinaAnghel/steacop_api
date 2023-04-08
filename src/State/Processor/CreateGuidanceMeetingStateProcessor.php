@@ -18,6 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CreateGuidanceMeetingStateProcessor implements ProcessorInterface {
     public function __construct(private readonly EntityManagerInterface $entityManager,
                                 private readonly LoggerInterface        $logger) {
+        date_default_timezone_set('Europe/Bucharest');
     }
 
     /**
@@ -27,7 +28,6 @@ class CreateGuidanceMeetingStateProcessor implements ProcessorInterface {
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
     ?GuidanceMeetingOutputDto {
-        date_default_timezone_set('Europe/Bucharest');
         $projectRepo = $this->entityManager->getRepository(Project::class);
         $project = $projectRepo->findOneBy(['id' => $data->getProjectId()]);
         if (null !== $project) {

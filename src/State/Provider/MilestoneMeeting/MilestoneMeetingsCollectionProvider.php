@@ -15,6 +15,7 @@ use AutoMapperPlus\Configuration\AutoMapperConfig;
 class MilestoneMeetingsCollectionProvider implements ProviderInterface {
     public function __construct(private readonly ProviderInterface      $decoratedProvider,
                                 private readonly Pagination             $pagination) {
+        date_default_timezone_set('Europe/Bucharest');
     }
 
 

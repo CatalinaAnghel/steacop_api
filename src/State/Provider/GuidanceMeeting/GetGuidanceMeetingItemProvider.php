@@ -16,6 +16,7 @@ class GetGuidanceMeetingItemProvider implements ProviderInterface {
     public function __construct(private readonly ProviderInterface $decoratedProvider,
                                 private readonly LoggerInterface   $logger
     ) {
+        date_default_timezone_set('Europe/Bucharest');
     }
 
     /**

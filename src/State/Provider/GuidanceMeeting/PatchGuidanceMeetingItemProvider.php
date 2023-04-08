@@ -16,6 +16,7 @@ use Psr\Log\LoggerInterface;
 class PatchGuidanceMeetingItemProvider implements ProviderInterface {
     public function __construct(private readonly EntityManagerInterface $entityManager,
                                 private readonly LoggerInterface        $logger) {
+        date_default_timezone_set('Europe/Bucharest');
     }
 
     /**

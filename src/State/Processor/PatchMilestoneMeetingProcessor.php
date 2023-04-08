@@ -19,14 +19,15 @@ class PatchMilestoneMeetingProcessor implements ProcessorInterface {
                                 private readonly LoggerInterface        $logger,
                                 private readonly ValidatorInterface     $meetingValidator
     ) {
+        date_default_timezone_set('Europe/Bucharest');
     }
 
     /**
      * @inheritDoc
      * @param PatchMilestoneMeetingInputDto $data
      */
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []) {
-        date_default_timezone_set('Europe/Bucharest');
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
+    ?MilestoneMeetingOutputDto {
         $milestoneMeetingRepo = $this->entityManager->getRepository(MilestoneMeeting::class);
         $milestoneMeeting = $milestoneMeetingRepo->findOneBy(['id' => $uriVariables['id']]);
         if (null !== $milestoneMeeting) {

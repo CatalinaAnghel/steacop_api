@@ -32,6 +32,9 @@ abstract class AbstractMeeting {
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $canceledAt = null;
 
+    #[ORM\Column]
+    private float $duration;
+
     #[Pure] public function __construct() {
     }
 
@@ -95,5 +98,19 @@ abstract class AbstractMeeting {
 
     public function setCanceledAt(?\DateTimeImmutable $canceledAt): void {
         $this->canceledAt = $canceledAt;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDuration(): float {
+        return $this->duration;
+    }
+
+    /**
+     * @param float $duration
+     */
+    public function setDuration(float $duration): void {
+        $this->duration = $duration;
     }
 }

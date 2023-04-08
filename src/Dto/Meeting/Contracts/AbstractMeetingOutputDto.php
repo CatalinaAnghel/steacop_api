@@ -23,6 +23,8 @@ class AbstractMeetingOutputDto {
 
     private \DateTime $scheduledAt;
 
+    private float $duration;
+
     use SchedulingTrait;
 
     use IsCanceledTrait;
@@ -95,5 +97,19 @@ class AbstractMeetingOutputDto {
      */
     public function setIsCompleted(bool $isCompleted): void {
         $this->isCompleted = $isCompleted;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDuration(): float {
+        return $this->duration;
+    }
+
+    /**
+     * @param float $duration
+     */
+    public function setDuration(float $duration): void {
+        $this->duration = $duration;
     }
 }

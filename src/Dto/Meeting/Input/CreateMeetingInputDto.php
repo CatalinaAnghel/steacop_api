@@ -16,6 +16,11 @@ class CreateMeetingInputDto extends AbstractMeetingInputDto {
     #[FutureDateTime]
     private \DateTime $scheduledAt;
 
+    #[Assert\NotBlank]
+    #[Assert\GreaterThanOrEqual(1)]
+    #[Assert\LessThanOrEqual(4)]
+    private float $duration;
+
     use SchedulingTrait;
 
     /**
@@ -30,5 +35,19 @@ class CreateMeetingInputDto extends AbstractMeetingInputDto {
      */
     public function setProjectId(int $projectId): void {
         $this->projectId = $projectId;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDuration(): float {
+        return $this->duration;
+    }
+
+    /**
+     * @param float $duration
+     */
+    public function setDuration(float $duration): void {
+        $this->duration = $duration;
     }
 }

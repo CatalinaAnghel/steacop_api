@@ -20,6 +20,7 @@ class PatchGuidanceMeetingStateProcessor implements ProcessorInterface {
                                 private readonly LoggerInterface        $logger,
                                 private readonly ValidatorInterface     $meetingValidator
     ) {
+        date_default_timezone_set('Europe/Bucharest');
     }
 
     /**
@@ -28,7 +29,6 @@ class PatchGuidanceMeetingStateProcessor implements ProcessorInterface {
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
     ?GuidanceMeetingOutputDto {
-        date_default_timezone_set('Europe/Bucharest');
         $guidanceMeetingRepo = $this->entityManager->getRepository(GuidanceMeeting::class);
         $guidanceMeeting = $guidanceMeetingRepo->findOneBy(['id' => $uriVariables['id']]);
         if (null !== $guidanceMeeting) {

@@ -11,7 +11,25 @@ class PatchGuidanceMeetingInputDto extends AbstractCancellableMeetingInputDto {
     #[Assert\Type(\DateTimeInterface::class)]
     private \DateTime $scheduledAt;
 
+    #[Assert\GreaterThanOrEqual(1)]
+    #[Assert\LessThanOrEqual(4)]
+    private float $duration;
+
     use SchedulingTrait;
 
     use IsCompletedTrait;
+
+    /**
+     * @return float
+     */
+    public function getDuration(): float {
+        return $this->duration;
+    }
+
+    /**
+     * @param float $duration
+     */
+    public function setDuration(float $duration): void {
+        $this->duration = $duration;
+    }
 }
