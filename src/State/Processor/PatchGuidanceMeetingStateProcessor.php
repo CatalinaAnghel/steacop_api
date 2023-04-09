@@ -13,7 +13,6 @@ use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class PatchGuidanceMeetingStateProcessor implements ProcessorInterface {
     public function __construct(private readonly EntityManagerInterface $entityManager,
@@ -59,8 +58,6 @@ class PatchGuidanceMeetingStateProcessor implements ProcessorInterface {
             } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
             }
-        } else {
-            throw new UnprocessableEntityHttpException('The meeting is canceled, it cannot be updated');
         }
 
         return $meetingDto ?? null;

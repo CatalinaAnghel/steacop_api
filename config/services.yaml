@@ -100,6 +100,26 @@ services:
         autoconfigure: false
         public: false
 
+    assignment.search_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { project.id: 'exact' } ]
+        tags: [ 'api_platform.filter' ]
+        # The following are mandatory only if a _defaults section is defined with inverted values.
+        # You may want to isolate filters in a dedicated file to avoid adding the following lines (by adding them in the defaults section)
+        autowire: false
+        autoconfigure: false
+        public: false
+
+    assignment.date_filter:
+        parent: 'api_platform.doctrine.orm.date_filter'
+        arguments: [ { dueDate: ~ } ]
+        tags: [ 'api_platform.filter' ]
+        # The following are mandatory only if a _defaults section is defined with inverted values.
+        # You may want to isolate filters in a dedicated file to avoid adding the following lines (by adding them in the defaults section)
+        autowire: false
+        autoconfigure: false
+        public: false
+
     # processors
     App\State\Processor\UserStateProcessor:
         bind:
@@ -119,6 +139,10 @@ services:
 #        bind:
 #            $requestContext: '@request_stack'
 
+    App\State\Processor\Assignment\DeleteAssignmentStateProcessor:
+        bind:
+            $decoratedProcessor: '@api_platform.doctrine.orm.state.remove_processor'
+
     # providers
     App\State\Provider\StudentsStateProvider:
         bind:
@@ -132,6 +156,7 @@ services:
     App\State\Provider\GetProjectSupervisoryPlanProvider: ~
     App\State\Provider\GetProjectInformationProvider: ~
 
+    # milestone meetings
     App\State\Provider\MilestoneMeeting\MilestoneMeetingsCollectionProvider:
         bind:
             $decoratedProvider: '@api_platform.doctrine.orm.state.collection_provider'
@@ -142,6 +167,7 @@ services:
 
     App\State\Provider\MilestoneMeeting\PatchMilestoneMeetingItemProvider: ~
 
+    # guidance meetings
     App\State\Provider\GuidanceMeeting\PatchGuidanceMeetingItemProvider: ~
 
     App\State\Provider\GuidanceMeeting\GetGuidanceMeetingsCollectionProvider:
@@ -149,6 +175,15 @@ services:
             $decoratedProvider: '@api_platform.doctrine.orm.state.collection_provider'
 
     App\State\Provider\GuidanceMeeting\GetGuidanceMeetingItemProvider:
+        bind:
+            $decoratedProvider: '@api_platform.doctrine.orm.state.item_provider'
+
+    # assignments
+    App\State\Provider\Assignment\GetAssignmentCollectionProvider:
+        bind:
+            $decoratedProvider: '@api_platform.doctrine.orm.state.collection_provider'
+
+    App\State\Provider\Assignment\GetAssignmentItemProvider:
         bind:
             $decoratedProvider: '@api_platform.doctrine.orm.state.item_provider'
 
