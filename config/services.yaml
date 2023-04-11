@@ -193,3 +193,6 @@ services:
 
     App\Validator\PatchMeetingValidator: ~
     App\Validator\Contracts\ValidatorInterface $meetingValidator: '@App\Validator\PatchMeetingValidator'
+
+    App\Validator\RatingValidator: ~
+    App\Validator\Contracts\ValidatorInterface $ratingValidator: '@App\Validator\RatingValidator'

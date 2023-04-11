@@ -1,0 +1,13 @@
+App\Entity\Rating:
+  operations:
+    ApiPlatform\Metadata\Post:
+      security: 'is_granted("ROLE_TEACHER")||is_granted("ROLE_STUDENT")'
+      input: App\Dto\Rating\Input\CreateRatingInputDto
+      processor: App\State\Processor\Rating\CreateRatingStateProcessor
+      output: App\Dto\Rating\Output\RatingOutputDto
+    ApiPlatform\Metadata\Patch:
+      security: 'is_granted("ROLE_TEACHER")||is_granted("ROLE_STUDENT")'
+      input: App\Dto\Rating\Input\RatingInputDto
+      processor: App\State\Processor\Rating\PatchRatingStateProcessor
+      provider: App\State\Provider\Rating\PatchRatingProvider
+      output: App\Dto\Rating\Output\RatingOutputDto

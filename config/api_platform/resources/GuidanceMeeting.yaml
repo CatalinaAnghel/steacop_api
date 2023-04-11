@@ -12,11 +12,11 @@ App\Entity\GuidanceMeeting:
     ApiPlatform\Metadata\Post:
       security: 'is_granted("ROLE_TEACHER")'
       input: App\Dto\Meeting\Input\CreateMeetingInputDto
-      processor: App\State\Processor\CreateGuidanceMeetingStateProcessor
+      processor: App\State\Processor\GuidanceMeetingCreateGuidanceMeetingStateProcessor
       output: App\Dto\Meeting\Output\GuidanceMeetingOutputDto
     ApiPlatform\Metadata\Patch:
       security: 'is_granted("ROLE_TEACHER")'
       input: App\Dto\Meeting\Input\PatchGuidanceMeetingInputDto
       output: App\Dto\Meeting\Output\GuidanceMeetingOutputDto
       provider: App\State\Provider\GuidanceMeeting\PatchGuidanceMeetingItemProvider
-      processor: App\State\Processor\PatchGuidanceMeetingStateProcessor
+      processor: App\State\Processor\GuidanceMeeting\PatchGuidanceMeetingStateProcessor

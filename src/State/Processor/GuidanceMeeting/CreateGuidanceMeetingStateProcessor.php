@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\State\Processor;
+namespace App\State\Processor\GuidanceMeeting;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;

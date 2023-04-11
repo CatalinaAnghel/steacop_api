@@ -12,11 +12,11 @@ App\Entity\MilestoneMeeting:
     ApiPlatform\Metadata\Post:
       security: 'is_granted("ROLE_TEACHER")'
       input: App\Dto\Meeting\Input\CreateMeetingInputDto
-      processor: App\State\Processor\CreateMilestoneMeetingStateProcessor
+      processor: App\State\Processor\MilestoneMeeting\CreateMilestoneMeetingStateProcessor
       output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
     ApiPlatform\Metadata\Patch:
       security: 'is_granted("ROLE_TEACHER")'
       input: App\Dto\Meeting\Input\PatchMilestoneMeetingInputDto
       output: App\Dto\Meeting\Output\MilestoneMeetingOutputDto
       provider: App\State\Provider\MilestoneMeeting\PatchMilestoneMeetingItemProvider
-      processor: App\State\Processor\PatchMilestoneMeetingProcessor
+      processor: App\State\Processor\MilestoneMeeting\PatchMilestoneMeetingProcessor

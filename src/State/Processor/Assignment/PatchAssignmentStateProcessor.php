@@ -15,8 +15,8 @@ use Psr\Log\LoggerInterface;
 
 class PatchAssignmentStateProcessor implements ProcessorInterface {
     public function __construct(
-    private readonly EntityManagerInterface $entityManager,
-    private readonly LoggerInterface $logger) {
+        private readonly EntityManagerInterface $entityManager,
+        private readonly LoggerInterface        $logger) {
     }
 
     /**
@@ -29,19 +29,10 @@ class PatchAssignmentStateProcessor implements ProcessorInterface {
         $assignment = $assignmentRepo->findOneBy(['id' => $uriVariables['id']]);
         if (null !== $assignment) {
             $assignment->setGrade($data->getGrade());
-
-            if (!empty($data->getTitle())){
-                $assignment->setTitle($data->getTitle());
-            }
-
-            if (!empty($data->getDescription())){
-                $assignment->setDescription($data->getDescription());
-            }
-
-            if(null !== $data->getTurnedInDate()){
-                $assignment->setTurnedInDate($data->getTurnedInDate());
-            }
-
+            $assignment->setTitle($data->getTitle());
+            $assignment->setDescription($data->getDescription());
+            $assignment->setTurnedInDate($data->getTurnedInDate());
+            $assignment->setDueDate($data->getDueDate());
             $assignment->setUpdatedAt(new \DateTime('Now'));
             $this->entityManager->persist($assignment);
 
