@@ -33,6 +33,7 @@ class PatchGuidanceMeetingStateProcessor implements ProcessorInterface {
         if (null !== $guidanceMeeting) {
             $this->meetingValidator->validate($data, $guidanceMeeting);
             $guidanceMeeting->setDescription($data->getDescription());
+            $guidanceMeeting->setDuration($data->getDuration());
             $guidanceMeeting->setScheduledAt($data->getScheduledAt());
             $guidanceMeeting->setLink($data->getLink());
             $guidanceMeeting->setUpdatedAt(new \DateTime('Now'));

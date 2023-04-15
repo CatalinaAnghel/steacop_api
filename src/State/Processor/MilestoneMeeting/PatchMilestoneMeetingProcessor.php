@@ -35,6 +35,7 @@ class PatchMilestoneMeetingProcessor implements ProcessorInterface {
             $milestoneMeeting->setDescription($data->getDescription());
             $milestoneMeeting->setScheduledAt($data->getScheduledAt());
             $milestoneMeeting->setLink($data->getLink());
+            $milestoneMeeting->setDuration($data->getDuration());
             if (null !== $data->getGrade()) {
                 $milestoneMeeting->setGrade($data->getGrade());
             }
