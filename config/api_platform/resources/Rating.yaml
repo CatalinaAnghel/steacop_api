@@ -11,3 +11,11 @@ App\Entity\Rating:
       processor: App\State\Processor\Rating\PatchRatingStateProcessor
       provider: App\State\Provider\Rating\PatchRatingProvider
       output: App\Dto\Rating\Output\RatingOutputDto
+
+App\ApiResource\Rating:
+  operations:
+    ApiPlatform\Metadata\Get:
+      uriTemplate: '/ratings/{meetingId}'
+      provider: App\State\Provider\Rating\GetRatingItemProvider
+      output: App\Dto\Rating\Output\RatingOutputDto
+      security: 'is_granted("ROLE_TEACHER")||is_granted("ROLE_STUDENT")'

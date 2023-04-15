@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Dto\Rating\Output;
 
 class RatingOutputDto {
+    private int $id;
+
     private int $guidanceMeetingId;
 
     private string $userCode;
@@ -50,5 +52,19 @@ class RatingOutputDto {
      */
     public function setValue(float $value): void {
         $this->value = $value;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void {
+        $this->id = $id;
     }
 }
