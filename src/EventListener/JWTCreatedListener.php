@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Entity\Student;
+use App\Entity\Supervisor;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
@@ -29,6 +31,15 @@ class JWTCreatedListener {
         if($user !== null){
             $payload['code'] = $user->getCode();
             $payload['id'] = $user->getId();
+            $personsRepo = $this->entityManager->getRepository(Student::class);
+
+            $personData = $personsRepo->findOneBy(['user' => $user->getId()]);
+            if(null === $personData){
+                $personsRepo = $this->entityManager->getRepository(Supervisor::class);
+                $personData = $personsRepo->findOneBy(['user' => $user->getId()]);
+            }
+            $payload['fullName'] = null !== $personData?$personData->getFirstName() . ' ' . $personData->getLastName():
+                'Admin';
         }
 
         $event->setData($payload);
