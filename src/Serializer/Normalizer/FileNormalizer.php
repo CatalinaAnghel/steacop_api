@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Serializer\Normalizer;
 
+use App\Entity\Document;
 use App\Entity\StudentImportFile;
 use App\Entity\SupervisorImportFile;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
@@ -30,6 +31,6 @@ final class FileNormalizer implements NormalizerInterface, NormalizerAwareInterf
             return false;
         }
 
-        return $data instanceof StudentImportFile || $data instanceof SupervisorImportFile;
+        return $data instanceof StudentImportFile || $data instanceof SupervisorImportFile || $data instanceof Document;
     }
 }

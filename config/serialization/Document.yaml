@@ -1,0 +1,9 @@
+App\Entity\Document:
+  attributes:
+    contentUrl:
+      types: ['https://schema.org/contentUrl']
+      groups: ['assignment_document_upload:output']
+    file:
+      groups: ['assignment_document_upload:input']
+    createdAt:
+      groups: [ 'assignment_document_upload:input' ]

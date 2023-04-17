@@ -143,6 +143,10 @@ services:
         bind:
             $decoratedProcessor: '@api_platform.doctrine.orm.state.remove_processor'
 
+    App\State\Processor\DocumentStateProcessor:
+        bind:
+            $decorated: '@api_platform.doctrine.orm.state.persist_processor'
+
     # providers
     App\State\Provider\StudentsStateProvider:
         bind:
