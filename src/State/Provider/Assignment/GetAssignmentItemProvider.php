@@ -35,7 +35,10 @@ class GetAssignmentItemProvider implements ProviderInterface {
                 $documentConfig->registerMapping(
                     Document::class,
                     DocumentOutputDto::class
-                );
+                )->forMember('contentUrl', function (Document $document) {
+                        return '/documents/assignments/' .
+                            $document->getAssignment()?->getId() . '/' . $document->getFilePath();
+                    });
                 return (new AutoMapper($documentConfig))->mapMultiple(
                     $source->getDocuments(),
                     DocumentOutputDto::class
