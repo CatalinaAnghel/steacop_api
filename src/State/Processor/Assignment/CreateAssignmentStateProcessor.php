@@ -7,20 +7,24 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Dto\Assignment\Input\CreateAssignmentInputDto;
 use App\Dto\Assignment\Output\AssignmentOutputDto;
-use App\Dto\Document\Output\DocumentOutputDto;
 use App\Entity\Assignment;
-use App\Entity\Document;
 use App\Entity\Project;
+use App\Entity\Student;
+use App\Message\Command\CreateAssignmentCommand;
+use App\Message\Event\AssignmentCreatedEvent;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class CreateAssignmentStateProcessor implements ProcessorInterface
 {
     public function __construct(private readonly EntityManagerInterface $entityManager,
-                                private readonly LoggerInterface        $logger)
+                                private readonly LoggerInterface        $logger,
+                                private readonly MessageBusInterface    $commandBus
+    )
     {
         date_default_timezone_set('Europe/Bucharest');
     }
@@ -43,11 +47,8 @@ class CreateAssignmentStateProcessor implements ProcessorInterface
                  * @var Assignment $assignment
                  */
                 $assignment = $mapper->map($data, Assignment::class);
-                $assignment->setCreatedAt(new \DateTimeImmutable('Now'));
-                $assignment->setUpdatedAt(new \DateTime('Now'));
-                $assignment->setProject($project);
-                $this->entityManager->persist($assignment);
-                $this->entityManager->flush();
+
+                $this->commandBus->dispatch(new CreateAssignmentCommand($assignment, $project));
 
                 $configOutput = new AutoMapperConfig();
                 $configOutput->registerMapping(
@@ -68,6 +69,7 @@ class CreateAssignmentStateProcessor implements ProcessorInterface
                 }
             } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
+                dd($exception->getMessage());
             }
         } else {
             throw new NotFoundHttpException('The project could not be found');

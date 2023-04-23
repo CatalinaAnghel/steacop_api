@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        body {
+            font-family: Roboto, sans-serif;
+        }
+
+        table {
+            font-family: Roboto, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            color: #00BFA5;
+        }
+
+        .container {
+            margin: auto;
+            width: 90%;
+        }
+
+        h3 {
+            color: #00BFA5;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h3>New assignment available</h3>
+        <hr/>
+        <p>Your supervisor has added a new assignment. Check out your project's assignment page!</p>
+        <br/>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Due date</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>{{ assignment.title }}</td>
+                <td>{{ assignment.dueDate }}</td>
+                <td>{{ assignment.description }}</td>
+            </tr>
+        </table>
+        <br/>
+
+        <p>The Steacop Team</p>
+    </div>
+{% endblock %}

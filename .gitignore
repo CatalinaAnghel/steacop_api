@@ -22,3 +22,5 @@
 /migr_bkp/*
 /public/documents/students/*
 /public/documents/supervisors/*
+
+docker-compose.override.yml
