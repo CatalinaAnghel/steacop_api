@@ -18,7 +18,7 @@ vich_uploader:
       upload_destination: '%kernel.project_dir%/public/documents/assignments'
       # Will rename uploaded files using a uniqueid as a prefix.
       namer: Vich\UploaderBundle\Naming\OrignameNamer
-      directory_namer:
-        service: vich_uploader.namer_directory_property
-        options: { property: 'assignmentId', transliterate: true }
+#      directory_namer:
+#        service: vich_uploader.namer_directory_property
+#        options: { property: 'assignmentId', transliterate: true }
       delete_on_remove: true

@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DocumentStateProcessor implements ProcessorInterface {
     public function __construct(
-        private readonly ProcessorInterface $decorated,
+        private readonly ProcessorInterface     $decorated,
         private readonly EntityManagerInterface $entityManager
     ) {
     }
@@ -21,13 +21,16 @@ class DocumentStateProcessor implements ProcessorInterface {
      * @inheritDoc
      * @param Document $data
      */
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): void {
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): Document {
         $assignmentRepo = $this->entityManager->getRepository(Assignment::class);
         $assignment = $assignmentRepo->findOneBy(['id' => (int)$data->getAssignmentId()]);
-        if(null === $assignment){
+        if (null === $assignment) {
             throw new NotFoundHttpException('The assignment could not be found');
         }
         $data->setAssignment($assignment);
         $this->decorated->process($data, $operation, $uriVariables, $context);
+        $data->setContentUrl('/documents/assignments/' . $assignment->getId() . '/' . $data->getFilePath());
+
+        return $data;
     }
 }

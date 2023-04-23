@@ -17,26 +17,26 @@ class PatchAssignmentInputDto {
      * @var string $title
      */
     #[Assert\Length(max: 128)]
+    #[Assert\Length(min: 10)]
     private string $title;
 
     /**
      * @var string $description
      */
-    #[Assert\Length(max: 255)]
+    #[Assert\Length(min: 16)]
     private string $description;
 
     /**
-     * @var float $grade
+     * @var float|null $grade
      */
     #[Assert\GreaterThanOrEqual(1)]
     #[Assert\LessThanOrEqual(10)]
-    private float $grade;
+    private ?float $grade;
 
     /**
-     * @var \DateTime
+     * @var bool
      */
-    #[Assert\Type(\DateTimeInterface::class)]
-    private \DateTime $turnedInDate;
+    private bool $isTurnedIn = false;
 
     /**
      * @return \DateTime
@@ -81,9 +81,9 @@ class PatchAssignmentInputDto {
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getGrade(): float {
+    public function getGrade(): ?float {
         return $this->grade;
     }
 
@@ -95,16 +95,16 @@ class PatchAssignmentInputDto {
     }
 
     /**
-     * @return \DateTime
+     * @return bool
      */
-    public function getTurnedInDate(): \DateTime {
-        return $this->turnedInDate;
+    public function isTurnedIn(): bool {
+        return $this->isTurnedIn;
     }
 
     /**
-     * @param \DateTime $turnedInDate
+     * @param bool $isTurnedIn
      */
-    public function setTurnedInDate(\DateTime $turnedInDate): void {
-        $this->turnedInDate = $turnedInDate;
+    public function setIsTurnedIn(bool $isTurnedIn): void {
+        $this->isTurnedIn = $isTurnedIn;
     }
 }

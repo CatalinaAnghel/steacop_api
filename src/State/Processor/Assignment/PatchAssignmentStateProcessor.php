@@ -7,7 +7,9 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Dto\Assignment\Input\PatchAssignmentInputDto;
 use App\Dto\Assignment\Output\AssignmentOutputDto;
+use App\Dto\Document\Output\DocumentOutputDto;
 use App\Entity\Assignment;
+use App\Entity\Document;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +19,7 @@ class PatchAssignmentStateProcessor implements ProcessorInterface {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly LoggerInterface        $logger) {
+        date_default_timezone_set('Europe/Bucharest');
     }
 
     /**
@@ -31,7 +34,8 @@ class PatchAssignmentStateProcessor implements ProcessorInterface {
             $assignment->setGrade($data->getGrade());
             $assignment->setTitle($data->getTitle());
             $assignment->setDescription($data->getDescription());
-            $assignment->setTurnedInDate($data->getTurnedInDate());
+            $turnInDate = $data->isTurnedIn()? new \DateTime('Now'): null;
+            $assignment->setTurnedInDate($turnInDate);
             $assignment->setDueDate($data->getDueDate());
             $assignment->setUpdatedAt(new \DateTime('Now'));
             $this->entityManager->persist($assignment);
@@ -42,7 +46,21 @@ class PatchAssignmentStateProcessor implements ProcessorInterface {
                 $configOutput = new AutoMapperConfig();
                 $configOutput->registerMapping(
                     Assignment::class,
-                    AssignmentOutputDto::class);
+                    AssignmentOutputDto::class)
+                ->forMember('documents', function (Assignment $source): array {
+                    $documentConfig = new AutoMapperConfig();
+                    $documentConfig->registerMapping(
+                        Document::class,
+                        DocumentOutputDto::class
+                    )->forMember('contentUrl', function (Document $document) {
+                        return '/documents/assignments/' . $document->getAssignment()?->getId() .
+                            '/' . $document->getFilePath();
+                    });
+                    return (new AutoMapper($documentConfig))->mapMultiple(
+                        $source->getDocuments(),
+                        DocumentOutputDto::class
+                    );
+                });
                 $mapper = new AutoMapper($configOutput);
                 /**
                  * @var AssignmentOutputDto $assignmentDto

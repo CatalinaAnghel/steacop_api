@@ -7,8 +7,9 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Dto\Assignment\Input\CreateAssignmentInputDto;
 use App\Dto\Assignment\Output\AssignmentOutputDto;
-use App\Dto\Meeting\Output\GuidanceMeetingOutputDto;
+use App\Dto\Document\Output\DocumentOutputDto;
 use App\Entity\Assignment;
+use App\Entity\Document;
 use App\Entity\Project;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
@@ -40,7 +41,7 @@ class CreateAssignmentStateProcessor implements ProcessorInterface {
                  */
                 $assignment = $mapper->map($data, Assignment::class);
                 $assignment->setCreatedAt(new \DateTimeImmutable('Now'));
-                $assignment->setUpdatedAt(new \DateTimeImmutable('Now'));
+                $assignment->setUpdatedAt(new \DateTime('Now'));
                 $assignment->setProject($project);
                 $this->entityManager->persist($assignment);
                 $this->entityManager->flush();
@@ -49,13 +50,15 @@ class CreateAssignmentStateProcessor implements ProcessorInterface {
                 $configOutput->registerMapping(
                     Assignment::class,
                     AssignmentOutputDto::class
-                );
+                )->forMember('documents', function (): array {
+                    return [];
+                });
                 $mapper = new AutoMapper($configOutput);
 
                 /**
                  * @var AssignmentOutputDto $assignmentDto
                  */
-                $assignmentDto = $mapper->map($assignment, GuidanceMeetingOutputDto::class);
+                $assignmentDto = $mapper->map($assignment, AssignmentOutputDto::class);
                 if (null !== $assignment->getTurnedInDate()) {
                     $assignmentDto->setTurnedInDate(
                         new \DateTime(($assignment->getTurnedInDate())?->format('Y-m-d H:i:s')));

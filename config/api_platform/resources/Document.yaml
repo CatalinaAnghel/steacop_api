@@ -20,3 +20,4 @@ App\Entity\Document:
                     format: binary
                   assignmentId:
                     type: string
+    ApiPlatform\Metadata\Delete: ~

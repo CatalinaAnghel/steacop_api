@@ -17,9 +17,6 @@ class Project {
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Student::class, orphanRemoval: true)]
-    private Collection $student;
-
     #[ORM\ManyToOne(inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Supervisor $supervisor = null;
@@ -48,8 +45,10 @@ class Project {
     #[ORM\OneToOne(mappedBy: 'project', cascade: ['persist', 'remove'])]
     private ?CustomSupervisoryPlan $supervisoryPlan = null;
 
+    #[ORM\OneToOne(mappedBy: 'project', cascade: ['persist', 'remove'])]
+    private ?Student $student = null;
+
     public function __construct() {
-        $this->student = new ArrayCollection();
         $this->functionalities = new ArrayCollection();
         $this->milestoneMeetings = new ArrayCollection();
         $this->guidanceMeetings = new ArrayCollection();
@@ -58,28 +57,6 @@ class Project {
 
     public function getId(): ?int {
         return $this->id;
-    }
-
-    /**
-     * @return Collection<int, Student>
-     */
-    public function getStudent(): Collection {
-        return $this->student;
-    }
-
-    public function addStudent(Student $student): self {
-        if (!$this->student->contains($student)) {
-            $this->student->add($student);
-            $student->setProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStudent(Student $student): void {
-        if ($this->student->removeElement($student) && $student->getProject() === $this) {
-            $student->setProject(null);
-        }
     }
 
     public function getSupervisor(): ?Supervisor {
@@ -198,13 +175,11 @@ class Project {
         return $this;
     }
 
-    public function getSupervisoryPlan(): ?CustomSupervisoryPlan
-    {
+    public function getSupervisoryPlan(): ?CustomSupervisoryPlan {
         return $this->supervisoryPlan;
     }
 
-    public function setSupervisoryPlan(CustomSupervisoryPlan $supervisoryPlan): self
-    {
+    public function setSupervisoryPlan(CustomSupervisoryPlan $supervisoryPlan): self {
         // set the owning side of the relation if necessary
         if ($supervisoryPlan->getProject() !== $this) {
             $supervisoryPlan->setProject($this);
@@ -213,5 +188,18 @@ class Project {
         $this->supervisoryPlan = $supervisoryPlan;
 
         return $this;
+    }
+
+    public function getStudent(): ?Student {
+        return $this->student;
+    }
+
+    public function setStudent(Student $student): void {
+        // set the owning side of the relation if necessary
+        if ($student->getProject() !== $this) {
+            $student->setProject($this);
+        }
+
+        $this->student = $student;
     }
 }

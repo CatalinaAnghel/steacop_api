@@ -36,8 +36,8 @@ class GetAssignmentItemProvider implements ProviderInterface {
                     Document::class,
                     DocumentOutputDto::class
                 )->forMember('contentUrl', function (Document $document) {
-                        return '/documents/assignments/' .
-                            $document->getAssignment()?->getId() . '/' . $document->getFilePath();
+                        return '/documents/assignments/' . $document->getAssignment()?->getId() .
+                            '/' . $document->getFilePath();
                     });
                 return (new AutoMapper($documentConfig))->mapMultiple(
                     $source->getDocuments(),
@@ -48,7 +48,7 @@ class GetAssignmentItemProvider implements ProviderInterface {
 
             try {
                 /**
-                 * @var AssignmentOutputDto $meetingDto
+                 * @var AssignmentOutputDto $assignmentDto
                  */
                 $assignmentDto = $mapper->map($assignment, AssignmentOutputDto::class);
             } catch (UnregisteredMappingException $e) {

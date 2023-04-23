@@ -5,7 +5,7 @@ App\Entity\Assignment:
       provider: App\State\Provider\Assignment\GetAssignmentItemProvider
       output: App\Dto\Assignment\Output\AssignmentOutputDto
     ApiPlatform\Metadata\GetCollection:
-#      security: 'is_granted("ROLE_USER")'
+      security: 'is_granted("ROLE_USER")'
       filters: [ 'assignment.search_filter', 'assignment.date_filter' ]
       provider: App\State\Provider\Assignment\GetAssignmentCollectionProvider
       output: App\Dto\Assignment\Output\AssignmentOutputDto
@@ -17,7 +17,7 @@ App\Entity\Assignment:
     ApiPlatform\Metadata\Delete:
       processor: App\State\Processor\Assignment\DeleteAssignmentStateProcessor
     ApiPlatform\Metadata\Patch:
-      security: 'is_granted("ROLE_TEACHER")'
+      security: 'is_granted("PATCH", object)'
       input: App\Dto\Assignment\Input\PatchAssignmentInputDto
       output: App\Dto\Assignment\Output\AssignmentOutputDto
       provider: App\State\Provider\Assignment\PatchAssignmentProvider

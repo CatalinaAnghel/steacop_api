@@ -25,13 +25,14 @@ class CreateAssignmentInputDto {
      */
     #[Assert\NotBlank]
     #[Assert\Length(max: 128)]
+    #[Assert\Length(min: 10)]
     private string $title;
 
     /**
      * @var string $description
      */
     #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
+    #[Assert\Length(min: 16)]
     private string $description;
 
     /**
