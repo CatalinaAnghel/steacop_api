@@ -11,14 +11,15 @@ use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ScoreWeightsService implements Contract\ScoreWeightsServiceInterface {
-    public function __construct(private readonly EntityManagerInterface $entityManager) {
-    }
+class ScoreWeightsService implements Contract\ScoreWeightsServiceInterface
+{
+    public function __construct(private readonly EntityManagerInterface $entityManager) {}
 
     /**
      * @inheritDoc
      */
-    public function multipleUpdate(ScoreWeightDto $scoreWeightDto): ScoreWeightsDto {
+    public function multipleUpdate(ScoreWeightDto $scoreWeightDto): ScoreWeightsDto
+    {
         $repository = $this->entityManager->getRepository(ScoreWeight::class);
         $weights = $repository->findAll();
         $weightsOutputDto = new ScoreWeightsDto();

@@ -12,7 +12,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: SupervisorImportFileRepository::class)]
 #[ApiResource]
-class SupervisorImportFile {
+class SupervisorImportFile
+{
     /**
      * @var int|null $id
      */
@@ -41,21 +42,24 @@ class SupervisorImportFile {
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->createdAt = new \DateTimeImmutable();
     }
 
     /**
      * @return int|null
      */
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
     /**
      * @return File|null
      */
-    public function getFile(): ?File {
+    public function getFile(): ?File
+    {
         return $this->file;
     }
 
@@ -63,14 +67,16 @@ class SupervisorImportFile {
      * @param File|null $file
      * @return void
      */
-    public function setFile(?File $file): void {
+    public function setFile(?File $file): void
+    {
         $this->file = $file;
     }
 
     /**
      * @return string|null
      */
-    public function getFilePath(): ?string {
+    public function getFilePath(): ?string
+    {
         return $this->filePath;
     }
 
@@ -78,28 +84,32 @@ class SupervisorImportFile {
      * @param string|null $filePath
      * @return void
      */
-    public function setFilePath(?string $filePath): void {
+    public function setFilePath(?string $filePath): void
+    {
         $this->filePath = $filePath;
     }
 
     /**
      * @return \DateTimeImmutable|null
      */
-    public function getCreatedAt(): ?\DateTimeImmutable {
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
         return $this->createdAt;
     }
 
     /**
      * @return string|null
      */
-    public function getContentUrl(): ?string {
+    public function getContentUrl(): ?string
+    {
         return $this->contentUrl;
     }
 
     /**
      * @param string|null $contentUrl
      */
-    public function setContentUrl(?string $contentUrl): void {
+    public function setContentUrl(?string $contentUrl): void
+    {
         $this->contentUrl = $contentUrl;
     }
 }

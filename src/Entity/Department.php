@@ -11,7 +11,8 @@ use JetBrains\PhpStorm\Pure;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: DepartmentRepository::class)]
-class Department {
+class Department
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -26,20 +27,24 @@ class Department {
     #[ORM\OneToMany(mappedBy: 'department', targetEntity: Specialization::class, orphanRemoval: true)]
     private Collection $specializations;
 
-    #[Pure] public function __construct() {
+    #[Pure] public function __construct()
+    {
         $this->supervisors = new ArrayCollection();
         $this->specializations = new ArrayCollection();
     }
 
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function getName(): ?string {
+    public function getName(): ?string
+    {
         return $this->name;
     }
 
-    public function setName(string $name): self {
+    public function setName(string $name): self
+    {
         $this->name = $name;
 
         return $this;
@@ -48,11 +53,13 @@ class Department {
     /**
      * @return Collection<int, Supervisor>
      */
-    public function getSupervisors(): Collection {
+    public function getSupervisors(): Collection
+    {
         return $this->supervisors;
     }
 
-    public function addSupervisor(Supervisor $supervisor): self {
+    public function addSupervisor(Supervisor $supervisor): self
+    {
         if (!$this->supervisors->contains($supervisor)) {
             $this->supervisors->add($supervisor);
             $supervisor->setDepartment($this);
@@ -61,12 +68,10 @@ class Department {
         return $this;
     }
 
-    public function removeSupervisor(Supervisor $supervisor): self {
-        if ($this->supervisors->removeElement($supervisor)) {
-            // set the owning side to null (unless already changed)
-            if ($supervisor->getDepartment() === $this) {
-                $supervisor->setDepartment(null);
-            }
+    public function removeSupervisor(Supervisor $supervisor): self
+    {
+        if ($this->supervisors->removeElement($supervisor) && $supervisor->getDepartment() === $this) {
+            $supervisor->setDepartment(null);
         }
 
         return $this;
@@ -92,11 +97,8 @@ class Department {
 
     public function removeSpecialization(Specialization $specialization): self
     {
-        if ($this->specializations->removeElement($specialization)) {
-            // set the owning side to null (unless already changed)
-            if ($specialization->getDepartment() === $this) {
-                $specialization->setDepartment(null);
-            }
+        if ($this->specializations->removeElement($specialization) && $specialization->getDepartment() === $this) {
+            $specialization->setDepartment(null);
         }
 
         return $this;

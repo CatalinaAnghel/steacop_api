@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Dto\Project\Output;
 
-class ProjectInformationOutputDto {
+class ProjectInformationOutputDto
+{
     /**
      * @var int $numberOfGuidanceMeetings
      */
@@ -49,7 +50,8 @@ class ProjectInformationOutputDto {
      */
     private ?string $repositoryUrl;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->numberOfGuidanceMeetings = 0;
         $this->numberOfAssignments = 0;
     }
@@ -57,126 +59,144 @@ class ProjectInformationOutputDto {
     /**
      * @return int
      */
-    public function getNumberOfGuidanceMeetings(): int {
+    public function getNumberOfGuidanceMeetings(): int
+    {
         return $this->numberOfGuidanceMeetings;
     }
 
     /**
      * @param int $numberOfGuidanceMeetings
      */
-    public function setNumberOfGuidanceMeetings(int $numberOfGuidanceMeetings): void {
+    public function setNumberOfGuidanceMeetings(int $numberOfGuidanceMeetings): void
+    {
         $this->numberOfGuidanceMeetings = $numberOfGuidanceMeetings;
     }
 
     /**
      * @return int
      */
-    public function getNumberOfCompletedGuidanceMeetings(): int {
+    public function getNumberOfCompletedGuidanceMeetings(): int
+    {
         return $this->numberOfCompletedGuidanceMeetings;
     }
 
     /**
      * @param int $numberOfCompletedGuidanceMeetings
      */
-    public function setNumberOfCompletedGuidanceMeetings(int $numberOfCompletedGuidanceMeetings): void {
+    public function setNumberOfCompletedGuidanceMeetings(int $numberOfCompletedGuidanceMeetings): void
+    {
         $this->numberOfCompletedGuidanceMeetings = $numberOfCompletedGuidanceMeetings;
     }
 
     /**
      * @return int
      */
-    public function getNumberOfMilestoneMeetings(): int {
+    public function getNumberOfMilestoneMeetings(): int
+    {
         return $this->numberOfMilestoneMeetings;
     }
 
     /**
      * @param int $numberOfMilestoneMeetings
      */
-    public function setNumberOfMilestoneMeetings(int $numberOfMilestoneMeetings): void {
+    public function setNumberOfMilestoneMeetings(int $numberOfMilestoneMeetings): void
+    {
         $this->numberOfMilestoneMeetings = $numberOfMilestoneMeetings;
     }
 
     /**
      * @return int
      */
-    public function getNumberOfCompletedMilestoneMeetings(): int {
+    public function getNumberOfCompletedMilestoneMeetings(): int
+    {
         return $this->numberOfCompletedMilestoneMeetings;
     }
 
     /**
      * @param int $numberOfCompletedMilestoneMeetings
      */
-    public function setNumberOfCompletedMilestoneMeetings(int $numberOfCompletedMilestoneMeetings): void {
+    public function setNumberOfCompletedMilestoneMeetings(int $numberOfCompletedMilestoneMeetings): void
+    {
         $this->numberOfCompletedMilestoneMeetings = $numberOfCompletedMilestoneMeetings;
     }
 
     /**
      * @return int
      */
-    public function getNumberOfAssignments(): int {
+    public function getNumberOfAssignments(): int
+    {
         return $this->numberOfAssignments;
     }
 
     /**
      * @param int $numberOfAssignments
      */
-    public function setNumberOfAssignments(int $numberOfAssignments): void {
+    public function setNumberOfAssignments(int $numberOfAssignments): void
+    {
         $this->numberOfAssignments = $numberOfAssignments;
     }
 
     /**
      * @return int
      */
-    public function getNumberOfFinishedAssignments(): int {
+    public function getNumberOfFinishedAssignments(): int
+    {
         return $this->numberOfFinishedAssignments;
     }
 
     /**
      * @param int $numberOfFinishedAssignments
      */
-    public function setNumberOfFinishedAssignments(int $numberOfFinishedAssignments): void {
+    public function setNumberOfFinishedAssignments(int $numberOfFinishedAssignments): void
+    {
         $this->numberOfFinishedAssignments = $numberOfFinishedAssignments;
     }
 
     /**
      * @return ?string
      */
-    public function getTitle(): string|null {
+    public function getTitle(): string|null
+    {
         return $this->title;
     }
 
     /**
      * @param ?string $title
      */
-    public function setTitle(?string $title): void {
+    public function setTitle(?string $title): void
+    {
         $this->title = $title;
     }
 
     /**
      * @return ?string
      */
-    public function getDescription(): string|null {
+    public function getDescription(): string|null
+    {
         return $this->description;
     }
 
     /**
      * @param ?string $description
      */
-    public function setDescription(?string $description): void {
+    public function setDescription(?string $description): void
+    {
         $this->description = $description;
     }
 
     /**
      * @return ?string
      */
-    public function getRepositoryUrl(): string|null {
+    public function getRepositoryUrl(): string|null
+    {
         return $this->repositoryUrl;
     }
 
     /**
      * @param ?string $repositoryUrl
      */
-    public function setRepositoryUrl(?string $repositoryUrl): void {
+    public function setRepositoryUrl(?string $repositoryUrl): void
+    {
         $this->repositoryUrl = $repositoryUrl;
     }
 }

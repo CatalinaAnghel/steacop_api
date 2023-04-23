@@ -39,28 +39,28 @@ class FunctionalityRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Functionality[] Returns an array of Functionality objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Functionality[] Returns an array of Functionality objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('f')
+    //            ->andWhere('f.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('f.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Functionality
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Functionality
+    //    {
+    //        return $this->createQueryBuilder('f')
+    //            ->andWhere('f.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

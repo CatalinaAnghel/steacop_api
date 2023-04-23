@@ -14,11 +14,13 @@ use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class PatchMilestoneMeetingProcessor implements ProcessorInterface {
+class PatchMilestoneMeetingProcessor implements ProcessorInterface
+{
     public function __construct(private readonly EntityManagerInterface $entityManager,
                                 private readonly LoggerInterface        $logger,
                                 private readonly ValidatorInterface     $meetingValidator
-    ) {
+    )
+    {
         date_default_timezone_set('Europe/Bucharest');
     }
 
@@ -27,7 +29,8 @@ class PatchMilestoneMeetingProcessor implements ProcessorInterface {
      * @param PatchMilestoneMeetingInputDto $data
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
-    ?MilestoneMeetingOutputDto {
+    ?MilestoneMeetingOutputDto
+    {
         $milestoneMeetingRepo = $this->entityManager->getRepository(MilestoneMeeting::class);
         $milestoneMeeting = $milestoneMeetingRepo->findOneBy(['id' => $uriVariables['id']]);
         if (null !== $milestoneMeeting) {
@@ -41,7 +44,7 @@ class PatchMilestoneMeetingProcessor implements ProcessorInterface {
             }
             $milestoneMeeting->setUpdatedAt(new \DateTime('Now'));
             $milestoneMeeting->setIsCompleted($data->getIsCompleted());
-            if($data->getIsCanceled()){
+            if ($data->getIsCanceled()) {
                 $milestoneMeeting->setIsCanceled(true);
                 $milestoneMeeting->setCanceledAt(new \DateTimeImmutable('Now'));
             }

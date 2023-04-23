@@ -14,16 +14,19 @@ use AutoMapperPlus\Configuration\AutoMapperConfig;
 use AutoMapperPlus\Exception\UnregisteredMappingException;
 use Psr\Log\LoggerInterface;
 
-class GetAssignmentItemProvider implements ProviderInterface {
+class GetAssignmentItemProvider implements ProviderInterface
+{
     public function __construct(private readonly ProviderInterface $decoratedProvider,
-                                private readonly LoggerInterface   $logger) {
+                                private readonly LoggerInterface   $logger)
+    {
         date_default_timezone_set('Europe/Bucharest');
     }
 
     /**
      * @inheritDoc
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
         $assignment = $this->decoratedProvider->provide($operation, $uriVariables, $context);
         if (null !== $assignment) {
             $configOutput = new AutoMapperConfig();
@@ -36,9 +39,9 @@ class GetAssignmentItemProvider implements ProviderInterface {
                     Document::class,
                     DocumentOutputDto::class
                 )->forMember('contentUrl', function (Document $document) {
-                        return '/documents/assignments/' . $document->getAssignment()?->getId() .
-                            '/' . $document->getFilePath();
-                    });
+                    return '/documents/assignments/' . $document->getAssignment()?->getId() .
+                        '/' . $document->getFilePath();
+                });
                 return (new AutoMapper($documentConfig))->mapMultiple(
                     $source->getDocuments(),
                     DocumentOutputDto::class

@@ -13,16 +13,19 @@ use AutoMapperPlus\Exception\UnregisteredMappingException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class PatchGuidanceMeetingItemProvider implements ProviderInterface {
+class PatchGuidanceMeetingItemProvider implements ProviderInterface
+{
     public function __construct(private readonly EntityManagerInterface $entityManager,
-                                private readonly LoggerInterface        $logger) {
+                                private readonly LoggerInterface        $logger)
+    {
         date_default_timezone_set('Europe/Bucharest');
     }
 
     /**
      * @inheritDoc
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
         $meetingDto = null;
         if (isset($uriVariables['id'])) {
             $guidanceMeetingRepo = $this->entityManager->getRepository(GuidanceMeeting::class);
@@ -33,7 +36,7 @@ class PatchGuidanceMeetingItemProvider implements ProviderInterface {
                     PatchGuidanceMeetingInputDto::class
                 );
                 $mapper = new AutoMapper($config);
-                try{
+                try {
                     $meetingDto = $mapper->map($meeting, PatchGuidanceMeetingInputDto::class);
 
                 } catch (UnregisteredMappingException $exception) {

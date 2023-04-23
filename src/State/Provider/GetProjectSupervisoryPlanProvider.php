@@ -17,20 +17,23 @@ use Psr\Log\LoggerInterface;
 /**
  * GetProjectSupervisoryPlanProvider
  */
-class GetProjectSupervisoryPlanProvider extends AbstractPlanProvider {
+class GetProjectSupervisoryPlanProvider extends AbstractPlanProvider
+{
     /**
      * @param EntityManagerInterface $entityManager
      * @param LoggerInterface $logger
      */
     public function __construct(private readonly EntityManagerInterface $entityManager,
-                                private readonly LoggerInterface        $logger) {
+                                private readonly LoggerInterface        $logger)
+    {
         parent::__construct($this->entityManager);
     }
 
     /**
      * @inheritDoc
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
         $planDto = null;
         if (isset($uriVariables['projectId'])) {
             $projectRepo = $this->entityManager->getRepository(Project::class);
@@ -58,12 +61,13 @@ class GetProjectSupervisoryPlanProvider extends AbstractPlanProvider {
      * @throws UnregisteredMappingException
      */
     private function handleGetRequest(
-        Project $project,
+        Project                    $project,
         CustomSupervisoryPlan|null $plan
-    ): PlanOutputDto|null {
+    ): PlanOutputDto|null
+    {
         if (null === $plan) {
             $computedPlan = $this->determineSupervisoryPlan($project);
-            if(null === $computedPlan){
+            if (null === $computedPlan) {
                 return null;
             }
             $planDto = new PlanOutputDto();

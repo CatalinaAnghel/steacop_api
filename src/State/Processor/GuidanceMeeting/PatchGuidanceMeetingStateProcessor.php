@@ -14,11 +14,13 @@ use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class PatchGuidanceMeetingStateProcessor implements ProcessorInterface {
+class PatchGuidanceMeetingStateProcessor implements ProcessorInterface
+{
     public function __construct(private readonly EntityManagerInterface $entityManager,
                                 private readonly LoggerInterface        $logger,
                                 private readonly ValidatorInterface     $meetingValidator
-    ) {
+    )
+    {
         date_default_timezone_set('Europe/Bucharest');
     }
 
@@ -27,7 +29,8 @@ class PatchGuidanceMeetingStateProcessor implements ProcessorInterface {
      * @param PatchGuidanceMeetingInputDto $data
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
-    ?GuidanceMeetingOutputDto {
+    ?GuidanceMeetingOutputDto
+    {
         $guidanceMeetingRepo = $this->entityManager->getRepository(GuidanceMeeting::class);
         $guidanceMeeting = $guidanceMeetingRepo->findOneBy(['id' => $uriVariables['id']]);
         if (null !== $guidanceMeeting) {
@@ -38,7 +41,7 @@ class PatchGuidanceMeetingStateProcessor implements ProcessorInterface {
             $guidanceMeeting->setLink($data->getLink());
             $guidanceMeeting->setUpdatedAt(new \DateTime('Now'));
             $guidanceMeeting->setIsCompleted($data->getIsCompleted());
-            if($data->getIsCanceled()){
+            if ($data->getIsCanceled()) {
                 $guidanceMeeting->setIsCanceled(true);
                 $guidanceMeeting->setCanceledAt(new \DateTimeImmutable('Now'));
             }

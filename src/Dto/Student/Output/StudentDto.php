@@ -7,7 +7,8 @@ use App\Dto\Project\Output\ProjectDto;
 use App\Dto\Shared\Output\AbstractPerson;
 use App\Dto\Shared\Output\SpecializationDto;
 
-final class StudentDto extends AbstractPerson {
+final class StudentDto extends AbstractPerson
+{
     /**
      * @var ProjectDto $project
      */
@@ -21,28 +22,32 @@ final class StudentDto extends AbstractPerson {
     /**
      * @return ProjectDto
      */
-    public function getProject(): ProjectDto {
+    public function getProject(): ProjectDto
+    {
         return $this->project;
     }
 
     /**
      * @param ProjectDto $project
      */
-    public function setProject(ProjectDto $project): void {
+    public function setProject(ProjectDto $project): void
+    {
         $this->project = $project;
     }
 
     /**
      * @return SpecializationDto
      */
-    public function getSpecialization(): SpecializationDto {
+    public function getSpecialization(): SpecializationDto
+    {
         return $this->specialization;
     }
 
     /**
      * @param SpecializationDto $specialization
      */
-    public function setSpecialization(SpecializationDto $specialization): void {
+    public function setSpecialization(SpecializationDto $specialization): void
+    {
         $this->specialization = $specialization;
     }
 }

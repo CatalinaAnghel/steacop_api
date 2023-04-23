@@ -12,16 +12,17 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class PatchAssignmentVoter extends Voter {
+class PatchAssignmentVoter extends Voter
+{
     public const PATCH = 'PATCH';
 
     public function __construct(
         private readonly RequestStack           $requestBody,
         private readonly EntityManagerInterface $entityManager
-    ) {
-    }
+    ) {}
 
-    protected function supports(string $attribute, mixed $subject): bool {
+    protected function supports(string $attribute, mixed $subject): bool
+    {
         return $subject instanceof PatchAssignmentInputDto && $attribute === self::PATCH;
     }
 
@@ -31,7 +32,8 @@ class PatchAssignmentVoter extends Voter {
      * @param TokenInterface $token
      * @return bool
      */
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool {
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
+    {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {

@@ -5,7 +5,8 @@ namespace App\Dto\Rating\Input;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class RatingInputDto {
+class RatingInputDto
+{
     #[Assert\NotBlank]
     #[Assert\Positive]
     #[Assert\LessThanOrEqual(5)]
@@ -14,14 +15,16 @@ class RatingInputDto {
     /**
      * @return float
      */
-    public function getValue(): float {
+    public function getValue(): float
+    {
         return $this->value;
     }
 
     /**
      * @param float $value
      */
-    public function setValue(float $value): void {
+    public function setValue(float $value): void
+    {
         $this->value = $value;
     }
 }

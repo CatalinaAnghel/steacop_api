@@ -24,7 +24,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
     aliases: ['app:add-supervisors'],
     hidden: false
 )]
-class ImportSupervisorsCommand extends AbstractUsersCommand {
+class ImportSupervisorsCommand extends AbstractUsersCommand
+{
     public const IMPORT_FILE_PATH = '\\..\\..\\..\\public\\documents\\supervisors\\';
     protected const DETAILED_DESCRIPTION = 'This command allows you to import the supervisors';
 
@@ -35,17 +36,20 @@ class ImportSupervisorsCommand extends AbstractUsersCommand {
      */
     public function __construct(private readonly UserPasswordHasherInterface $userPasswordHasher,
                                 private readonly EntityManagerInterface      $entityManager,
-    private readonly LoggerInterface $logger
-    ) {
+                                private readonly LoggerInterface             $logger
+    )
+    {
         parent::__construct();
     }
 
-    protected function configure(): void {
+    protected function configure(): void
+    {
         $this->setHelp(self::DETAILED_DESCRIPTION)
             ->addArgument('fileName', InputArgument::OPTIONAL, 'Provide the file name');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int {
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
         if ($input->getArgument('fileName') === null) {
             $supervisorImportFileRepo = $this->entityManager->getRepository(SupervisorImportFile::class);
             try {

@@ -12,17 +12,20 @@ use AutoMapperPlus\Configuration\AutoMapperConfig;
 use AutoMapperPlus\Exception\UnregisteredMappingException;
 use Psr\Log\LoggerInterface;
 
-class GetGuidanceMeetingItemProvider implements ProviderInterface {
+class GetGuidanceMeetingItemProvider implements ProviderInterface
+{
     public function __construct(private readonly ProviderInterface $decoratedProvider,
                                 private readonly LoggerInterface   $logger
-    ) {
+    )
+    {
         date_default_timezone_set('Europe/Bucharest');
     }
 
     /**
      * @inheritDoc
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
         $guidanceMeeting = $this->decoratedProvider->provide($operation, $uriVariables, $context);
         if (null !== $guidanceMeeting) {
             $configOutput = new AutoMapperConfig();

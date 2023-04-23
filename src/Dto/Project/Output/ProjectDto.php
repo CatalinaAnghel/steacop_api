@@ -5,7 +5,8 @@ namespace App\Dto\Project\Output;
 
 use App\Dto\Traits\IdentityTrait;
 
-class ProjectDto {
+class ProjectDto
+{
     use IdentityTrait;
 
     /**
@@ -21,28 +22,32 @@ class ProjectDto {
     /**
      * @return string
      */
-    public function getTitle(): string {
+    public function getTitle(): string
+    {
         return $this->title;
     }
 
     /**
      * @param string|null $title
      */
-    public function setTitle(string|null $title): void {
+    public function setTitle(string|null $title): void
+    {
         $this->title = $title;
     }
 
     /**
      * @return string|null
      */
-    public function getDescription(): string|null {
+    public function getDescription(): string|null
+    {
         return $this->description;
     }
 
     /**
      * @param string|null $description
      */
-    public function setDescription(string|null $description): void {
+    public function setDescription(string|null $description): void
+    {
         $this->description = $description;
     }
 }

@@ -6,7 +6,8 @@ namespace App\Dto\Shared\Output;
 use App\Dto\Traits\DepartmentTrait;
 use App\Dto\Traits\IdentityTrait;
 
-class SpecializationDto {
+class SpecializationDto
+{
     use IdentityTrait;
     use DepartmentTrait;
 
@@ -18,14 +19,16 @@ class SpecializationDto {
     /**
      * @return string
      */
-    public function getName(): string {
+    public function getName(): string
+    {
         return $this->name;
     }
 
     /**
      * @param string $name
      */
-    public function setName(string $name): void {
+    public function setName(string $name): void
+    {
         $this->name = $name;
     }
 }

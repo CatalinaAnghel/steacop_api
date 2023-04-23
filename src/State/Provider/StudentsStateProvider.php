@@ -18,17 +18,18 @@ use AutoMapperPlus\Configuration\AutoMapperConfig;
 use AutoMapperPlus\Exception\InvalidArgumentException;
 use Doctrine\ORM\EntityManagerInterface;
 
-class StudentsStateProvider implements ProviderInterface {
+class StudentsStateProvider implements ProviderInterface
+{
     public function __construct(private readonly ProviderInterface      $decoratedProvider,
                                 private readonly Pagination             $pagination,
-                                private readonly EntityManagerInterface $entityManager) {
-    }
+                                private readonly EntityManagerInterface $entityManager) {}
 
     /**
      * @inheritDoc
      * @throws InvalidArgumentException
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
         $students = $this->decoratedProvider->provide($operation, $uriVariables, $context);
         $config = new AutoMapperConfig();
         $config

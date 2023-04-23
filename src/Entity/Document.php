@@ -12,7 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Vich\Uploadable]
 #[ApiResource]
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
-class Document {
+class Document
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -46,19 +47,23 @@ class Document {
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->createdAt = new \DateTimeImmutable();
     }
 
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function getAssignment(): ?Assignment {
+    public function getAssignment(): ?Assignment
+    {
         return $this->assignment;
     }
 
-    public function setAssignment(?Assignment $assignment): self {
+    public function setAssignment(?Assignment $assignment): self
+    {
         $this->assignment = $assignment;
 
         return $this;
@@ -67,63 +72,72 @@ class Document {
     /**
      * @return string|null
      */
-    public function getContentUrl(): ?string {
+    public function getContentUrl(): ?string
+    {
         return $this->contentUrl;
     }
 
     /**
      * @param string|null $contentUrl
      */
-    public function setContentUrl(?string $contentUrl): void {
+    public function setContentUrl(?string $contentUrl): void
+    {
         $this->contentUrl = $contentUrl;
     }
 
     /**
      * @return File|null
      */
-    public function getFile(): ?File {
+    public function getFile(): ?File
+    {
         return $this->file;
     }
 
     /**
      * @param File|null $file
      */
-    public function setFile(?File $file): void {
+    public function setFile(?File $file): void
+    {
         $this->file = $file;
     }
 
     /**
      * @return string|null
      */
-    public function getFilePath(): ?string {
+    public function getFilePath(): ?string
+    {
         return $this->filePath;
     }
 
     /**
      * @param string|null $filePath
      */
-    public function setFilePath(?string $filePath): void {
+    public function setFilePath(?string $filePath): void
+    {
         $this->filePath = $filePath;
     }
 
     /**
      * @return \DateTimeImmutable|null
      */
-    public function getCreatedAt(): ?\DateTimeImmutable {
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
         return $this->createdAt;
     }
 
     /**
      * @return string
      */
-    public function getAssignmentId(): string {
+    public function getAssignmentId(): string
+    {
         return $this->assignmentId;
     }
 
     /**
      * @param string $assignmentId
      */
-    public function setAssignmentId(string $assignmentId): void {
+    public function setAssignmentId(string $assignmentId): void
+    {
         $this->assignmentId = $assignmentId;
     }
 }

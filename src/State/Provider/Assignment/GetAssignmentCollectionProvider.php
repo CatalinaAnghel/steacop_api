@@ -14,9 +14,11 @@ use App\Paginator\StatePaginator;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 
-class GetAssignmentCollectionProvider implements ProviderInterface {
+class GetAssignmentCollectionProvider implements ProviderInterface
+{
     public function __construct(private readonly ProviderInterface $decoratedProvider,
-                                private readonly Pagination        $pagination) {
+                                private readonly Pagination        $pagination)
+    {
         date_default_timezone_set('Europe/Bucharest');
     }
 
@@ -24,27 +26,27 @@ class GetAssignmentCollectionProvider implements ProviderInterface {
     /**
      * @inheritDoc
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
         $assignments = $this->decoratedProvider->provide($operation, $uriVariables, $context);
         $config = new AutoMapperConfig();
         $config
             ->registerMapping(Assignment::class, AssignmentOutputDto::class)
-            ->forMember('documents', function(Assignment $source): array{
+            ->forMember('documents', function (Assignment $source): array {
                 $documentConfig = new AutoMapperConfig();
                 $documentConfig->registerMapping(
                     Document::class,
                     DocumentOutputDto::class
                 )
-                ->forMember('contentUrl', function(Document $document){
-                    return '/documents/assignments/' . $document->getAssignment()?->getId() .
-                        '/' . $document->getFilePath();
-                });
+                    ->forMember('contentUrl', function (Document $document) {
+                        return '/documents/assignments/' . $document->getAssignment()?->getId() .
+                            '/' . $document->getFilePath();
+                    });
                 return (new AutoMapper($documentConfig))->mapMultiple(
                     $source->getDocuments(),
                     DocumentOutputDto::class
                 );
-            })
-        ;
+            });
         $mapper = new AutoMapper($config);
         $assignmentsCollection = $mapper->mapMultiple($assignments, AssignmentOutputDto::class);
         $assignmentsIterator = new \ArrayIterator($assignmentsCollection);

@@ -8,7 +8,8 @@ use App\Dto\Traits\SchedulingTrait;
 use App\Validator\FutureDateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateMeetingInputDto extends AbstractMeetingInputDto {
+class CreateMeetingInputDto extends AbstractMeetingInputDto
+{
     #[Assert\Positive]
     private int $projectId;
 
@@ -26,28 +27,32 @@ class CreateMeetingInputDto extends AbstractMeetingInputDto {
     /**
      * @return int
      */
-    public function getProjectId(): int {
+    public function getProjectId(): int
+    {
         return $this->projectId;
     }
 
     /**
      * @param int $projectId
      */
-    public function setProjectId(int $projectId): void {
+    public function setProjectId(int $projectId): void
+    {
         $this->projectId = $projectId;
     }
 
     /**
      * @return float
      */
-    public function getDuration(): float {
+    public function getDuration(): float
+    {
         return $this->duration;
     }
 
     /**
      * @param float $duration
      */
-    public function setDuration(float $duration): void {
+    public function setDuration(float $duration): void
+    {
         $this->duration = $duration;
     }
 }

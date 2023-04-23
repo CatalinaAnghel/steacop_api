@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SpecializationRepository::class)]
 #[ApiResource]
-class Specialization {
+class Specialization
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -26,29 +27,35 @@ class Specialization {
     #[ORM\OneToMany(mappedBy: 'specialization', targetEntity: Student::class, orphanRemoval: true)]
     private Collection $students;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->students = new ArrayCollection();
     }
 
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function getName(): ?string {
+    public function getName(): ?string
+    {
         return $this->name;
     }
 
-    public function setName(string $name): self {
+    public function setName(string $name): self
+    {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getDepartment(): ?Department {
+    public function getDepartment(): ?Department
+    {
         return $this->department;
     }
 
-    public function setDepartment(?Department $department): self {
+    public function setDepartment(?Department $department): self
+    {
         $this->department = $department;
 
         return $this;
@@ -57,11 +64,13 @@ class Specialization {
     /**
      * @return Collection<int, Student>
      */
-    public function getStudents(): Collection {
+    public function getStudents(): Collection
+    {
         return $this->students;
     }
 
-    public function addStudent(Student $student): self {
+    public function addStudent(Student $student): self
+    {
         if (!$this->students->contains($student)) {
             $this->students->add($student);
             $student->setSpecialization($this);
@@ -70,12 +79,10 @@ class Specialization {
         return $this;
     }
 
-    public function removeStudent(Student $student): self {
-        if ($this->students->removeElement($student)) {
-            // set the owning side to null (unless already changed)
-            if ($student->getSpecialization() === $this) {
-                $student->setSpecialization(null);
-            }
+    public function removeStudent(Student $student): self
+    {
+        if ($this->students->removeElement($student) && $student->getSpecialization() === $this) {
+            $student->setSpecialization(null);
         }
 
         return $this;

@@ -11,7 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: SupervisorRepository::class)]
-class Supervisor {
+class Supervisor
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -33,45 +34,54 @@ class Supervisor {
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->projects = new ArrayCollection();
     }
 
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function getDepartment(): ?Department {
+    public function getDepartment(): ?Department
+    {
         return $this->department;
     }
 
-    public function setDepartment(?Department $department): self {
+    public function setDepartment(?Department $department): self
+    {
         $this->department = $department;
 
         return $this;
     }
 
-    public function getDescription(): ?string {
+    public function getDescription(): ?string
+    {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self {
+    public function setDescription(?string $description): self
+    {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getSupervisoryPlan(): ?SupervisoryPlan {
+    public function getSupervisoryPlan(): ?SupervisoryPlan
+    {
         return $this->supervisoryPlan;
     }
 
-    public function setSupervisoryPlan(?SupervisoryPlan $supervisoryPlan): self {
+    public function setSupervisoryPlan(?SupervisoryPlan $supervisoryPlan): self
+    {
         $this->supervisoryPlan = $supervisoryPlan;
 
         return $this;
     }
 
-    public function getProjects(): Collection {
+    public function getProjects(): Collection
+    {
         return $this->projects;
     }
 
@@ -85,19 +95,18 @@ class Supervisor {
 
     public function removeRating(Project $project): void
     {
-        if ($this->projects->removeElement($project)) {
-            // set the owning side to null (unless already changed)
-            if ($project->getSupervisor() === $this) {
-                $project->setSupervisor(null);
-            }
+        if ($this->projects->removeElement($project) && $project->getSupervisor() === $this) {
+            $project->setSupervisor(null);
         }
     }
 
-    public function getUser(): ?User {
+    public function getUser(): ?User
+    {
         return $this->user;
     }
 
-    public function setUser(User $user): self {
+    public function setUser(User $user): self
+    {
         $this->user = $user;
 
         return $this;

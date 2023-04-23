@@ -5,7 +5,8 @@ namespace App\ApiResource\Traits;
 
 use ApiPlatform\Metadata\ApiProperty;
 
-trait IdentityTrait {
+trait IdentityTrait
+{
     #[ApiProperty(identifier: true)]
     /**
      * @var int $id
@@ -15,14 +16,16 @@ trait IdentityTrait {
     /**
      * @return int
      */
-    public function getId(): int {
+    public function getId(): int
+    {
         return $this->id;
     }
 
     /**
      * @param int $id
      */
-    public function setId(int $id): void {
+    public function setId(int $id): void
+    {
         $this->id = $id;
     }
 }

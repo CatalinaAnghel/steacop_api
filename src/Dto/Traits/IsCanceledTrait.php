@@ -5,35 +5,40 @@ namespace App\Dto\Traits;
 
 use DateTimeImmutable;
 
-trait IsCanceledTrait {
+trait IsCanceledTrait
+{
     private bool $isCanceled;
     private ?DateTimeImmutable $canceledAt;
 
     /**
      * @return bool
      */
-    public function getIsCanceled(): bool {
+    public function getIsCanceled(): bool
+    {
         return $this->isCanceled;
     }
 
     /**
      * @param bool $isCanceled
      */
-    public function setIsCanceled(bool $isCanceled): void {
+    public function setIsCanceled(bool $isCanceled): void
+    {
         $this->isCanceled = $isCanceled;
     }
 
     /**
      * @return ?DateTimeImmutable
      */
-    public function getCanceledAt(): ?DateTimeImmutable {
+    public function getCanceledAt(): ?DateTimeImmutable
+    {
         return $this->canceledAt;
     }
 
     /**
      * @param DateTimeImmutable $canceledAt
      */
-    public function setCanceledAt(DateTimeImmutable $canceledAt): void {
+    public function setCanceledAt(DateTimeImmutable $canceledAt): void
+    {
         $this->canceledAt = $canceledAt;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Repository\Traits;
 
 use Psr\Log\LoggerInterface;
 
-trait LoggerTrait {
+trait LoggerTrait
+{
     private LoggerInterface $logger;
 }

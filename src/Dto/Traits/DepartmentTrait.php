@@ -5,7 +5,8 @@ namespace App\Dto\Traits;
 
 use App\Dto\Shared\Output\DepartmentDto;
 
-trait DepartmentTrait {
+trait DepartmentTrait
+{
     /**
      * @var DepartmentDto $department
      */
@@ -14,14 +15,16 @@ trait DepartmentTrait {
     /**
      * @return DepartmentDto
      */
-    public function getDepartment(): DepartmentDto {
+    public function getDepartment(): DepartmentDto
+    {
         return $this->department;
     }
 
     /**
      * @param DepartmentDto $department
      */
-    public function setDepartment(DepartmentDto $department): void {
+    public function setDepartment(DepartmentDto $department): void
+    {
         $this->department = $department;
     }
 }

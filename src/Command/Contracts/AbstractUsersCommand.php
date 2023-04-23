@@ -6,7 +6,8 @@ namespace App\Command\Contracts;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 
-abstract class AbstractUsersCommand extends Command {
+abstract class AbstractUsersCommand extends Command
+{
     public const IMPORT_FILE_PATH = '\\..\\..\\..\\public\\documents\\';
 
     /**
@@ -17,14 +18,16 @@ abstract class AbstractUsersCommand extends Command {
     /**
      * @return string
      */
-    public function getImportFilePath(): string {
+    public function getImportFilePath(): string
+    {
         return __DIR__ . static::IMPORT_FILE_PATH;
     }
 
     /**
      * @return array
      */
-    public function mapCSV(): array{
+    public function mapCSV(): array
+    {
         $userData = [];
         $userDataType = [];
         $rowCounter = 0;
@@ -48,7 +51,8 @@ abstract class AbstractUsersCommand extends Command {
      * @param string $fileName
      * @return void
      */
-    public function setFileName(string $fileName): void {
+    public function setFileName(string $fileName): void
+    {
         $this->fileName = $fileName;
     }
 }

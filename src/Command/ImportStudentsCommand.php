@@ -26,7 +26,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
     aliases: ['app:add-students'],
     hidden: false
 )]
-class ImportStudentsCommand extends AbstractUsersCommand {
+class ImportStudentsCommand extends AbstractUsersCommand
+{
     public const IMPORT_FILE_PATH = '\\..\\..\\..\\public\\documents\\students\\';
     protected const DETAILED_DESCRIPTION = 'This command allows you to import the students';
 
@@ -37,12 +38,14 @@ class ImportStudentsCommand extends AbstractUsersCommand {
      */
     public function __construct(private readonly UserPasswordHasherInterface $userPasswordHasher,
                                 private readonly EntityManagerInterface      $entityManager,
-                                private readonly LoggerInterface $logger
-    ) {
+                                private readonly LoggerInterface             $logger
+    )
+    {
         parent::__construct();
     }
 
-    protected function configure(): void {
+    protected function configure(): void
+    {
         $this->setHelp(self::DETAILED_DESCRIPTION)
             ->addArgument('fileName', InputArgument::OPTIONAL, 'Provide the file name');
     }
@@ -52,22 +55,23 @@ class ImportStudentsCommand extends AbstractUsersCommand {
      * @param OutputInterface $output
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int {
-        if($input->getArgument('fileName') === null){
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        if ($input->getArgument('fileName') === null) {
             $studentImportFileRepo = $this->entityManager->getRepository(StudentImportFile::class);
-            try{
+            try {
                 $fileInfo = $studentImportFileRepo->findMostRecentFile();
-            }catch (\Exception $exception){
+            } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
             }
 
-            if(isset($fileInfo)){
+            if (isset($fileInfo)) {
                 $fileName = $fileInfo->getFilePath();
             }
-        }else {
+        } else {
             $fileName = $input->getArgument('fileName');
         }
-        if(isset($fileName)){
+        if (isset($fileName)) {
             $this->setFileName($fileName);
             $userRepo = $this->entityManager->getRepository(User::class);
             $studentsData = $this->mapCSV();
@@ -77,27 +81,27 @@ class ImportStudentsCommand extends AbstractUsersCommand {
                     null === $userRepo->findOneBy(['code' => $data['Code']])) {
                     $specialization = null;
                     $supervisoryPlan = null;
-                    if (isset($data['Specialization'])){
+                    if (isset($data['Specialization'])) {
                         $specializationRepo = $this->entityManager->getRepository(Specialization::class);
                         $specialization = $specializationRepo->findOneBy(['name' => $data['Specialization']]);
                     }
 
-                    if(isset($data['SupervisoryPlan'])){
+                    if (isset($data['SupervisoryPlan'])) {
                         $supervisoryStyleRepo = $this->entityManager->getRepository(SupervisoryPlan::class);
                         $supervisoryPlan = $supervisoryStyleRepo->findOneBy(['name' => $data['SupervisoryPlan']]);
                     }
 
                     $project = $this->insertProject($data);
                     $user = $this->insertUser($data);
-                    if (null !== $supervisoryPlan && null !== $specialization && null !== $project && null !== $user){
+                    if (null !== $supervisoryPlan && null !== $specialization && null !== $project && null !== $user) {
                         $student = new Student();
                         $student->setUser($user);
                         $student->setSupervisoryPlan($supervisoryPlan);
                         $student->setProject($project);
                         $student->setSpecialization($specialization);
-                        $student->setFirstName($data['FirstName']?? '');
-                        $student->setLastName($data['LastName']?? '');
-                        $student->setPhoneNumber($data['PhoneNumber']?? '');
+                        $student->setFirstName($data['FirstName'] ?? '');
+                        $student->setLastName($data['LastName'] ?? '');
+                        $student->setPhoneNumber($data['PhoneNumber'] ?? '');
                         $this->entityManager->persist($student);
                         $this->entityManager->flush();
                     }
@@ -113,8 +117,9 @@ class ImportStudentsCommand extends AbstractUsersCommand {
      * @param array $data
      * @return User|null
      */
-    private function insertUser(array $data): User|null{
-        try{
+    private function insertUser(array $data): User|null
+    {
+        try {
             $user = new User();
             $user->setEmail($data['Email']);
             $user->setCode($data['Code']);
@@ -122,33 +127,34 @@ class ImportStudentsCommand extends AbstractUsersCommand {
             $user->setRoles(['ROLE_STUDENT']);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-        }catch(\Exception $exception){
+        } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());
         }
 
-        return $user?? null;
+        return $user ?? null;
     }
 
     /**
      * @param array $data
      * @return Project|null
      */
-    private function insertProject(array $data): Project|null{
+    private function insertProject(array $data): Project|null
+    {
         $supervisorRepo = $this->entityManager->getRepository(Supervisor::class);
-        $supervisor = $supervisorRepo->findByCode((string) $data['SupervisorCode']);
-        if(null !== $supervisor){
-            try{
+        $supervisor = $supervisorRepo->findByCode((string)$data['SupervisorCode']);
+        if (null !== $supervisor) {
+            try {
                 $project = new Project();
-                $project->setDescription($data['ProjectDescription']?? '');
-                $project->setTitle($data['ProjectTitle']?? '');
+                $project->setDescription($data['ProjectDescription'] ?? '');
+                $project->setTitle($data['ProjectTitle'] ?? '');
                 $project->setSupervisor($supervisor);
 
                 $this->entityManager->persist($project);
                 $this->entityManager->flush();
-            }catch (\Exception $exception){
+            } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
             }
         }
-        return $project?? null;
+        return $project ?? null;
     }
 }

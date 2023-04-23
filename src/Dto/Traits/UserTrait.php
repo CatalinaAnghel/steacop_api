@@ -5,7 +5,8 @@ namespace App\Dto\Traits;
 
 use App\Dto\User\Output\UserDto;
 
-trait UserTrait {
+trait UserTrait
+{
     /**
      * @var UserDto $user
      */
@@ -14,14 +15,16 @@ trait UserTrait {
     /**
      * @return UserDto
      */
-    public function getUser(): UserDto {
+    public function getUser(): UserDto
+    {
         return $this->user;
     }
 
     /**
      * @param UserDto $user
      */
-    public function setUser(UserDto $user): void {
+    public function setUser(UserDto $user): void
+    {
         $this->user = $user;
     }
 }

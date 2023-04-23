@@ -9,7 +9,8 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class DepartmentFixture extends Fixture implements FixtureGroupInterface {
+class DepartmentFixture extends Fixture implements FixtureGroupInterface
+{
     public const DEPARTMENT_REFERENCE = 'dcti_department';
 
     use DataSeedingFixtureGroupTrait;
@@ -17,7 +18,8 @@ class DepartmentFixture extends Fixture implements FixtureGroupInterface {
     /**
      * @inheritDoc
      */
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager)
+    {
         $department = new Department();
         $department->setName('DCTI');
         $manager->persist($department);

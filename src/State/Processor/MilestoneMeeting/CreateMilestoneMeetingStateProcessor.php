@@ -15,9 +15,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CreateMilestoneMeetingStateProcessor implements ProcessorInterface {
+class CreateMilestoneMeetingStateProcessor implements ProcessorInterface
+{
     public function __construct(private readonly EntityManagerInterface $entityManager,
-                                private readonly LoggerInterface        $logger) {
+                                private readonly LoggerInterface        $logger)
+    {
         date_default_timezone_set('Europe/Bucharest');
     }
 
@@ -26,7 +28,8 @@ class CreateMilestoneMeetingStateProcessor implements ProcessorInterface {
      * @param CreateMeetingInputDto $data
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
-    ?MilestoneMeetingOutputDto {
+    ?MilestoneMeetingOutputDto
+    {
         $projectRepo = $this->entityManager->getRepository(Project::class);
         $project = $projectRepo->findOneBy(['id' => $data->getProjectId()]);
         if (null !== $project) {
@@ -60,7 +63,7 @@ class CreateMilestoneMeetingStateProcessor implements ProcessorInterface {
             } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
             }
-        }else{
+        } else {
             throw new NotFoundHttpException('The project could not be found');
         }
 

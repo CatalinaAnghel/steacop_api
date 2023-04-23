@@ -13,7 +13,8 @@ use JetBrains\PhpStorm\Pure;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: FunctionalityRepository::class)]
-class Functionality {
+class Functionality
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -35,7 +36,7 @@ class Functionality {
 
     #[ORM\ManyToOne(inversedBy: 'functionalities')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?FunctionalityStatus $FunctionalityStatus = null;
+    private ?FunctionalityStatus $functionalityStatus = null;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -48,29 +49,35 @@ class Functionality {
 
     use TimestampableTrait;
 
-    #[Pure] public function __construct() {
+    #[Pure] public function __construct()
+    {
         $this->functionalities = new ArrayCollection();
     }
 
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function getProject(): ?Project {
+    public function getProject(): ?Project
+    {
         return $this->project;
     }
 
-    public function setProject(?Project $project): self {
+    public function setProject(?Project $project): self
+    {
         $this->project = $project;
 
         return $this;
     }
 
-    public function getParentFunctionality(): ?self {
+    public function getParentFunctionality(): ?self
+    {
         return $this->parentFunctionality;
     }
 
-    public function setParentFunctionality(?self $parentFunctionality): self {
+    public function setParentFunctionality(?self $parentFunctionality): self
+    {
         $this->parentFunctionality = $parentFunctionality;
 
         return $this;
@@ -79,11 +86,13 @@ class Functionality {
     /**
      * @return Collection<int, self>
      */
-    public function getFunctionalities(): Collection {
+    public function getFunctionalities(): Collection
+    {
         return $this->functionalities;
     }
 
-    public function addFunctionality(self $functionality): self {
+    public function addFunctionality(self $functionality): self
+    {
         if (!$this->functionalities->contains($functionality)) {
             $this->functionalities->add($functionality);
             $functionality->setParentFunctionality($this);
@@ -92,59 +101,71 @@ class Functionality {
         return $this;
     }
 
-    public function removeFunctionality(self $functionality): self {
-        if ($this->functionalities->removeElement($functionality) && $functionality->getParentFunctionality() === $this) {
+    public function removeFunctionality(self $functionality): self
+    {
+        if ($this->functionalities->removeElement($functionality) &&
+            $functionality->getParentFunctionality() === $this) {
             $functionality->setParentFunctionality(null);
         }
 
         return $this;
     }
 
-    public function getType(): ?FunctionalityType {
+    public function getType(): ?FunctionalityType
+    {
         return $this->type;
     }
 
-    public function setType(?FunctionalityType $type): self {
+    public function setType(?FunctionalityType $type): self
+    {
         $this->type = $type;
 
         return $this;
     }
 
-    public function getFunctionalityStatus(): ?FunctionalityStatus {
-        return $this->FunctionalityStatus;
+    public function getFunctionalityStatus(): ?FunctionalityStatus
+    {
+        return $this->functionalityStatus;
     }
 
-    public function setFunctionalityStatus(?FunctionalityStatus $FunctionalityStatus): self {
-        $this->FunctionalityStatus = $FunctionalityStatus;
+    public function setFunctionalityStatus(?FunctionalityStatus $functionalityStatus): self
+    {
+        $this->functionalityStatus = $functionalityStatus;
 
         return $this;
     }
 
-    public function getTitle(): ?string {
+    public function getTitle(): ?string
+    {
         return $this->title;
     }
 
-    public function setTitle(string $title): self {
+    public function setTitle(string $title): self
+    {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getDescription(): ?string {
+    public function getDescription(): ?string
+    {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self {
+    public function setDescription(?string $description): self
+    {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getDueDate(): ?\DateTimeInterface {
+    public function getDueDate(): ?\DateTimeInterface
+    {
         return $this->dueDate;
     }
 
-    public function setDueDate(?\DateTimeInterface $dueDate): self {
+    public function setDueDate(?\DateTimeInterface $dueDate): self
+    {
         $this->dueDate = $dueDate;
 
         return $this;

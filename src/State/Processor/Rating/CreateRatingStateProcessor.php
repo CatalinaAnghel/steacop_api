@@ -18,19 +18,20 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Security;
 
-class CreateRatingStateProcessor implements ProcessorInterface {
+class CreateRatingStateProcessor implements ProcessorInterface
+{
     public function __construct(private readonly EntityManagerInterface $entityManager,
                                 private readonly LoggerInterface        $logger,
                                 private readonly Security               $security,
                                 private readonly ValidatorInterface     $ratingValidator
-    ) {
-    }
+    ) {}
 
     /**
      * @inheritDoc
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
-    ?RatingOutputDto {
+    ?RatingOutputDto
+    {
         $guidanceMeetingRepo = $this->entityManager->getRepository(GuidanceMeeting::class);
         $guidanceMeeting = $guidanceMeetingRepo->findOneBy(['id' => $data->getGuidanceMeetingId()]);
         if (null !== $guidanceMeeting) {

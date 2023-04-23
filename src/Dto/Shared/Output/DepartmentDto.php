@@ -5,7 +5,8 @@ namespace App\Dto\Shared\Output;
 
 use App\Dto\Traits\IdentityTrait;
 
-class DepartmentDto {
+class DepartmentDto
+{
     use IdentityTrait;
 
     /**
@@ -16,14 +17,16 @@ class DepartmentDto {
     /**
      * @return string
      */
-    public function getName(): string {
+    public function getName(): string
+    {
         return $this->name;
     }
 
     /**
      * @param string $name
      */
-    public function setName(string $name): void {
+    public function setName(string $name): void
+    {
         $this->name = $name;
     }
 }

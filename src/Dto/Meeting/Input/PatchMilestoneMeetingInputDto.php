@@ -8,7 +8,8 @@ use App\Dto\Traits\IsCompletedTrait;
 use App\Dto\Traits\SchedulingTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PatchMilestoneMeetingInputDto extends AbstractCancellableMeetingInputDto {
+class PatchMilestoneMeetingInputDto extends AbstractCancellableMeetingInputDto
+{
     #[Assert\Type(\DateTimeInterface::class)]
     private \DateTime $scheduledAt;
 
@@ -27,28 +28,32 @@ class PatchMilestoneMeetingInputDto extends AbstractCancellableMeetingInputDto {
     /**
      * @return float|null
      */
-    public function getGrade(): ?float {
+    public function getGrade(): ?float
+    {
         return $this->grade;
     }
 
     /**
      * @param float|null $grade
      */
-    public function setGrade(?float $grade): void {
+    public function setGrade(?float $grade): void
+    {
         $this->grade = $grade;
     }
 
     /**
      * @return float
      */
-    public function getDuration(): float {
+    public function getDuration(): float
+    {
         return $this->duration;
     }
 
     /**
      * @param float $duration
      */
-    public function setDuration(float $duration): void {
+    public function setDuration(float $duration): void
+    {
         $this->duration = $duration;
     }
 }

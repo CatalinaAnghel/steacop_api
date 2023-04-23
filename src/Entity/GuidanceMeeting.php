@@ -13,7 +13,8 @@ use JetBrains\PhpStorm\Pure;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: GuidanceMeetingRepository::class)]
-class GuidanceMeeting extends AbstractMeeting {
+class GuidanceMeeting extends AbstractMeeting
+{
     #[ORM\OneToMany(mappedBy: 'meeting', targetEntity: Rating::class, orphanRemoval: true)]
     private Collection $ratings;
 
@@ -21,7 +22,8 @@ class GuidanceMeeting extends AbstractMeeting {
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 
-    #[Pure] public function __construct() {
+    #[Pure] public function __construct()
+    {
         parent::__construct();
         $this->ratings = new ArrayCollection();
     }
@@ -31,18 +33,21 @@ class GuidanceMeeting extends AbstractMeeting {
     /**
      * @return Collection<int, Rating>
      */
-    public function getRatings(): Collection {
+    public function getRatings(): Collection
+    {
         return $this->ratings;
     }
 
-    public function addRating(Rating $rating): void {
+    public function addRating(Rating $rating): void
+    {
         if (!$this->ratings->contains($rating)) {
             $this->ratings->add($rating);
             $rating->setMeeting($this);
         }
     }
 
-    public function removeRating(Rating $rating): void {
+    public function removeRating(Rating $rating): void
+    {
         if ($this->ratings->removeElement($rating) && $rating->getMeeting() === $this) {
             $rating->setMeeting(null);
         }

@@ -6,11 +6,13 @@ namespace App\Serializer\Denormalizer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-final class UploadedFileDenormalizer implements DenormalizerInterface {
+final class UploadedFileDenormalizer implements DenormalizerInterface
+{
     /**
      * @inheritDoc
      */
-    public function denormalize(mixed $data, string $type, string $format = null, array $context = []): mixed {
+    public function denormalize(mixed $data, string $type, string $format = null, array $context = []): mixed
+    {
         // skipping the denormalization step
         return $data;
     }
@@ -18,7 +20,8 @@ final class UploadedFileDenormalizer implements DenormalizerInterface {
     /**
      * @inheritDoc
      */
-    public function supportsDenormalization(mixed $data, string $type, string $format = null): bool {
+    public function supportsDenormalization(mixed $data, string $type, string $format = null): bool
+    {
         return $data instanceof UploadedFile;
     }
 }

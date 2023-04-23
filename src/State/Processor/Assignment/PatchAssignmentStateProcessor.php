@@ -15,10 +15,12 @@ use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class PatchAssignmentStateProcessor implements ProcessorInterface {
+class PatchAssignmentStateProcessor implements ProcessorInterface
+{
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface        $logger) {
+        private readonly LoggerInterface        $logger)
+    {
         date_default_timezone_set('Europe/Bucharest');
     }
 
@@ -27,14 +29,15 @@ class PatchAssignmentStateProcessor implements ProcessorInterface {
      * @param PatchAssignmentInputDto $data
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
-    ?AssignmentOutputDto {
+    ?AssignmentOutputDto
+    {
         $assignmentRepo = $this->entityManager->getRepository(Assignment::class);
         $assignment = $assignmentRepo->findOneBy(['id' => $uriVariables['id']]);
         if (null !== $assignment) {
             $assignment->setGrade($data->getGrade());
             $assignment->setTitle($data->getTitle());
             $assignment->setDescription($data->getDescription());
-            $turnInDate = $data->isTurnedIn()? new \DateTime('Now'): null;
+            $turnInDate = $data->isTurnedIn() ? new \DateTime('Now') : null;
             $assignment->setTurnedInDate($turnInDate);
             $assignment->setDueDate($data->getDueDate());
             $assignment->setUpdatedAt(new \DateTime('Now'));
@@ -47,20 +50,20 @@ class PatchAssignmentStateProcessor implements ProcessorInterface {
                 $configOutput->registerMapping(
                     Assignment::class,
                     AssignmentOutputDto::class)
-                ->forMember('documents', function (Assignment $source): array {
-                    $documentConfig = new AutoMapperConfig();
-                    $documentConfig->registerMapping(
-                        Document::class,
-                        DocumentOutputDto::class
-                    )->forMember('contentUrl', function (Document $document) {
-                        return '/documents/assignments/' . $document->getAssignment()?->getId() .
-                            '/' . $document->getFilePath();
+                    ->forMember('documents', function (Assignment $source): array {
+                        $documentConfig = new AutoMapperConfig();
+                        $documentConfig->registerMapping(
+                            Document::class,
+                            DocumentOutputDto::class
+                        )->forMember('contentUrl', function (Document $document) {
+                            return '/documents/assignments/' . $document->getAssignment()?->getId() .
+                                '/' . $document->getFilePath();
+                        });
+                        return (new AutoMapper($documentConfig))->mapMultiple(
+                            $source->getDocuments(),
+                            DocumentOutputDto::class
+                        );
                     });
-                    return (new AutoMapper($documentConfig))->mapMultiple(
-                        $source->getDocuments(),
-                        DocumentOutputDto::class
-                    );
-                });
                 $mapper = new AutoMapper($configOutput);
                 /**
                  * @var AssignmentOutputDto $assignmentDto

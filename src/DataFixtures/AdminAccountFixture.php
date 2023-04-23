@@ -10,19 +10,20 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class AdminAccountFixture extends Fixture implements FixtureGroupInterface {
+class AdminAccountFixture extends Fixture implements FixtureGroupInterface
+{
     public function __construct(private readonly UserPasswordHasherInterface $userPasswordHasher,
-                                private readonly string $adminEmail,
-                                private readonly string $adminPassword,
-                                private readonly string $adminCode) {
-    }
+                                private readonly string                      $adminEmail,
+                                private readonly string                      $adminPassword,
+                                private readonly string                      $adminCode) {}
 
     use DataSeedingFixtureGroupTrait;
 
     /**
      * @inheritDoc
      */
-    public function load(ObjectManager $manager): void {
+    public function load(ObjectManager $manager): void
+    {
         $admin = new User();
         $admin->setCode($this->adminCode);
         $admin->setEmail($this->adminEmail);

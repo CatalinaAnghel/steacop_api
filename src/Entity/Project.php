@@ -11,7 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
-class Project {
+class Project
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -48,64 +49,77 @@ class Project {
     #[ORM\OneToOne(mappedBy: 'project', cascade: ['persist', 'remove'])]
     private ?Student $student = null;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->functionalities = new ArrayCollection();
         $this->milestoneMeetings = new ArrayCollection();
         $this->guidanceMeetings = new ArrayCollection();
         $this->assignments = new ArrayCollection();
     }
 
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function getSupervisor(): ?Supervisor {
+    public function getSupervisor(): ?Supervisor
+    {
         return $this->supervisor;
     }
 
-    public function setSupervisor(Supervisor $supervisor): void {
+    public function setSupervisor(Supervisor $supervisor): void
+    {
         $this->supervisor = $supervisor;
     }
 
-    public function getTitle(): ?string {
+    public function getTitle(): ?string
+    {
         return $this->title;
     }
 
-    public function setTitle(string $title): void {
+    public function setTitle(string $title): void
+    {
         $this->title = $title;
     }
 
-    public function getDescription(): ?string {
+    public function getDescription(): ?string
+    {
         return $this->description;
     }
 
-    public function setDescription(?string $description): void {
+    public function setDescription(?string $description): void
+    {
         $this->description = $description;
     }
 
-    public function getRepositoryUrl(): ?string {
+    public function getRepositoryUrl(): ?string
+    {
         return $this->repositoryUrl;
     }
 
-    public function setRepositoryUrl(?string $repositoryUrl): void {
+    public function setRepositoryUrl(?string $repositoryUrl): void
+    {
         $this->repositoryUrl = $repositoryUrl;
     }
 
     /**
      * @return Collection<int, Functionality>
      */
-    public function getFunctionalities(): Collection {
+    public function getFunctionalities(): Collection
+    {
         return $this->functionalities;
     }
 
-    public function addFunctionality(Functionality $functionality): void {
+    public function addFunctionality(Functionality $functionality): void
+    {
         if (!$this->functionalities->contains($functionality)) {
             $this->functionalities->add($functionality);
             $functionality->setProject($this);
         }
     }
 
-    public function removeFunctionality(Functionality $functionality): void {
+    public function removeFunctionality(Functionality $functionality): void
+    {
         if ($this->functionalities->removeElement($functionality) && $functionality->getProject() === $this) {
             $functionality->setProject(null);
         }
@@ -114,18 +128,21 @@ class Project {
     /**
      * @return Collection<int, MilestoneMeeting>
      */
-    public function getMilestoneMeetings(): Collection {
+    public function getMilestoneMeetings(): Collection
+    {
         return $this->milestoneMeetings;
     }
 
-    public function addMilestoneMeeting(MilestoneMeeting $milestoneMeeting): void {
+    public function addMilestoneMeeting(MilestoneMeeting $milestoneMeeting): void
+    {
         if (!$this->milestoneMeetings->contains($milestoneMeeting)) {
             $this->milestoneMeetings->add($milestoneMeeting);
             $milestoneMeeting->setProject($this);
         }
     }
 
-    public function removeMilestoneMeeting(MilestoneMeeting $milestoneMeeting): void {
+    public function removeMilestoneMeeting(MilestoneMeeting $milestoneMeeting): void
+    {
         if ($this->milestoneMeetings->removeElement($milestoneMeeting) && $milestoneMeeting->getProject() === $this) {
             $milestoneMeeting->setProject(null);
         }
@@ -134,18 +151,21 @@ class Project {
     /**
      * @return Collection<int, GuidanceMeeting>
      */
-    public function getGuidanceMeetings(): Collection {
+    public function getGuidanceMeetings(): Collection
+    {
         return $this->guidanceMeetings;
     }
 
-    public function addGuidanceMeeting(GuidanceMeeting $guidanceMeeting): void {
+    public function addGuidanceMeeting(GuidanceMeeting $guidanceMeeting): void
+    {
         if (!$this->guidanceMeetings->contains($guidanceMeeting)) {
             $this->guidanceMeetings->add($guidanceMeeting);
             $guidanceMeeting->setProject($this);
         }
     }
 
-    public function removeGuidanceMeeting(GuidanceMeeting $guidanceMeeting): void {
+    public function removeGuidanceMeeting(GuidanceMeeting $guidanceMeeting): void
+    {
         if ($this->guidanceMeetings->removeElement($guidanceMeeting) && $guidanceMeeting->getProject() === $this) {
             $guidanceMeeting->setProject(null);
         }
@@ -154,11 +174,13 @@ class Project {
     /**
      * @return Collection<int, Assignment>
      */
-    public function getAssignments(): Collection {
+    public function getAssignments(): Collection
+    {
         return $this->assignments;
     }
 
-    public function addAssignment(Assignment $assignment): self {
+    public function addAssignment(Assignment $assignment): self
+    {
         if (!$this->assignments->contains($assignment)) {
             $this->assignments->add($assignment);
             $assignment->setProject($this);
@@ -167,7 +189,8 @@ class Project {
         return $this;
     }
 
-    public function removeAssignment(Assignment $assignment): self {
+    public function removeAssignment(Assignment $assignment): self
+    {
         if ($this->assignments->removeElement($assignment) && $assignment->getProject() === $this) {
             $assignment->setProject(null);
         }
@@ -175,11 +198,13 @@ class Project {
         return $this;
     }
 
-    public function getSupervisoryPlan(): ?CustomSupervisoryPlan {
+    public function getSupervisoryPlan(): ?CustomSupervisoryPlan
+    {
         return $this->supervisoryPlan;
     }
 
-    public function setSupervisoryPlan(CustomSupervisoryPlan $supervisoryPlan): self {
+    public function setSupervisoryPlan(CustomSupervisoryPlan $supervisoryPlan): self
+    {
         // set the owning side of the relation if necessary
         if ($supervisoryPlan->getProject() !== $this) {
             $supervisoryPlan->setProject($this);
@@ -190,11 +215,13 @@ class Project {
         return $this;
     }
 
-    public function getStudent(): ?Student {
+    public function getStudent(): ?Student
+    {
         return $this->student;
     }
 
-    public function setStudent(Student $student): void {
+    public function setStudent(Student $student): void
+    {
         // set the owning side of the relation if necessary
         if ($student->getProject() !== $this) {
             $student->setProject($this);

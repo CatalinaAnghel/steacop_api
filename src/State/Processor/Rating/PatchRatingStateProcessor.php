@@ -16,20 +16,21 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Security;
 
-class PatchRatingStateProcessor implements ProcessorInterface {
+class PatchRatingStateProcessor implements ProcessorInterface
+{
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly LoggerInterface        $logger,
         private readonly Security               $security,
         private readonly ValidatorInterface     $ratingValidator
-    ) {
-    }
+    ) {}
 
     /**
      * @inheritDoc
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
-    ?RatingOutputDto {
+    ?RatingOutputDto
+    {
         $ratingRepo = $this->entityManager->getRepository(Rating::class);
         $rating = $ratingRepo->findOneBy(['id' => $uriVariables['id']]);
         if (null !== $rating) {

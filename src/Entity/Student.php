@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
-class Student {
+class Student
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -30,31 +31,38 @@ class Student {
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function getSpecialization(): ?Specialization {
+    public function getSpecialization(): ?Specialization
+    {
         return $this->specialization;
     }
 
-    public function setSpecialization(?Specialization $specialization): void {
+    public function setSpecialization(?Specialization $specialization): void
+    {
         $this->specialization = $specialization;
     }
 
-    public function getUser(): ?User {
+    public function getUser(): ?User
+    {
         return $this->user;
     }
 
-    public function setUser(User $user): void {
+    public function setUser(User $user): void
+    {
         $this->user = $user;
     }
 
-    public function getProject(): ?Project {
+    public function getProject(): ?Project
+    {
         return $this->project;
     }
 
-    public function setProject(Project $project): void {
+    public function setProject(Project $project): void
+    {
         $this->project = $project;
     }
 }

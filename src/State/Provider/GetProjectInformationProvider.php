@@ -12,15 +12,18 @@ use App\Entity\Project;
 use App\State\Provider\Contracts\AbstractPlanProvider;
 use Doctrine\ORM\EntityManagerInterface;
 
-class GetProjectInformationProvider extends AbstractPlanProvider {
-    public function __construct(private readonly EntityManagerInterface $entityManager) {
+class GetProjectInformationProvider extends AbstractPlanProvider
+{
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
         parent::__construct($this->entityManager);
     }
 
     /**
      * @inheritDoc
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
         $projectDto = null;
         if (isset($uriVariables['id'])) {
             $projectRepository = $this->entityManager->getRepository(Project::class);

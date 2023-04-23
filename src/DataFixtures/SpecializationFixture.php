@@ -10,12 +10,15 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class SpecializationFixture extends Fixture implements DependentFixtureInterface, FixtureGroupInterface {
+class SpecializationFixture extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
+{
     use DataSeedingFixtureGroupTrait;
+
     /**
      * @inheritDoc
      */
-    public function getDependencies(): array {
+    public function getDependencies(): array
+    {
         return [
             DepartmentFixture::class
         ];
@@ -24,7 +27,8 @@ class SpecializationFixture extends Fixture implements DependentFixtureInterface
     /**
      * @inheritDoc
      */
-    public function load(ObjectManager $manager): void {
+    public function load(ObjectManager $manager): void
+    {
         $crSpecialization = new Specialization();
         $crSpecialization->setName('Calculatoare cu predare in limba romana');
         $crSpecialization->setDepartment($this->getReference(DepartmentFixture::DEPARTMENT_REFERENCE));

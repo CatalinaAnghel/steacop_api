@@ -7,7 +7,8 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ApiResource]
-class User{
+class User
+{
     /**
      * @var string $code
      */
@@ -28,12 +29,6 @@ class User{
      */
     private ?string $plainPassword;
 
-//    /**
-//     * @var string|null $password
-//     * The hashed password
-//     */
-//    private ?string $password = null;
-
     /**
      * @var string|null $discriminator
      * The user's type (if any)
@@ -48,22 +43,26 @@ class User{
     /**
      * @return string
      */
-    public function getCode(): string {
+    public function getCode(): string
+    {
         return $this->code;
     }
 
     /**
      * @param string $code
      */
-    public function setCode(string $code): void {
+    public function setCode(string $code): void
+    {
         $this->code = $code;
     }
 
-    public function getEmail(): ?string {
+    public function getEmail(): ?string
+    {
         return $this->email;
     }
 
-    public function setEmail(string $email): self {
+    public function setEmail(string $email): self
+    {
         $this->email = $email;
 
         return $this;
@@ -74,49 +73,41 @@ class User{
      *
      * @see UserInterface
      */
-    public function getUserIdentifier(): string {
+    public function getUserIdentifier(): string
+    {
         return (string)$this->email;
     }
 
     /**
      * @see UserInterface
      */
-    public function getRoles(): array {
+    public function getRoles(): array
+    {
         $roles = $this->roles;
 
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self {
+    public function setRoles(array $roles): self
+    {
         $this->roles = $roles;
 
         return $this;
     }
-//
-//    /**
-//     * @see PasswordAuthenticatedUserInterface
-//     */
-//    public function getPassword(): string {
-//        return $this->password;
-//    }
-//
-//    public function setPassword(string $password): self {
-//        $this->password = $password;
-//
-//        return $this;
-//    }
 
     /**
      * @return string
      */
-    public function getPlainPassword(): string {
+    public function getPlainPassword(): string
+    {
         return $this->plainPassword;
     }
 
     /**
      * @param string $plainPassword
      */
-    public function setPlainPassword(string $plainPassword): void {
+    public function setPlainPassword(string $plainPassword): void
+    {
         $this->plainPassword = $plainPassword;
     }
 
@@ -124,7 +115,8 @@ class User{
     /**
      * @see UserInterface
      */
-    public function eraseCredentials(): void {
+    public function eraseCredentials(): void
+    {
         // If you store any temporary, sensitive data on the user, clear it here
         $this->plainPassword = null;
     }
@@ -132,28 +124,32 @@ class User{
     /**
      * @return string|null
      */
-    public function getDiscriminator(): ?string {
+    public function getDiscriminator(): ?string
+    {
         return $this->discriminator;
     }
 
     /**
      * @param string|null $discriminator
      */
-    public function setDiscriminator(?string $discriminator): void {
+    public function setDiscriminator(?string $discriminator): void
+    {
         $this->discriminator = $discriminator;
     }
 
     /**
      * @return bool
      */
-    public function isStudent(): bool {
+    public function isStudent(): bool
+    {
         return $this->isStudent;
     }
 
     /**
      * @param bool $isStudent
      */
-    public function setIsStudent(bool $isStudent): void {
+    public function setIsStudent(bool $isStudent): void
+    {
         $this->isStudent = $isStudent;
     }
 }

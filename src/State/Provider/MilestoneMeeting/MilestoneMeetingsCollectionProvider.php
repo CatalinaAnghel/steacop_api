@@ -12,9 +12,11 @@ use App\Paginator\StatePaginator;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 
-class MilestoneMeetingsCollectionProvider implements ProviderInterface {
-    public function __construct(private readonly ProviderInterface      $decoratedProvider,
-                                private readonly Pagination             $pagination) {
+class MilestoneMeetingsCollectionProvider implements ProviderInterface
+{
+    public function __construct(private readonly ProviderInterface $decoratedProvider,
+                                private readonly Pagination        $pagination)
+    {
         date_default_timezone_set('Europe/Bucharest');
     }
 
@@ -22,7 +24,8 @@ class MilestoneMeetingsCollectionProvider implements ProviderInterface {
     /**
      * @inheritDoc
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
         $meetings = $this->decoratedProvider->provide($operation, $uriVariables, $context);
         $config = new AutoMapperConfig();
         $config

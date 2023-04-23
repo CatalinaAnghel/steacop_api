@@ -15,17 +15,18 @@ use AutoMapperPlus\Exception\UnregisteredMappingException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class PatchAssignmentProvider implements ProviderInterface {
+class PatchAssignmentProvider implements ProviderInterface
+{
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface $logger
-    ) {
-    }
+        private readonly LoggerInterface        $logger
+    ) {}
 
     /**
      * @inheritDoc
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
         $assignmentDto = null;
         if (isset($uriVariables['id'])) {
             $assignmentRepo = $this->entityManager->getRepository(Assignment::class);
@@ -46,7 +47,7 @@ class PatchAssignmentProvider implements ProviderInterface {
                     );
                 });
                 $mapper = new AutoMapper($config);
-                try{
+                try {
                     $assignmentDto = $mapper->map($assignment, PatchAssignmentInputDto::class);
 
                 } catch (UnregisteredMappingException $exception) {

@@ -9,13 +9,15 @@ use App\Helper\MeetingValidationHelper;
 use App\Validator\Contracts\ValidatorInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-class PatchMeetingValidator implements ValidatorInterface {
+class PatchMeetingValidator implements ValidatorInterface
+{
     /**
      * @param AbstractCancellableMeetingInputDto $data
      * @param AbstractMeeting $referencedObject
      * @return void
      */
-    public function validate($data, $referencedObject = null): void {
+    public function validate($data, $referencedObject = null): void
+    {
         if (null !== $referencedObject) {
             if ($referencedObject->isCanceled()) {
                 throw new UnprocessableEntityHttpException(

@@ -10,7 +10,8 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-final class ScoreWeightsFixture extends Fixture implements FixtureGroupInterface{
+final class ScoreWeightsFixture extends Fixture implements FixtureGroupInterface
+{
     /**
      * @var array
      */
@@ -18,7 +19,8 @@ final class ScoreWeightsFixture extends Fixture implements FixtureGroupInterface
 
     use DataSeedingFixtureGroupTrait;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->variables = [
             WeightsHelper::RatingWeight,
             WeightsHelper::SupportWeight,
@@ -30,8 +32,9 @@ final class ScoreWeightsFixture extends Fixture implements FixtureGroupInterface
     /**
      * @inheritDoc
      */
-    public function load(ObjectManager $manager):void {
-        foreach ($this->variables as $variable){
+    public function load(ObjectManager $manager): void
+    {
+        foreach ($this->variables as $variable) {
             $variableObject = new ScoreWeight();
             $variableObject->setName($variable->getWeightName());
             $variableObject->setDescription($variable->getWeightName());

@@ -8,14 +8,17 @@ use ApiPlatform\OpenApi\OpenApi;
 use ApiPlatform\OpenApi\Model;
 use ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface;
 
-final class JwtDecorator implements OpenApiFactoryInterface {
+final class JwtDecorator implements OpenApiFactoryInterface
+{
+    public const JSON_MIME_TYPE = 'application/json';
+    public const TOKEN_REFRESH_MESSAGE = 'Refresh JWT token';
 
     public function __construct(
         private readonly OpenApiFactoryInterface $decorated
-    ) {
-    }
+    ) {}
 
-    public function __invoke(array $context = []): OpenApi {
+    public function __invoke(array $context = []): OpenApi
+    {
         $openApi = ($this->decorated)($context);
         $schemas = $this->buildSchema($openApi);
 
@@ -32,7 +35,7 @@ final class JwtDecorator implements OpenApiFactoryInterface {
                     '200' => [
                         'description' => 'Get JWT token',
                         'content' => [
-                            'application/json' => [
+                            self::JSON_MIME_TYPE => [
                                 'schema' => [
                                     '$ref' => '#/components/schemas/Token'
                                 ],
@@ -47,7 +50,7 @@ final class JwtDecorator implements OpenApiFactoryInterface {
                 new Model\RequestBody(
                     'Generate new JWT Token',
                     new \ArrayObject([
-                        'application/json' => [
+                        self::JSON_MIME_TYPE => [
                             'schema' => [
                                 '$ref' => '#/components/schemas/Credentials',
                             ],
@@ -68,9 +71,9 @@ final class JwtDecorator implements OpenApiFactoryInterface {
                 ['Refresh Token'],
                 [
                     '200' => [
-                        'description' => 'Refresh JWT token',
+                        'description' => self::TOKEN_REFRESH_MESSAGE,
                         'content' => [
-                            'application/json' => [
+                            self::JSON_MIME_TYPE => [
                                 'schema' => [
                                     '$ref' => '#/components/schemas/Token',
                                 ],
@@ -78,14 +81,14 @@ final class JwtDecorator implements OpenApiFactoryInterface {
                         ],
                     ],
                 ],
-                'Refresh JWT token',
+                self::TOKEN_REFRESH_MESSAGE,
                 '',
                 null,
                 [],
                 new Model\RequestBody(
-                    'Refresh JWT token',
+                    self::TOKEN_REFRESH_MESSAGE,
                     new \ArrayObject([
-                        'application/json' => [
+                        self::JSON_MIME_TYPE => [
                             'schema' => [
                                 '$ref' => '#/components/schemas/RefreshToken',
                             ],
@@ -104,7 +107,8 @@ final class JwtDecorator implements OpenApiFactoryInterface {
      * @param $openApi
      * @return \ArrayObject
      */
-    private function buildSchema($openApi): \ArrayObject {
+    private function buildSchema($openApi): \ArrayObject
+    {
         $schemas = $openApi->getComponents()->getSchemas();
 
         $schemas['Token'] = new \ArrayObject([

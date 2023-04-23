@@ -13,7 +13,8 @@ use JetBrains\PhpStorm\Pure;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: AssignmentRepository::class)]
-class Assignment {
+class Assignment
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -43,29 +44,35 @@ class Assignment {
 
     use TimestampableTrait;
 
-    #[Pure] public function __construct() {
+    #[Pure] public function __construct()
+    {
         $this->documents = new ArrayCollection();
     }
 
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function getProject(): ?Project {
+    public function getProject(): ?Project
+    {
         return $this->project;
     }
 
-    public function setProject(?Project $project): self {
+    public function setProject(?Project $project): self
+    {
         $this->project = $project;
 
         return $this;
     }
 
-    public function getDueDate(): ?\DateTimeInterface {
+    public function getDueDate(): ?\DateTimeInterface
+    {
         return $this->dueDate;
     }
 
-    public function setDueDate(?\DateTimeInterface $dueDate): self {
+    public function setDueDate(?\DateTimeInterface $dueDate): self
+    {
         $this->dueDate = $dueDate;
 
         return $this;
@@ -74,11 +81,13 @@ class Assignment {
     /**
      * @return Collection<int, Document>
      */
-    public function getDocuments(): Collection {
+    public function getDocuments(): Collection
+    {
         return $this->documents;
     }
 
-    public function addDocument(Document $document): self {
+    public function addDocument(Document $document): self
+    {
         if (!$this->documents->contains($document)) {
             $this->documents->add($document);
             $document->setAssignment($this);
@@ -87,52 +96,58 @@ class Assignment {
         return $this;
     }
 
-    public function removeDocument(Document $document): self {
-        if ($this->documents->removeElement($document)) {
-            // set the owning side to null (unless already changed)
-            if ($document->getAssignment() === $this) {
-                $document->setAssignment(null);
-            }
+    public function removeDocument(Document $document): self
+    {
+        if ($this->documents->removeElement($document) && $document->getAssignment() === $this) {
+            $document->setAssignment(null);
         }
 
         return $this;
     }
 
-    public function getTurnedInDate(): ?\DateTimeInterface {
+    public function getTurnedInDate(): ?\DateTimeInterface
+    {
         return $this->turnedInDate;
     }
 
-    public function setTurnedInDate(?\DateTimeInterface $turnedInDate): self {
+    public function setTurnedInDate(?\DateTimeInterface $turnedInDate): self
+    {
         $this->turnedInDate = $turnedInDate;
 
         return $this;
     }
 
-    public function getTitle(): ?string {
+    public function getTitle(): ?string
+    {
         return $this->title;
     }
 
-    public function setTitle(string $title): self {
+    public function setTitle(string $title): self
+    {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getDescription(): ?string {
+    public function getDescription(): ?string
+    {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self {
+    public function setDescription(?string $description): self
+    {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getGrade(): ?float {
+    public function getGrade(): ?float
+    {
         return $this->grade;
     }
 
-    public function setGrade(?float $grade): self {
+    public function setGrade(?float $grade): self
+    {
         $this->grade = $grade;
 
         return $this;

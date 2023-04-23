@@ -9,7 +9,8 @@ use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserStateProcessor implements ProcessorInterface {
+class UserStateProcessor implements ProcessorInterface
+{
     public const ROLES = [
         'student' => 'ROLE_STUDENT',
         'supervisor' => 'ROLE_TEACHER'
@@ -17,15 +18,17 @@ class UserStateProcessor implements ProcessorInterface {
     private ProcessorInterface $decorated;
     private UserPasswordHasherInterface $userPasswordHasher;
 
-    public function __construct(UserPasswordHasherInterface $userPasswordHasher, ProcessorInterface $decorated) {
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher, ProcessorInterface $decorated)
+    {
         $this->decorated = $decorated;
         $this->userPasswordHasher = $userPasswordHasher;
     }
 
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): void {
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): void
+    {
         // Handle the state
         $data->setRoles($data->getRoles());
-        
+
         if ($data->getPlainPassword()) {
             // hash the plain password
             $data->setPassword(

@@ -14,12 +14,15 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method MilestoneMeeting[]    findAll()
  * @method MilestoneMeeting[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MilestoneMeetingRepository extends ServiceEntityRepository {
-    public function __construct(ManagerRegistry $registry) {
+class MilestoneMeetingRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
         parent::__construct($registry, MilestoneMeeting::class);
     }
 
-    public function add(MilestoneMeeting $entity, bool $flush = false): void {
+    public function add(MilestoneMeeting $entity, bool $flush = false): void
+    {
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
@@ -27,7 +30,8 @@ class MilestoneMeetingRepository extends ServiceEntityRepository {
         }
     }
 
-    public function remove(MilestoneMeeting $entity, bool $flush = false): void {
+    public function remove(MilestoneMeeting $entity, bool $flush = false): void
+    {
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
@@ -35,28 +39,28 @@ class MilestoneMeetingRepository extends ServiceEntityRepository {
         }
     }
 
-//    /**
-//     * @return MilestoneMeeting[] Returns an array of MilestoneMeeting objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return MilestoneMeeting[] Returns an array of MilestoneMeeting objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('m')
+    //            ->andWhere('m.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('m.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?MilestoneMeeting
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?MilestoneMeeting
+    //    {
+    //        return $this->createQueryBuilder('m')
+    //            ->andWhere('m.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

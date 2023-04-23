@@ -7,13 +7,13 @@ use App\Dto\Traits\IdentityTrait;
 use App\Dto\Traits\IsCanceledTrait;
 use App\Dto\Traits\SchedulingTrait;
 
-class AbstractMeetingOutputDto {
+class AbstractMeetingOutputDto
+{
     use IdentityTrait;
 
     private \DateTimeImmutable $createdAt;
 
     private \DateTime $updatedAt;
-
 
     private bool $isCompleted;
 
@@ -32,84 +32,96 @@ class AbstractMeetingOutputDto {
     /**
      * @return string
      */
-    public function getDescription(): string {
+    public function getDescription(): string
+    {
         return $this->description;
     }
 
     /**
      * @param string $description
      */
-    public function setDescription(string $description): void {
+    public function setDescription(string $description): void
+    {
         $this->description = $description;
     }
 
     /**
      * @return string|null
      */
-    public function getLink(): ?string {
+    public function getLink(): ?string
+    {
         return $this->link;
     }
 
     /**
      * @param string|null $link
      */
-    public function setLink(?string $link): void {
+    public function setLink(?string $link): void
+    {
         $this->link = $link;
     }
 
     /**
      * @return \DateTimeImmutable
      */
-    public function getCreatedAt(): \DateTimeImmutable {
+    public function getCreatedAt(): \DateTimeImmutable
+    {
         return $this->createdAt;
     }
 
     /**
      * @param \DateTimeImmutable $createdAt
      */
-    public function setCreatedAt(\DateTimeImmutable $createdAt): void {
+    public function setCreatedAt(\DateTimeImmutable $createdAt): void
+    {
         $this->createdAt = $createdAt;
     }
 
     /**
      * @return \DateTime
      */
-    public function getUpdatedAt(): \DateTime {
+    public function getUpdatedAt(): \DateTime
+    {
         return $this->updatedAt;
     }
 
     /**
      * @param \DateTime $updatedAt
      */
-    public function setUpdatedAt(\DateTime $updatedAt): void {
+    public function setUpdatedAt(\DateTime $updatedAt): void
+    {
         $this->updatedAt = $updatedAt;
     }
 
     /**
      * @return bool
      */
-    public function getIsCompleted(): bool {
+    public function getIsCompleted(): bool
+    {
         return $this->isCompleted;
     }
 
     /**
      * @param bool $isCompleted
      */
-    public function setIsCompleted(bool $isCompleted): void {
+    public function setIsCompleted(bool $isCompleted): void
+    {
         $this->isCompleted = $isCompleted;
     }
 
     /**
      * @return float
      */
-    public function getDuration(): float {
+    public function getDuration(): float
+    {
         return $this->duration;
     }
 
     /**
      * @param float $duration
      */
-    public function setDuration(float $duration): void {
+    public function setDuration(float $duration): void
+    {
         $this->duration = $duration;
     }
 }

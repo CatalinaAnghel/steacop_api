@@ -13,15 +13,16 @@ use AutoMapperPlus\Exception\UnregisteredMappingException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class PatchRatingProvider implements ProviderInterface {
+class PatchRatingProvider implements ProviderInterface
+{
     public function __construct(private readonly EntityManagerInterface $entityManager,
-                                private readonly LoggerInterface        $logger) {
-    }
+                                private readonly LoggerInterface        $logger) {}
 
     /**
      * @inheritDoc
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
         $ratingDto = null;
         if (isset($uriVariables['id'])) {
             $ratingRepo = $this->entityManager->getRepository(Rating::class);
@@ -32,7 +33,7 @@ class PatchRatingProvider implements ProviderInterface {
                     RatingInputDto::class
                 );
                 $mapper = new AutoMapper($config);
-                try{
+                try {
                     $ratingDto = $mapper->map($rating, RatingInputDto::class);
 
                 } catch (UnregisteredMappingException $exception) {

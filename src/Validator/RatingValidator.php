@@ -10,9 +10,9 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Security\Core\Security;
 
-class RatingValidator implements ValidatorInterface {
-    public function __construct(private readonly Security $security) {
-    }
+class RatingValidator implements ValidatorInterface
+{
+    public function __construct(private readonly Security $security) {}
 
     public const MEETING_NOT_COMPLETED_ERROR = 'The meeting cannot be rated yet since it has not been completed';
 
@@ -21,7 +21,8 @@ class RatingValidator implements ValidatorInterface {
      * @param GuidanceMeeting $referencedObject
      * @return void
      */
-    public function validate($data, $referencedObject = null): void {
+    public function validate($data, $referencedObject = null): void
+    {
         if (null !== $referencedObject && !$referencedObject->isCompleted()) {
             throw new UnprocessableEntityHttpException(self::MEETING_NOT_COMPLETED_ERROR);
         }

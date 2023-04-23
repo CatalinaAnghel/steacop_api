@@ -17,9 +17,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CreateAssignmentStateProcessor implements ProcessorInterface {
+class CreateAssignmentStateProcessor implements ProcessorInterface
+{
     public function __construct(private readonly EntityManagerInterface $entityManager,
-                                private readonly LoggerInterface        $logger) {
+                                private readonly LoggerInterface        $logger)
+    {
         date_default_timezone_set('Europe/Bucharest');
     }
 
@@ -27,7 +29,8 @@ class CreateAssignmentStateProcessor implements ProcessorInterface {
      * @inheritDoc
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
-    ?AssignmentOutputDto {
+    ?AssignmentOutputDto
+    {
         $projectRepo = $this->entityManager->getRepository(Project::class);
         $project = $projectRepo->findOneBy(['id' => $data->getProjectId()]);
         if (null !== $project) {

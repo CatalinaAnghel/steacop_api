@@ -6,16 +6,17 @@ namespace App\Encoder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 
-final class MultipartDecoder implements DecoderInterface {
+final class MultipartDecoder implements DecoderInterface
+{
     public const FORMAT = 'multipart';
 
-    public function __construct(private readonly RequestStack $requestStack) {
-    }
+    public function __construct(private readonly RequestStack $requestStack) {}
 
     /**
      * @inheritDoc
      */
-    public function decode(string $data, string $format, array $context = []): array|null {
+    public function decode(string $data, string $format, array $context = []): array|null
+    {
         $request = $this->requestStack->getCurrentRequest();
 
         if (!$request) {
@@ -33,7 +34,8 @@ final class MultipartDecoder implements DecoderInterface {
     /**
      * @inheritDoc
      */
-    public function supportsDecoding(string $format): bool {
+    public function supportsDecoding(string $format): bool
+    {
         return self::FORMAT === $format;
     }
 }

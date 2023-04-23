@@ -16,19 +16,20 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Security;
 
-class GetRatingItemProvider implements ProviderInterface {
+class GetRatingItemProvider implements ProviderInterface
+{
     public function __construct(
         private readonly Security               $security,
         private readonly ValidatorInterface     $ratingValidator,
         private readonly LoggerInterface        $logger,
         private readonly EntityManagerInterface $entityManager
-    ) {
-    }
+    ) {}
 
     /**
      * @inheritDoc
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
         $ratingRepo = $this->entityManager->getRepository(Rating::class);
         $userRepo = $this->entityManager->getRepository(User::class);
         $user = $userRepo->findOneBy(['email' => $this->security->getUser()?->getUserIdentifier()]);

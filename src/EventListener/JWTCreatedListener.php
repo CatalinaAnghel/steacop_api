@@ -10,35 +10,37 @@ use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 
 
-class JWTCreatedListener {
+class JWTCreatedListener
+{
     private const HEADER_CTY_JWT = 'JWT';
 
     /**
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(private readonly EntityManagerInterface $entityManager) {
-    }
+    public function __construct(private readonly EntityManagerInterface $entityManager) {}
 
     /**
      * @param JWTCreatedEvent $event
      *
      * @return void
      */
-    public function onJWTCreated(JWTCreatedEvent $event):void {
+    public function onJWTCreated(JWTCreatedEvent $event): void
+    {
         $payload = $event->getData();
         $repo = $this->entityManager->getRepository(User::class);
         $user = $repo->findOneBy(['email' => $payload['username']]);
-        if($user !== null){
+        if ($user !== null) {
             $payload['code'] = $user->getCode();
             $payload['id'] = $user->getId();
             $personsRepo = $this->entityManager->getRepository(Student::class);
 
             $personData = $personsRepo->findOneBy(['user' => $user->getId()]);
-            if(null === $personData){
+            if (null === $personData) {
                 $personsRepo = $this->entityManager->getRepository(Supervisor::class);
                 $personData = $personsRepo->findOneBy(['user' => $user->getId()]);
             }
-            $payload['fullName'] = null !== $personData?$personData->getFirstName() . ' ' . $personData->getLastName():
+            $payload['fullName'] = null !== $personData ?
+                $personData->getFirstName() . ' ' . $personData->getLastName() :
                 'Admin';
         }
 

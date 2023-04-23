@@ -14,15 +14,15 @@ use AutoMapperPlus\Exception\UnregisteredMappingException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class PatchProjectSupervisoryPlanProvider implements ProviderInterface {
+class PatchProjectSupervisoryPlanProvider implements ProviderInterface
+{
 
     /**
      * @param EntityManagerInterface $entityManager
      * @param LoggerInterface $logger
      */
     public function __construct(private readonly EntityManagerInterface $entityManager,
-                                private readonly LoggerInterface        $logger) {
-    }
+                                private readonly LoggerInterface        $logger) {}
 
     /**
      * @param Operation $operation
@@ -30,7 +30,8 @@ class PatchProjectSupervisoryPlanProvider implements ProviderInterface {
      * @param array $context
      * @return object|array|null
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null {
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    {
         $planDto = null;
         if (isset($uriVariables['projectId'])) {
             $projectRepo = $this->entityManager->getRepository(Project::class);
@@ -45,7 +46,7 @@ class PatchProjectSupervisoryPlanProvider implements ProviderInterface {
                         PlanInputDto::class
                     );
                     $mapper = new AutoMapper($config);
-                    try{
+                    try {
                         $planDto = $mapper->map($plan, PlanInputDto::class);
 
                     } catch (UnregisteredMappingException $exception) {

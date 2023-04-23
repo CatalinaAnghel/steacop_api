@@ -10,18 +10,19 @@ use App\Entity\Document;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class DocumentStateProcessor implements ProcessorInterface {
+class DocumentStateProcessor implements ProcessorInterface
+{
     public function __construct(
         private readonly ProcessorInterface     $decorated,
         private readonly EntityManagerInterface $entityManager
-    ) {
-    }
+    ) {}
 
     /**
      * @inheritDoc
      * @param Document $data
      */
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): Document {
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): Document
+    {
         $assignmentRepo = $this->entityManager->getRepository(Assignment::class);
         $assignment = $assignmentRepo->findOneBy(['id' => (int)$data->getAssignmentId()]);
         if (null === $assignment) {

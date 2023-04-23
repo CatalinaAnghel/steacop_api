@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Dto\User\Output;
 
-final class UserDto {
+final class UserDto
+{
     /**
      * @var string $code
      */
@@ -18,28 +19,32 @@ final class UserDto {
     /**
      * @return string
      */
-    public function getCode(): string {
+    public function getCode(): string
+    {
         return $this->code;
     }
 
     /**
      * @param string $code
      */
-    public function setCode(string $code): void {
+    public function setCode(string $code): void
+    {
         $this->code = $code;
     }
 
     /**
      * @return string
      */
-    public function getEmail(): string {
+    public function getEmail(): string
+    {
         return $this->email;
     }
 
     /**
      * @param string $email
      */
-    public function setEmail(string $email): void {
+    public function setEmail(string $email): void
+    {
         $this->email = $email;
     }
 }

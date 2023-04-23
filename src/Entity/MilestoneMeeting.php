@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: MilestoneMeetingRepository::class)]
-class MilestoneMeeting extends AbstractMeeting {
+class MilestoneMeeting extends AbstractMeeting
+{
     #[ORM\Column(nullable: true)]
     private ?float $grade = null;
 
@@ -20,11 +21,13 @@ class MilestoneMeeting extends AbstractMeeting {
 
     use ProjectTrait;
 
-    public function getGrade(): ?float {
+    public function getGrade(): ?float
+    {
         return $this->grade;
     }
 
-    public function setGrade(?float $grade): void {
+    public function setGrade(?float $grade): void
+    {
         $this->grade = $grade;
     }
 }

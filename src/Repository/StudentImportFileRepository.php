@@ -15,12 +15,15 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method StudentImportFile[]    findAll()
  * @method StudentImportFile[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class StudentImportFileRepository extends ServiceEntityRepository {
-    public function __construct(ManagerRegistry $registry) {
+class StudentImportFileRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
         parent::__construct($registry, StudentImportFile::class);
     }
 
-    public function save(StudentImportFile $entity, bool $flush = false): void {
+    public function save(StudentImportFile $entity, bool $flush = false): void
+    {
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
@@ -28,7 +31,8 @@ class StudentImportFileRepository extends ServiceEntityRepository {
         }
     }
 
-    public function remove(StudentImportFile $entity, bool $flush = false): void {
+    public function remove(StudentImportFile $entity, bool $flush = false): void
+    {
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
@@ -40,20 +44,21 @@ class StudentImportFileRepository extends ServiceEntityRepository {
      * @return StudentImportFile|null Returns the details of the latest file that has been uploaded
      * @throws NonUniqueResultException
      */
-    public function findMostRecentFile(): StudentImportFile|null {
+    public function findMostRecentFile(): StudentImportFile|null
+    {
         return $this->createQueryBuilder('s')
             ->orderBy('s.createdAt', 'DESC')
             ->getQuery()
             ->getOneOrNullResult();
     }
 
-//    public function findOneBySomeField($value): ?StudentImportFile
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?StudentImportFile
+    //    {
+    //        return $this->createQueryBuilder('m')
+    //            ->andWhere('m.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

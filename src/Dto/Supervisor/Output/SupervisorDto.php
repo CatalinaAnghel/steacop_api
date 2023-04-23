@@ -6,6 +6,7 @@ namespace App\Dto\Supervisor\Output;
 use App\Dto\Shared\Output\AbstractPerson;
 use App\Dto\Traits\DepartmentTrait;
 
-class SupervisorDto extends AbstractPerson {
+class SupervisorDto extends AbstractPerson
+{
     use DepartmentTrait;
 }

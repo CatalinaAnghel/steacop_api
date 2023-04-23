@@ -9,13 +9,15 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-final class SupervisoryPlanFixture extends Fixture implements FixtureGroupInterface {
+final class SupervisoryPlanFixture extends Fixture implements FixtureGroupInterface
+{
     use DataSeedingFixtureGroupTrait;
 
     /**
      * @inheritDoc
      */
-    public function load(ObjectManager $manager): void {
+    public function load(ObjectManager $manager): void
+    {
         $laissezFairePlan = new SupervisoryPlan();
         $laissezFairePlan->setName('Laissez-faire');
         $laissezFairePlan->setHasLowStructure(true);
