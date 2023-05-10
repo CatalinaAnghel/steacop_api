@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\DataFixtures\Traits\DataSeedingFixtureGroupTrait;
-use App\Entity\ScoreWeight;
-use App\Helper\WeightsHelper;
+use App\Entity\SystemSetting;
+use App\Helper\SystemSettingsHelper;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-final class ScoreWeightsFixture extends Fixture implements FixtureGroupInterface
+final class SystemSettingsFixture extends Fixture implements FixtureGroupInterface
 {
     /**
      * @var array
@@ -22,10 +22,8 @@ final class ScoreWeightsFixture extends Fixture implements FixtureGroupInterface
     public function __construct()
     {
         $this->variables = [
-            WeightsHelper::RatingWeight,
-            WeightsHelper::SupportWeight,
-            WeightsHelper::StructureWeight,
-            WeightsHelper::SupervisorRatingWeight
+            SystemSettingsHelper::AssignmentPenalization,
+            SystemSettingsHelper::MilestoneMeetingsLimit
         ];
     }
 
@@ -35,10 +33,9 @@ final class ScoreWeightsFixture extends Fixture implements FixtureGroupInterface
     public function load(ObjectManager $manager): void
     {
         foreach ($this->variables as $variable) {
-            $variableObject = new ScoreWeight();
-            $variableObject->setName($variable->getWeightName());
-            $variableObject->setDescription($variable->getWeightName());
-            $variableObject->setWeight($variable->getWeightValue());
+            $variableObject = new SystemSetting();
+            $variableObject->setName($variable->getName());
+            $variableObject->setValue($variable->getValue());
             $manager->persist($variableObject);
         }
 

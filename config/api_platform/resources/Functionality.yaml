@@ -1,0 +1,24 @@
+App\Entity\Functionality:
+  operations:
+#    ApiPlatform\Metadata\Get:
+#      security: 'is_granted("ROLE_USER")'
+#      provider: App\State\Provider\Functionality\GetFunctionalityItemProvider
+#      output: App\Dto\Functionality\Output\FunctionalityOutputDto
+#    ApiPlatform\Metadata\GetCollection:
+#      security: 'is_granted("ROLE_USER")'
+#      filters: [ 'functionality.search_filter', 'functionality.date_filter' ]
+#      provider: App\State\Provider\Assignment\GetAssignmentCollectionProvider
+#      output: App\Dto\Assignment\Output\AssignmentOutputDto
+    ApiPlatform\Metadata\Post:
+      security: 'is_granted("ROLE_TEACHER")||is_granted("ROLE_STUDENT")'
+      input: App\Dto\Functionality\Input\CreateFunctionalityInputDto
+      processor: App\State\Processor\Functionality\CreateFunctionalityProcessor
+      output: App\Dto\Functionality\Output\FunctionalityOutputDto
+#    ApiPlatform\Metadata\Delete:
+#      processor: App\State\Processor\Assignment\DeleteAssignmentStateProcessor
+#    ApiPlatform\Metadata\Patch:
+#      security: 'is_granted("PATCH", object)'
+#      input: App\Dto\Assignment\Input\PatchAssignmentInputDto
+#      output: App\Dto\Assignment\Output\AssignmentOutputDto
+#      provider: App\State\Provider\Assignment\PatchAssignmentProvider
+#      processor: App\State\Processor\Assignment\PatchAssignmentStateProcessor

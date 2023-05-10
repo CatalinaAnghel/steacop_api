@@ -9,24 +9,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PatchAssignmentInputDto
 {
     /**
-     * @var \DateTime $dueDate
+     * @var ?\DateTime $dueDate
      */
     #[Assert\Type(\DateTimeInterface::class)]
     #[FutureDateTime]
-    private \DateTime $dueDate;
+    private ?\DateTime $dueDate;
 
     /**
-     * @var string $title
+     * @var ?string $title
      */
     #[Assert\Length(max: 128)]
     #[Assert\Length(min: 10)]
-    private string $title;
+    private ?string $title;
 
     /**
-     * @var string $description
+     * @var ?string $description
      */
     #[Assert\Length(min: 16)]
-    private string $description;
+    private ?string $description;
 
     /**
      * @var float|null $grade
@@ -41,9 +41,9 @@ class PatchAssignmentInputDto
     private bool $isTurnedIn = false;
 
     /**
-     * @return \DateTime
+     * @return ?\DateTime
      */
-    public function getDueDate(): \DateTime
+    public function getDueDate(): ?\DateTime
     {
         return $this->dueDate;
     }
@@ -57,9 +57,9 @@ class PatchAssignmentInputDto
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -73,9 +73,9 @@ class PatchAssignmentInputDto
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }

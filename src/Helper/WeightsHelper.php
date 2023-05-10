@@ -8,7 +8,7 @@ enum WeightsHelper
     case RatingWeight;
     case SupportWeight;
     case StructureWeight;
-    case StructurePenalty;
+    case SupervisorRatingWeight;
 
     /**
      * Get the weight name
@@ -28,7 +28,7 @@ enum WeightsHelper
         return match ($this) {
             self::StructureWeight, self::SupportWeight => 40.0,
             self::RatingWeight                         => 20.0,
-            self::StructurePenalty                     => 5.5
+            self::SupervisorRatingWeight                     => 65
         };
     }
 }

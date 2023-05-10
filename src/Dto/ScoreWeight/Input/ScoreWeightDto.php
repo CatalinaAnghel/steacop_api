@@ -8,22 +8,17 @@ class ScoreWeightDto
     /**
      * @var float $supportWeight
      */
-    public float $supportWeight;
+    protected float $supportWeight;
 
     /**
      * @var float $structureWeight
      */
-    public float $structureWeight;
+    protected float $structureWeight;
 
     /**
-     * @var float $structurePenalty
+     * @var float float $supervisorRatingWeight
      */
-    public float $structurePenalty;
-
-    /**
-     * @var float $ratingWeight
-     */
-    public float $ratingWeight;
+    protected float $supervisorRatingWeight;
 
     /**
      * @return float
@@ -60,32 +55,16 @@ class ScoreWeightDto
     /**
      * @return float
      */
-    public function getStructurePenalty(): float
+    public function getSupervisorRatingWeight(): float
     {
-        return $this->structurePenalty;
+        return $this->supervisorRatingWeight;
     }
 
     /**
-     * @param float $structurePenalty
+     * @param float $supervisorRatingWeight
      */
-    public function setStructurePenalty(float $structurePenalty): void
+    public function setSupervisorRatingWeight(float $supervisorRatingWeight): void
     {
-        $this->structurePenalty = $structurePenalty;
-    }
-
-    /**
-     * @return float
-     */
-    public function getRatingWeight(): float
-    {
-        return $this->ratingWeight;
-    }
-
-    /**
-     * @param float $ratingWeight
-     */
-    public function setRatingWeight(float $ratingWeight): void
-    {
-        $this->ratingWeight = $ratingWeight;
+        $this->supervisorRatingWeight = $supervisorRatingWeight;
     }
 }

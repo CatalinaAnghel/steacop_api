@@ -1,0 +1,9 @@
+App\Entity\FunctionalityAttachment:
+  attributes:
+    contentUrl:
+      types: ['https://schema.org/contentUrl']
+      groups: ['functionality_attachment:output']
+    file:
+      groups: ['functionality_attachment:input']
+    createdAt:
+      groups: [ 'functionality_attachment:input' ]

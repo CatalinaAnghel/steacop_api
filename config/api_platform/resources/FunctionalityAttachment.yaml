@@ -1,0 +1,23 @@
+App\Entity\FunctionalityAttachment:
+  normalizationContext:
+    groups: [ 'functionality_attachment:output' ],
+  types: [ 'https://schema.org/MediaObject' ]
+  operations:
+    ApiPlatform\Metadata\Post:
+      security: 'is_granted("ROLE_STUDENT")'
+      processor: App\State\Processor\FunctionalityAttachmentStateProcessor
+      validationContext:
+        groups: [ 'Default', 'assignment_document:input' ] ]
+      openapiContext:
+        requestBody:
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  file:
+                    type: string
+                    format: binary
+                  assignmentId:
+                    type: string
+    ApiPlatform\Metadata\Delete: ~

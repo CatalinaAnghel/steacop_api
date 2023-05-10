@@ -23,17 +23,39 @@ class ScoreWeightsService implements Contract\ScoreWeightsServiceInterface
         $repository = $this->entityManager->getRepository(ScoreWeight::class);
         $weights = $repository->findAll();
         $weightsOutputDto = new ScoreWeightsDto();
+        $total = 0.0;
+        $ratingScore = null;
         foreach ($weights as $weight) {
             $methodName = 'get' . lcfirst($weight->getName());
-            $weight->setWeight($scoreWeightDto->$methodName());
-            $repository->add($weight, true);
-            $config = new AutoMapperConfig();
-            $config->registerMapping(ScoreWeight::class,
-                ScoreWeightOutputDto::class);
-            $mapper = new AutoMapper($config);
-            $weightOutputDto = $mapper->map($weight, ScoreWeightOutputDto::class);
+            if (method_exists($scoreWeightDto, $methodName)) {
+                $weight->setWeight($scoreWeightDto->$methodName());
+                if($scoreWeightDto->$methodName() !== 'SupervisorRatingWeight'){
+                    $total += $scoreWeightDto->$methodName();
+                }
+                $repository->add($weight, true);
+                $weightOutputDto = $this->mapWeightToOutputDto($weight);
+                $weightsOutputDto->addWeight($weightOutputDto);
+            }
+            if ($weight->getName() === 'RatingWeight') {
+                $ratingScore = $weight;
+            }
+        }
+
+        if ($total >= 0) {
+            $ratingScore->setWeight(100 - $total);
+            $repository->add($ratingScore, true);
+            $weightOutputDto = $this->mapWeightToOutputDto($ratingScore);
             $weightsOutputDto->addWeight($weightOutputDto);
         }
+
         return $weightsOutputDto;
+    }
+
+    private function mapWeightToOutputDto(ScoreWeight $weight): ScoreWeightOutputDto
+    {
+        $config = new AutoMapperConfig();
+        $config->registerMapping(ScoreWeight::class,
+            ScoreWeightOutputDto::class);
+        return (new AutoMapper($config))->map($weight, ScoreWeightOutputDto::class);
     }
 }

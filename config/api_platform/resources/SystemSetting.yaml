@@ -1,0 +1,10 @@
+App\Entity\SystemSetting:
+  operations:
+    ApiPlatform\Metadata\Get: ~
+    ApiPlatform\Metadata\GetCollection:
+      filters: [ 'setting.search_filter' ]
+    ApiPlatform\Metadata\Post:
+      security: 'is_granted("ROLE_ADMIN")'
+      input: App\Dto\SystemSetting\SystemSettingInputDto
+      output: App\Dto\SystemSetting\SystemSettingsCollectionDto
+      processor: App\State\Processor\SystemSettingsStateProcessor

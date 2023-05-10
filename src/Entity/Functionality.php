@@ -47,11 +47,18 @@ class Functionality
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dueDate = null;
 
+    #[ORM\Column(length: 64)]
+    private ?string $code = null;
+
+    #[ORM\OneToMany(mappedBy: 'functionality', targetEntity: FunctionalityAttachment::class, orphanRemoval: true)]
+    private Collection $functionalityAttachments;
+
     use TimestampableTrait;
 
     #[Pure] public function __construct()
     {
         $this->functionalities = new ArrayCollection();
+        $this->functionalityAttachments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -167,6 +174,48 @@ class Functionality
     public function setDueDate(?\DateTimeInterface $dueDate): self
     {
         $this->dueDate = $dueDate;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FunctionalityAttachment>
+     */
+    public function getFunctionalityAttachments(): Collection
+    {
+        return $this->functionalityAttachments;
+    }
+
+    public function addFunctionalityAttachment(FunctionalityAttachment $functionalityAttachment): self
+    {
+        if (!$this->functionalityAttachments->contains($functionalityAttachment)) {
+            $this->functionalityAttachments->add($functionalityAttachment);
+            $functionalityAttachment->setFunctionality($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFunctionalityAttachment(FunctionalityAttachment $functionalityAttachment): self
+    {
+        if ($this->functionalityAttachments->removeElement($functionalityAttachment)) {
+            // set the owning side to null (unless already changed)
+            if ($functionalityAttachment->getFunctionality() === $this) {
+                $functionalityAttachment->setFunctionality(null);
+            }
+        }
 
         return $this;
     }
