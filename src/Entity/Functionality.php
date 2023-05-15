@@ -47,8 +47,8 @@ class Functionality
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dueDate = null;
 
-    #[ORM\Column(length: 64)]
-    private ?string $code = null;
+    #[ORM\Column]
+    private int $code;
 
     #[ORM\OneToMany(mappedBy: 'functionality', targetEntity: FunctionalityAttachment::class, orphanRemoval: true)]
     private Collection $functionalityAttachments;
@@ -178,12 +178,12 @@ class Functionality
         return $this;
     }
 
-    public function getCode(): ?string
+    public function getCode(): int
     {
         return $this->code;
     }
 
-    public function setCode(string $code): self
+    public function setCode(int $code): self
     {
         $this->code = $code;
 

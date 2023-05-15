@@ -7,7 +7,7 @@ App\Entity\FunctionalityAttachment:
       security: 'is_granted("ROLE_STUDENT")'
       processor: App\State\Processor\FunctionalityAttachmentStateProcessor
       validationContext:
-        groups: [ 'Default', 'assignment_document:input' ] ]
+        groups: [ 'Default', 'functionality_attachment:input' ] ]
       openapiContext:
         requestBody:
           content:

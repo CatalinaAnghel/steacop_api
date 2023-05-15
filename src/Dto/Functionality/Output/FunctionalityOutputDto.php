@@ -3,13 +3,15 @@ declare(strict_types=1);
 
 namespace App\Dto\Functionality\Output;
 
-use App\Dto\Project\Output\ProjectDto;
+use App\Dto\Traits\IdentityTrait;
 
 class FunctionalityOutputDto
 {
+    use IdentityTrait;
+
     private string $code;
 
-    private ProjectDto $project;
+    private int $projectId;
 
     private string $title;
 
@@ -44,19 +46,19 @@ class FunctionalityOutputDto
     }
 
     /**
-     * @return ProjectDto
+     * @return int
      */
-    public function getProject(): ProjectDto
+    public function getProjectId(): int
     {
-        return $this->project;
+        return $this->projectId;
     }
 
     /**
-     * @param ProjectDto $project
+     * @param int $projectId
      */
-    public function setProject(ProjectDto $project): void
+    public function setProjectId(int $projectId): void
     {
-        $this->project = $project;
+        $this->projectId = $projectId;
     }
 
     /**

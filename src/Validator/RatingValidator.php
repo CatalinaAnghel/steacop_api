@@ -19,9 +19,10 @@ class RatingValidator implements ValidatorInterface
     /**
      * @param $data
      * @param GuidanceMeeting $referencedObject
+     * @param string|null $operation
      * @return void
      */
-    public function validate($data, $referencedObject = null): void
+    public function validate($data, $referencedObject = null, string $operation = null): void
     {
         if (null !== $referencedObject && !$referencedObject->isCompleted()) {
             throw new UnprocessableEntityHttpException(self::MEETING_NOT_COMPLETED_ERROR);

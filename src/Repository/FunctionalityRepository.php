@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Functionality;
+use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
 
 /**
  * @extends ServiceEntityRepository<Functionality>
@@ -16,7 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FunctionalityRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly LoggerInterface $logger)
     {
         parent::__construct($registry, Functionality::class);
     }
@@ -37,6 +40,27 @@ class FunctionalityRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getNextAvailableCode(int $projectId): int
+    {
+        $qb = $this->createQueryBuilder('f');
+        $qb->select('MAX(f.code) as nextCode')
+            ->innerJoin(
+                Project::class,
+                'project',
+                Join::WITH,
+                'project.id = f.project'
+            )
+            ->where('project.id = :projectId')
+            ->setParameter('projectId', $projectId);
+        try{
+            $result = $qb->getQuery()->getSingleResult();
+        }catch (\Exception $exception){
+            $this->logger->error($exception->getMessage());
+        }
+
+        return isset($result['nextCode']) ? (int)$result['nextCode']: 0;
     }
 
     //    /**

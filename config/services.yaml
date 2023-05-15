@@ -154,8 +154,8 @@ services:
             $decorated: '@api_platform.doctrine.orm.state.persist_processor'
 
     App\State\Processor\ProjectSupervisoryPlanProcessor: ~
-    App\State\Processor\CreateMilestoneMeetingStateProcessor: ~
-    App\State\Processor\CreateGuidanceMeetingStateProcessor: ~
+#    App\State\Processor\CreateMilestoneMeetingStateProcessor: ~
+#    App\State\Processor\CreateGuidanceMeetingStateProcessor: ~
 #        bind:
 #            $requestContext: '@request_stack'
 
@@ -170,6 +170,10 @@ services:
     App\State\Processor\FunctionalityAttachmentStateProcessor:
         bind:
             $decorated: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\State\Processor\Functionality\DeleteFunctionalityStateProcessor:
+        bind:
+            $decoratedProcessor: '@api_platform.doctrine.orm.state.remove_processor'
 
     # providers
     App\State\Provider\StudentsStateProvider:
@@ -215,6 +219,15 @@ services:
         bind:
             $decoratedProvider: '@api_platform.doctrine.orm.state.item_provider'
 
+    # functionalities
+    App\State\Provider\Functionality\GetFunctionalityCollectionProvider:
+        bind:
+            $decoratedProvider: '@api_platform.doctrine.orm.state.collection_provider'
+
+    App\State\Provider\Functionality\GetFunctionalityItemProvider:
+        bind:
+            $decoratedProvider: '@api_platform.doctrine.orm.state.item_provider'
+
     # services
     App\Service\ScoreWeightsService: ~
     App\Service\Contract\ScoreWeightsServiceInterface: '@App\Service\ScoreWeightsService'
@@ -224,3 +237,6 @@ services:
 
     App\Validator\RatingValidator: ~
     App\Validator\Contracts\ValidatorInterface $ratingValidator: '@App\Validator\RatingValidator'
+
+    App\Validator\FunctionalityValidator: ~
+    App\Validator\Contracts\ValidatorInterface $functionalityValidator: '@App\Validator\FunctionalityValidator'

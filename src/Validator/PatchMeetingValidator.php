@@ -14,9 +14,10 @@ class PatchMeetingValidator implements ValidatorInterface
     /**
      * @param AbstractCancellableMeetingInputDto $data
      * @param AbstractMeeting $referencedObject
+     * @param string|null $operation
      * @return void
      */
-    public function validate($data, $referencedObject = null): void
+    public function validate($data, $referencedObject = null, string $operation = null): void
     {
         if (null !== $referencedObject) {
             if ($referencedObject->isCanceled()) {

@@ -5,5 +5,11 @@ namespace App\Validator\Contracts;
 
 interface ValidatorInterface
 {
-    public function validate($data, $referencedObject = null): void;
+    /**
+     * @param $data
+     * @param $referencedObject
+     * @param string|null $operation
+     * @return void
+     */
+    public function validate($data, $referencedObject = null, string $operation = null): void;
 }
