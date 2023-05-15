@@ -22,14 +22,15 @@ class FunctionalityAttachmentStateProcessor implements ProcessorInterface
      * @inheritDoc
      * @param FunctionalityAttachment $data
      */
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): Document
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): FunctionalityAttachment
     {
         $functionalityRepo = $this->entityManager->getRepository(Functionality::class);
-        $functionality = $functionalityRepo->findOneBy(['code' => (int)$data->getFunctionalityCode()]);
+        $functionality = $functionalityRepo->findOneBy(['id' => (int)$data->getFunctionalityId()]);
         if (null === $functionality) {
             throw new NotFoundHttpException('The item could not be found');
         }
         $data->setFunctionality($functionality);
+        $data->setCreatedAt(new \DateTimeImmutable('Now'));
         $this->decorated->process($data, $operation, $uriVariables, $context);
         $data->setContentUrl('/documents/functionalities/' . $functionality->getId() . '/' . $data->getFilePath());
 

@@ -22,7 +22,6 @@ vich_uploader:
 #        service: vich_uploader.namer_directory_property
 #        options: { property: 'assignmentId', transliterate: true }
       delete_on_remove: true
-
     functionality_attachment_upload:
       uri_prefix: /documents/functionalities
       upload_destination: '%kernel.project_dir%/public/documents/functionalities'

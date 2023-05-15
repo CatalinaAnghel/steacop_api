@@ -1,13 +1,13 @@
 App\Entity\FunctionalityAttachment:
   normalizationContext:
-    groups: [ 'functionality_attachment:output' ],
+    groups: [ 'functionality_attachment_upload:output' ],
   types: [ 'https://schema.org/MediaObject' ]
   operations:
     ApiPlatform\Metadata\Post:
-      security: 'is_granted("ROLE_STUDENT")'
+      security: 'is_granted("ROLE_STUDENT")||is_granted("ROLE_TEACHER")'
       processor: App\State\Processor\FunctionalityAttachmentStateProcessor
       validationContext:
-        groups: [ 'Default', 'functionality_attachment:input' ] ]
+        groups: [ 'Default', 'functionality_attachment_upload:input' ] ]
       openapiContext:
         requestBody:
           content:
@@ -18,6 +18,6 @@ App\Entity\FunctionalityAttachment:
                   file:
                     type: string
                     format: binary
-                  assignmentId:
+                  functionalityId:
                     type: string
     ApiPlatform\Metadata\Delete: ~

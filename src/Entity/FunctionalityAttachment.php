@@ -29,15 +29,15 @@ class FunctionalityAttachment
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    private string $functionalityCode;
+    private string $functionalityId;
 
     /**
      * @var string|null $contentUrl
      */
     private ?string $contentUrl = null;
 
-    #[Vich\UploadableField(mapping: "functionality_attachment", fileNameProperty: "filePath")]
-    #[Assert\NotNull(groups: ['functionality_attachment:input'])]
+    #[Vich\UploadableField(mapping: "functionality_attachment_upload", fileNameProperty: "filePath")]
+    #[Assert\NotNull(groups: ['functionality_attachment_upload:input'])]
     #[Assert\File(mimeTypes: ['application/pdf', 'image/jpeg', 'image/png'])]
     private ?File $file = null;
 
@@ -63,9 +63,9 @@ class FunctionalityAttachment
         return $this->filePath;
     }
 
-    public function setFilePatch(?string $filePatch): self
+    public function setFilePath(?string $filePath): self
     {
-        $this->filePath = $filePatch;
+        $this->filePath = $filePath;
 
         return $this;
     }
@@ -85,17 +85,17 @@ class FunctionalityAttachment
     /**
      * @return string
      */
-    public function getFunctionalityCode(): string
+    public function getFunctionalityId(): string
     {
-        return $this->functionalityCode;
+        return $this->functionalityId;
     }
 
     /**
-     * @param string $functionalityCode
+     * @param string $functionalityId
      */
-    public function setFunctionalityCode(string $functionalityCode): void
+    public function setFunctionalityId(string $functionalityId): void
     {
-        $this->functionalityCode = $functionalityCode;
+        $this->functionalityId = $functionalityId;
     }
 
     /**

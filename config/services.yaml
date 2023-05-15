@@ -130,15 +130,25 @@ services:
         autoconfigure: false
         public: false
 
-#    functionality.search_filter:
-#        parent: 'api_platform.doctrine.orm.search_filter'
-#        arguments: [ { project.id: 'exact' } ]
-#        tags: [ 'api_platform.filter' ]
-#        # The following are mandatory only if a _defaults section is defined with inverted values.
-#        # You may want to isolate filters in a dedicated file to avoid adding the following lines (by adding them in the defaults section)
-#        autowire: false
-#        autoconfigure: false
-#        public: false
+    functionality.search_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { title: 'partial', project.id: 'exact', type.id: 'exact', status.id: 'exact', parentFunctionality.id: 'exact' } ]
+        tags: [ 'api_platform.filter' ]
+        # The following are mandatory only if a _defaults section is defined with inverted values.
+        # You may want to isolate filters in a dedicated file to avoid adding the following lines (by adding them in the defaults section)
+        autowire: false
+        autoconfigure: false
+        public: false
+
+    functionality.date_filter:
+        parent: 'api_platform.doctrine.orm.date_filter'
+        arguments: [ { dueDate: ~, createdAt: ~ } ]
+        tags: [ 'api_platform.filter' ]
+        # The following are mandatory only if a _defaults section is defined with inverted values.
+        # You may want to isolate filters in a dedicated file to avoid adding the following lines (by adding them in the defaults section)
+        autowire: false
+        autoconfigure: false
+        public: false
 
     # processors
     App\State\Processor\UserStateProcessor:

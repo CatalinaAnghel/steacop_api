@@ -33,7 +33,6 @@ final class FileNormalizer implements NormalizerInterface, NormalizerAwareInterf
         if (isset($context[self::ALREADY_CALLED])) {
             return false;
         }
-
         return $data instanceof StudentImportFile || $data instanceof SupervisorImportFile ||
             $data instanceof Document || $data instanceof FunctionalityAttachment;
     }
