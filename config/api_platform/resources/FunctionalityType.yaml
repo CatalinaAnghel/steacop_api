@@ -1,0 +1,8 @@
+App\Entity\FunctionalityType:
+  normalizationContext:
+    groups: [ 'type:output' ]
+  operations:
+    ApiPlatform\Metadata\Get:
+      security: 'is_granted("ROLE_USER")'
+    ApiPlatform\Metadata\GetCollection:
+      security: 'is_granted("ROLE_USER")'

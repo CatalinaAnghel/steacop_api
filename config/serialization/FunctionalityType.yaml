@@ -1,0 +1,6 @@
+App\Entity\FunctionalityType:
+  attributes:
+    id:
+      groups: ['type:output']
+    name:
+      groups: ['type:output']

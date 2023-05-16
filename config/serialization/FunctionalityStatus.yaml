@@ -1,0 +1,6 @@
+App\Entity\FunctionalityStatus:
+  attributes:
+    id:
+      groups: ['status:output']
+    name:
+      groups: ['status:output']
