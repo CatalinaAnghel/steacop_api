@@ -7,12 +7,14 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\Functionality;
 use App\Helper\FunctionalityStatusesHelper;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class DeleteFunctionalityStateProcessor implements ProcessorInterface
 {
     public function __construct(
-        private readonly ProcessorInterface $decoratedProcessor
+        private readonly ProcessorInterface     $decoratedProcessor,
+        private readonly EntityManagerInterface $entityManager
     ) {}
 
     /**
@@ -23,6 +25,12 @@ class DeleteFunctionalityStateProcessor implements ProcessorInterface
     {
         if (FunctionalityStatusesHelper::Closed !== $data->getFunctionalityStatus()?->getName()) {
             // the assignment has not been turned in
+            $this->entityManager->getRepository(Functionality::class)->updateOrder(
+                $data->getOrderNumber(),
+                -1,
+                $data->getProject()?->getId(),
+                $data->getFunctionalityStatus()?->getId()
+            );
             $this->decoratedProcessor->process($data, $operation, $uriVariables, $context);
         } else {
             throw new UnprocessableEntityHttpException(

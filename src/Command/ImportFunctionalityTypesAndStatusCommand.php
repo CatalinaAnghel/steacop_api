@@ -53,12 +53,7 @@ class ImportFunctionalityTypesAndStatusCommand extends Command
             FunctionalityTypesHelper::Bug
         ];
 
-        $this->statuses = [
-            FunctionalityStatusesHelper::Open,
-            FunctionalityStatusesHelper::InProgress,
-            FunctionalityStatusesHelper::Testing,
-            FunctionalityStatusesHelper::Closed
-        ];
+        $this->statuses = FunctionalityStatusesHelper::getOrder();
     }
 
     protected function configure(): void
@@ -73,7 +68,7 @@ class ImportFunctionalityTypesAndStatusCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $progressBar = new ProgressBar($output, count($this->types) + 5);
+        $progressBar = new ProgressBar($output, count($this->types) + count($this->statuses));
         $progressBar->start();
         $progressBar->setMessage('Preparing...');
         try {
@@ -92,9 +87,13 @@ class ImportFunctionalityTypesAndStatusCommand extends Command
             foreach ($entities as $entity){
                 $propName = $entity['propName'];
                 $this->prepare($entity['entity']);
-                foreach ($this->$propName as $value) {
+                foreach ($this->$propName as $key => $value) {
                     $typeObject = new $entity['entity']();
                     $typeObject->setName($value->value);
+                    $reflectionClass = new \ReflectionClass($entity['entity']);
+                    if ($reflectionClass->hasProperty('orderNumber')) {
+                        $typeObject->setOrderNumber($key + 1);
+                    }
                     $progressBar->advance();
                     $this->entityManager->persist($typeObject);
                 }
@@ -104,7 +103,6 @@ class ImportFunctionalityTypesAndStatusCommand extends Command
                 $progressBar->setMessage('Creating the ' . $entity['entity'] . ' and persisting them...');
             }
         } catch (\Exception $exception) {
-            dd($exception->getMessage());
             $this->logger->error($exception->getMessage());
             return Command::FAILURE;
         }

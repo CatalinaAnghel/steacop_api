@@ -1,0 +1,5 @@
+App\ApiResource\FunctionalitiesOrdering:
+  operations:
+    ApiPlatform\Metadata\Post:
+      securityPostDenormalize: 'is_granted("FUNCTIONALITY_ORDER", object)'
+      processor: App\State\Processor\Functionality\OrderFunctionalitiesProcessor

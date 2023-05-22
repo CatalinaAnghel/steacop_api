@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Functionality;
+use App\Entity\FunctionalityStatus;
+use App\Entity\FunctionalityType;
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -19,6 +21,8 @@ use Psr\Log\LoggerInterface;
  */
 class FunctionalityRepository extends ServiceEntityRepository
 {
+    public const ALIAS = 'functionalities_alias';
+
     public function __construct(ManagerRegistry $registry, private readonly LoggerInterface $logger)
     {
         parent::__construct($registry, Functionality::class);
@@ -54,13 +58,95 @@ class FunctionalityRepository extends ServiceEntityRepository
             )
             ->where('project.id = :projectId')
             ->setParameter('projectId', $projectId);
-        try{
+        try {
             $result = $qb->getQuery()->getSingleResult();
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());
         }
 
-        return isset($result['nextCode']) ? (int)$result['nextCode']: 0;
+        return isset($result['nextCode']) ? (int)$result['nextCode'] + 1 : 1;
+    }
+
+    /**
+     * Returns the next available order number based on the project and the desired status
+     * @param int $projectId
+     * @param int $statusId
+     * @return int
+     */
+    public function getNextOrderNumber(int $projectId, int $statusId): int
+    {
+        $qb = $this->createQueryBuilder('f');
+        $qb->select('MAX(f.orderNumber) as nextOrderNumber')
+            ->innerJoin(
+                Project::class,
+                'project',
+                Join::WITH,
+                'project.id = f.project'
+            )
+            ->innerJoin(
+                FunctionalityStatus::class,
+                'status',
+                Join::WITH,
+                'status.id = ' . self::ALIAS . '.functionalityStatus'
+            )
+            ->where('project.id = :projectId')
+            ->andWhere('status.id = :statusId')
+            ->setParameter('projectId', $projectId)
+            ->setParameter('statusId', $statusId)
+        ;
+        try {
+            $result = $qb->getQuery()->getSingleResult();
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
+        }
+
+        return isset($result['nextOrderNumber']) ? (int)$result['nextOrderNumber'] + 1 : 1;
+    }
+
+    /**
+     * Update the order number of the next functionalities based on the type
+     * @param int $startOrderNumber
+     * @param int $positionOffset
+     * @param int $projectId
+     * @param int $statusId
+     * @return void
+     */
+    public function updateOrder(int $startOrderNumber, int $positionOffset, int $projectId, int $statusId): void
+    {
+        $qb = $this->createQueryBuilder(self::ALIAS);
+        $query = $qb->update()
+            ->set(self::ALIAS . '.orderNumber', self::ALIAS . '.orderNumber + :offset')
+            ->innerJoin(
+                Project::class,
+                'project',
+                Join::WITH,
+                'project.id = ' . self::ALIAS . '.project'
+            )
+            ->innerJoin(
+                FunctionalityStatus::class,
+                'status',
+                Join::WITH,
+                'status.id = ' . self::ALIAS . '.status'
+            )
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('project.id', ':projectId'),
+                    $qb->expr()->gt(self::ALIAS . '.orderNumber', ':startingOrderNumber'),
+                    $qb->expr()->eq('status.id', ':statusId')
+                )
+            )
+            ->setParameter('offset', $positionOffset)
+            ->setParameter('projectId', $projectId)
+            ->setParameter('startingOrderNumber', $startOrderNumber)
+            ->setParameter('statusId', $statusId)
+            ->getQuery();
+
+        try {
+            $query->execute();
+        } catch (\Exception $exception) {
+            dd($exception->getMessage());
+            $this->logger->error($exception->getMessage());
+        }
     }
 
     //    /**

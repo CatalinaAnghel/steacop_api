@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Traits\SortableTrait;
 use App\Repository\FunctionalityStatusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,6 +23,8 @@ class FunctionalityStatus
 
     #[ORM\OneToMany(mappedBy: 'functionalityStatus', targetEntity: Functionality::class, orphanRemoval: true)]
     private Collection $functionalities;
+
+    use SortableTrait;
 
     public function __construct()
     {

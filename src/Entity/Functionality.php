@@ -3,16 +3,19 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Traits\SortableTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\FunctionalityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use JetBrains\PhpStorm\Pure;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: FunctionalityRepository::class)]
+#[UniqueConstraint(name: "UC_functionality", columns: ["code"])]
 class Functionality
 {
     #[ORM\Id]
@@ -54,6 +57,8 @@ class Functionality
     private Collection $functionalityAttachments;
 
     use TimestampableTrait;
+
+    use SortableTrait;
 
     #[Pure] public function __construct()
     {

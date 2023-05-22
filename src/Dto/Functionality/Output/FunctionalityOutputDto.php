@@ -29,6 +29,8 @@ class FunctionalityOutputDto
 
     private ?\DateTimeInterface $updatedAt;
 
+    private int $orderNumber;
+
     /**
      * @return string
      */
@@ -187,5 +189,21 @@ class FunctionalityOutputDto
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrderNumber(): int
+    {
+        return $this->orderNumber;
+    }
+
+    /**
+     * @param int $orderNumber
+     */
+    public function setOrderNumber(int $orderNumber): void
+    {
+        $this->orderNumber = $orderNumber;
     }
 }

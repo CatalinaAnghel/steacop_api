@@ -9,4 +9,13 @@ enum FunctionalityStatusesHelper: string
     case Closed = 'Done';
     case InProgress = 'In progress';
     case Testing = 'Testing';
+
+    public static function getOrder(): array{
+        return [
+            self::Open,
+            self::InProgress,
+            self::Testing,
+            self::Closed
+        ];
+    }
 }

@@ -11,6 +11,9 @@ enum FunctionalityTypesHelper: string
     case Subtask = 'Subtask';
     case Bug = 'Bug';
 
+    /**
+     * @return string[]
+     */
     public function getPossibleChildIssues(): array{
         return match ($this) {
             self::Epic => [

@@ -58,13 +58,22 @@ class CreateFunctionalityProcessor implements ProcessorInterface
                     })
                     ->forMember('code', function (CreateFunctionalityInputDto $dto): int {
                         return $this->entityManager->getRepository(Functionality::class)
-                                ->getNextAvailableCode($dto->getProjectId()) + 1;
-                    })->forMember('functionalityParent', function(CreateFunctionalityInputDto $dto): ?Functionality{
-                        if(null !== $dto->getParentFunctionalityId()){
+                            ->getNextAvailableCode($dto->getProjectId());
+                    })
+                    ->forMember('functionalityParent', function (CreateFunctionalityInputDto $dto): ?Functionality {
+                        if (null !== $dto->getParentFunctionalityId()) {
                             $parentFunctionality = $this->entityManager->getRepository(Functionality::class)
                                 ->findOneBy(['id' => $dto->getParentFunctionalityId()]);
                         }
-                        return $parentFunctionality?? null;
+                        return $parentFunctionality ?? null;
+                    })
+                    ->forMember('orderNumber', function (CreateFunctionalityInputDto $source): int {
+                        return $this->entityManager->getRepository(Functionality::class)
+                            ->getNextOrderNumber(
+                                $source->getProjectId(),
+                                $this->entityManager->getRepository(FunctionalityStatus::class)
+                                    ->findOneBy(['name' => FunctionalityStatusesHelper::Open->value])?->getId()
+                            );
                     });
                 $mapper = new AutoMapper($config);
                 /**

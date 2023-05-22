@@ -53,7 +53,13 @@ class PatchFunctionalityStateProcessor implements ProcessorInterface
             }
             $statusRepo = $this->entityManager->getRepository(FunctionalityStatus::class);
             $status = $statusRepo->findOneBy(['id' => $data->getStatus()]);
-            $functionality->setFunctionalityStatus($status);
+            if (null !== $status && $functionality->getFunctionalityStatus()?->getId() !== $status->getId()) {
+                $functionality->setFunctionalityStatus($status);
+                $functionality->setOrderNumber($functionalityRepo->getNextOrderNumber(
+                    $functionality->getProject()?->getId(),
+                    $status->getId()
+                ));
+            }
 
             $typeRepo = $this->entityManager->getRepository(FunctionalityType::class);
             $type = $typeRepo->findOneBy(['id' => $data->getType()]);
@@ -87,7 +93,8 @@ class PatchFunctionalityStateProcessor implements ProcessorInterface
                             $source->getFunctionalityAttachments(),
                             FunctionalityAttachmentOutputDto::class
                         );
-                    })->forMember('type', function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
+                    })
+                    ->forMember('type', function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
                         $typeConfig = new AutoMapperConfig();
                         $typeConfig->registerMapping(
                             FunctionalityType::class,
@@ -95,7 +102,8 @@ class PatchFunctionalityStateProcessor implements ProcessorInterface
                         );
                         return (new AutoMapper($typeConfig))
                             ->map($functionality->getType(), FunctionalityCharacteristicOutputDto::class);
-                    })->forMember('status', function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
+                    })
+                    ->forMember('status', function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
                         $statusConfig = new AutoMapperConfig();
                         $statusConfig->registerMapping(
                             FunctionalityStatus::class,
@@ -103,7 +111,8 @@ class PatchFunctionalityStateProcessor implements ProcessorInterface
                         );
                         return (new AutoMapper($statusConfig))
                             ->map($functionality->getFunctionalityStatus(), FunctionalityCharacteristicOutputDto::class);
-                    })->forMember('projectId', function (Functionality $functionality): int {
+                    })
+                    ->forMember('projectId', function (Functionality $functionality): int {
                         return $functionality->getProject()?->getId();
                     });
                 $mapper = new AutoMapper($configOutput);
