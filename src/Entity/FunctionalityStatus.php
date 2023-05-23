@@ -24,11 +24,19 @@ class FunctionalityStatus
     #[ORM\OneToMany(mappedBy: 'functionalityStatus', targetEntity: Functionality::class, orphanRemoval: true)]
     private Collection $functionalities;
 
+    #[ORM\OneToMany(mappedBy: 'oldStatus', targetEntity: FunctionalityStatusHistory::class, orphanRemoval: true)]
+    private Collection $oldHistories;
+
+    #[ORM\OneToMany(mappedBy: 'newStatus', targetEntity: FunctionalityStatusHistory::class, orphanRemoval: true)]
+    private Collection $newHistories;
+
     use SortableTrait;
 
     public function __construct()
     {
         $this->functionalities = new ArrayCollection();
+        $this->oldHistories = new ArrayCollection();
+        $this->newHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,6 +79,63 @@ class FunctionalityStatus
         if ($this->functionalities->removeElement($functionality) &&
             $functionality->getFunctionalityStatus() === $this) {
             $functionality->setFunctionalityStatus(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FunctionalityStatusHistory>
+     */
+    public function getOldHistories(): Collection
+    {
+        return $this->oldHistories;
+    }
+
+    public function addOldHistory(FunctionalityStatusHistory $history): self
+    {
+        if (!$this->oldHistories->contains($history)) {
+            $this->oldHistories->add($history);
+            $history->setOldStatus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOldHistory(FunctionalityStatusHistory $history): self
+    {
+        if ($this->oldHistories->removeElement($history) && $history->getOldStatus() === $this) {
+            $history->setOldStatus(null);
+
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FunctionalityStatusHistory>
+     */
+    public function getNewHistories(): Collection
+    {
+        return $this->newHistories;
+    }
+
+    public function addNewHistories(FunctionalityStatusHistory $functionalityStatusHistory): self
+    {
+        if (!$this->newHistories->contains($functionalityStatusHistory)) {
+            $this->newHistories->add($functionalityStatusHistory);
+            $functionalityStatusHistory->setNewStatus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNewHistories(FunctionalityStatusHistory $functionalityStatusHistory): self
+    {
+        if ($this->newHistories->removeElement($functionalityStatusHistory) &&
+            $functionalityStatusHistory->getNewStatus() === $this) {
+            $functionalityStatusHistory->setNewStatus(null);
+
         }
 
         return $this;

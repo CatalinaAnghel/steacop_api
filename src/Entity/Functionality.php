@@ -56,6 +56,9 @@ class Functionality
     #[ORM\OneToMany(mappedBy: 'functionality', targetEntity: FunctionalityAttachment::class, orphanRemoval: true)]
     private Collection $functionalityAttachments;
 
+    #[ORM\OneToMany(mappedBy: 'functionality', targetEntity: FunctionalityStatusHistory::class, orphanRemoval: true)]
+    private Collection $history;
+
     use TimestampableTrait;
 
     use SortableTrait;
@@ -64,6 +67,7 @@ class Functionality
     {
         $this->functionalities = new ArrayCollection();
         $this->functionalityAttachments = new ArrayCollection();
+        $this->history = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -219,6 +223,36 @@ class Functionality
             // set the owning side to null (unless already changed)
             if ($functionalityAttachment->getFunctionality() === $this) {
                 $functionalityAttachment->setFunctionality(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FunctionalityStatusHistory>
+     */
+    public function getHistory(): Collection
+    {
+        return $this->history;
+    }
+
+    public function addHistory(FunctionalityStatusHistory $history): self
+    {
+        if (!$this->history->contains($history)) {
+            $this->history->add($history);
+            $history->setFunctionality($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistory(FunctionalityStatusHistory $history): self
+    {
+        if ($this->history->removeElement($history)) {
+            // set the owning side to null (unless already changed)
+            if ($history->getFunctionality() === $this) {
+                $history->setFunctionality(null);
             }
         }
 

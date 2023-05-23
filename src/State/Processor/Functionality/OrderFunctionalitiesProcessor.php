@@ -8,6 +8,7 @@ use ApiPlatform\State\ProcessorInterface;
 use App\ApiResource\FunctionalitiesOrdering;
 use App\Entity\Functionality;
 use App\Entity\FunctionalityStatus;
+use App\Entity\FunctionalityStatusHistory;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -32,6 +33,15 @@ class OrderFunctionalitiesProcessor implements ProcessorInterface
                 foreach ($orderingCollection->getFunctionalities() as $key => $functionality) {
                     $foundFunctionality = $functionalityRepo->findOneBy(['id' => $functionality]);
                     if (null !== $foundFunctionality) {
+                        if ($foundStatus->getId() !== $foundFunctionality->getFunctionalityStatus()?->getId()) {
+                            // log the update of the status of the functionality
+                            $functionalityLog = new FunctionalityStatusHistory();
+                            $functionalityLog->setCreatedAt(new \DateTimeImmutable('Now'))
+                                ->setFunctionality($foundFunctionality)
+                                ->setOldStatus($foundFunctionality->getFunctionalityStatus())
+                                ->setNewStatus($foundStatus);
+                            $this->entityManager->persist($functionalityLog);
+                        }
                         $foundFunctionality->setFunctionalityStatus($foundStatus);
                         $foundFunctionality->setOrderNumber($key + 1);
                     }

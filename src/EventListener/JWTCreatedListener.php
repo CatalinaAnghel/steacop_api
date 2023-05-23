@@ -38,6 +38,9 @@ class JWTCreatedListener
             if (null === $personData) {
                 $personsRepo = $this->entityManager->getRepository(Supervisor::class);
                 $personData = $personsRepo->findOneBy(['user' => $user->getId()]);
+            }else{
+                // student
+                $payload['projectId'] = $personData->getProject()?->getId();
             }
             $payload['fullName'] = null !== $personData ?
                 $personData->getFirstName() . ' ' . $personData->getLastName() :

@@ -12,6 +12,7 @@ use App\Dto\FunctionalityAttachment\Output\FunctionalityAttachmentOutputDto;
 use App\Entity\Functionality;
 use App\Entity\FunctionalityAttachment;
 use App\Entity\FunctionalityStatus;
+use App\Entity\FunctionalityStatusHistory;
 use App\Entity\FunctionalityType;
 use App\Helper\FunctionalityTypesHelper;
 use App\Validator\Contracts\ValidatorInterface;
@@ -54,6 +55,15 @@ class PatchFunctionalityStateProcessor implements ProcessorInterface
             $statusRepo = $this->entityManager->getRepository(FunctionalityStatus::class);
             $status = $statusRepo->findOneBy(['id' => $data->getStatus()]);
             if (null !== $status && $functionality->getFunctionalityStatus()?->getId() !== $status->getId()) {
+                // log the update of the status of the functionality
+                $functionalityLog = new FunctionalityStatusHistory();
+                $functionalityLog->setCreatedAt(new \DateTimeImmutable('Now'))
+                    ->setFunctionality($functionality)
+                    ->setOldStatus($functionality->getFunctionalityStatus())
+                    ->setNewStatus($status);
+                $this->entityManager->persist($functionalityLog);
+
+                // update the functionality
                 $functionality->setFunctionalityStatus($status);
                 $functionality->setOrderNumber($functionalityRepo->getNextOrderNumber(
                     $functionality->getProject()?->getId(),
@@ -94,24 +104,31 @@ class PatchFunctionalityStateProcessor implements ProcessorInterface
                             FunctionalityAttachmentOutputDto::class
                         );
                     })
-                    ->forMember('type', function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
-                        $typeConfig = new AutoMapperConfig();
-                        $typeConfig->registerMapping(
-                            FunctionalityType::class,
-                            FunctionalityCharacteristicOutputDto::class
-                        );
-                        return (new AutoMapper($typeConfig))
-                            ->map($functionality->getType(), FunctionalityCharacteristicOutputDto::class);
-                    })
-                    ->forMember('status', function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
-                        $statusConfig = new AutoMapperConfig();
-                        $statusConfig->registerMapping(
-                            FunctionalityStatus::class,
-                            FunctionalityCharacteristicOutputDto::class
-                        );
-                        return (new AutoMapper($statusConfig))
-                            ->map($functionality->getFunctionalityStatus(), FunctionalityCharacteristicOutputDto::class);
-                    })
+                    ->forMember(
+                        'type',
+                        function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
+                            $typeConfig = new AutoMapperConfig();
+                            $typeConfig->registerMapping(
+                                FunctionalityType::class,
+                                FunctionalityCharacteristicOutputDto::class
+                            );
+                            return (new AutoMapper($typeConfig))
+                                ->map($functionality->getType(), FunctionalityCharacteristicOutputDto::class);
+                        })
+                    ->forMember(
+                        'status',
+                        function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
+                            $statusConfig = new AutoMapperConfig();
+                            $statusConfig->registerMapping(
+                                FunctionalityStatus::class,
+                                FunctionalityCharacteristicOutputDto::class
+                            );
+                            return (new AutoMapper($statusConfig))
+                                ->map(
+                                    $functionality->getFunctionalityStatus(),
+                                    FunctionalityCharacteristicOutputDto::class
+                                );
+                        })
                     ->forMember('projectId', function (Functionality $functionality): int {
                         return $functionality->getProject()?->getId();
                     });
