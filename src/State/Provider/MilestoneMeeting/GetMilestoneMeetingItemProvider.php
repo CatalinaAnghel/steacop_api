@@ -6,13 +6,11 @@ namespace App\State\Provider\MilestoneMeeting;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Dto\Meeting\Output\MilestoneMeetingOutputDto;
-use App\Entity\MilestoneMeeting;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
+use App\State\Provider\Contracts\AbstractMilestoneMeetingProvider;
 use AutoMapperPlus\Exception\UnregisteredMappingException;
 use Psr\Log\LoggerInterface;
 
-class GetMilestoneMeetingItemProvider implements ProviderInterface
+class GetMilestoneMeetingItemProvider extends AbstractMilestoneMeetingProvider
 {
     public function __construct(private readonly ProviderInterface $decoratedProvider,
                                 private readonly LoggerInterface   $logger
@@ -28,12 +26,7 @@ class GetMilestoneMeetingItemProvider implements ProviderInterface
     {
         $milestoneMeeting = $this->decoratedProvider->provide($operation, $uriVariables, $context);
         if (null !== $milestoneMeeting) {
-            $configOutput = new AutoMapperConfig();
-            $configOutput->registerMapping(
-                MilestoneMeeting::class,
-                MilestoneMeetingOutputDto::class
-            );
-            $mapper = new AutoMapper($configOutput);
+            $mapper = $this->getMapper();
 
             try {
                 /**

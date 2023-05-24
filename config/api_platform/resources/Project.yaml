@@ -4,3 +4,6 @@ App\Entity\Project:
       output: App\Dto\Project\Output\ProjectInformationOutputDto
       security: 'is_granted("ROLE_USER")'
       provider: App\State\Provider\GetProjectInformationProvider
+    ApiPlatform\Metadata\GetCollection:
+      filters: ['project.search_filter']
+      security: 'is_granted("ROLE_USER")'

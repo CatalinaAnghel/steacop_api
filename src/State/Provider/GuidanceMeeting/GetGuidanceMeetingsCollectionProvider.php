@@ -7,12 +7,10 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\Pagination\Pagination;
 use ApiPlatform\State\ProviderInterface;
 use App\Dto\Meeting\Output\GuidanceMeetingOutputDto;
-use App\Entity\GuidanceMeeting;
 use App\Paginator\StatePaginator;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
+use App\State\Provider\Contracts\AbstractGuidanceMeetingProvider;
 
-class GetGuidanceMeetingsCollectionProvider implements ProviderInterface
+class GetGuidanceMeetingsCollectionProvider extends AbstractGuidanceMeetingProvider
 {
     public function __construct(private readonly ProviderInterface $decoratedProvider,
                                 private readonly Pagination        $pagination)
@@ -27,10 +25,7 @@ class GetGuidanceMeetingsCollectionProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
         $meetings = $this->decoratedProvider->provide($operation, $uriVariables, $context);
-        $config = new AutoMapperConfig();
-        $config
-            ->registerMapping(GuidanceMeeting::class, GuidanceMeetingOutputDto::class);
-        $mapper = new AutoMapper($config);
+        $mapper = $this->getMapper();
         $meetingsCollection = $mapper->mapMultiple($meetings, GuidanceMeetingOutputDto::class);
         $meetingIterator = new \ArrayIterator($meetingsCollection);
 

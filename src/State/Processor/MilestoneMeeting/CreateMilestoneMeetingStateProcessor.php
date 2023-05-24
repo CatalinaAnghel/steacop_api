@@ -4,18 +4,18 @@ declare(strict_types=1);
 namespace App\State\Processor\MilestoneMeeting;
 
 use ApiPlatform\Metadata\Operation;
-use ApiPlatform\State\ProcessorInterface;
 use App\Dto\Meeting\Input\CreateMeetingInputDto;
 use App\Dto\Meeting\Output\MilestoneMeetingOutputDto;
 use App\Entity\MilestoneMeeting;
 use App\Entity\Project;
+use App\State\Processor\Contracts\AbstractMilestoneMeetingProcessor;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CreateMilestoneMeetingStateProcessor implements ProcessorInterface
+class CreateMilestoneMeetingStateProcessor extends AbstractMilestoneMeetingProcessor
 {
     public function __construct(private readonly EntityManagerInterface $entityManager,
                                 private readonly LoggerInterface        $logger)
@@ -51,9 +51,7 @@ class CreateMilestoneMeetingStateProcessor implements ProcessorInterface
                 $this->entityManager->persist($meeting);
                 $this->entityManager->flush();
 
-                $configOutput = new AutoMapperConfig();
-                $configOutput->registerMapping(MilestoneMeeting::class, MilestoneMeetingOutputDto::class);
-                $mapper = new AutoMapper($configOutput);
+                $mapper = $this->getMapper();
 
                 /**
                  * @var MilestoneMeetingOutputDto $meetingDto

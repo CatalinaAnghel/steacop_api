@@ -25,6 +25,10 @@ class AbstractMeetingOutputDto
 
     private float $duration;
 
+    private string $studentFullName;
+
+    private string $supervisorFullName;
+
     use SchedulingTrait;
 
     use IsCanceledTrait;
@@ -123,5 +127,53 @@ class AbstractMeetingOutputDto
     public function setDuration(float $duration): void
     {
         $this->duration = $duration;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getScheduledAt(): \DateTime
+    {
+        return $this->scheduledAt;
+    }
+
+    /**
+     * @param \DateTime $scheduledAt
+     */
+    public function setScheduledAt(\DateTime $scheduledAt): void
+    {
+        $this->scheduledAt = $scheduledAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStudentFullName(): string
+    {
+        return $this->studentFullName;
+    }
+
+    /**
+     * @param string $studentFullName
+     */
+    public function setStudentFullName(string $studentFullName): void
+    {
+        $this->studentFullName = $studentFullName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSupervisorFullName(): string
+    {
+        return $this->supervisorFullName;
+    }
+
+    /**
+     * @param string $supervisorFullName
+     */
+    public function setSupervisorFullName(string $supervisorFullName): void
+    {
+        $this->supervisorFullName = $supervisorFullName;
     }
 }

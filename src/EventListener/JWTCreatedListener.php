@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Entity\Project;
 use App\Entity\Student;
 use App\Entity\Supervisor;
 use App\Entity\User;
@@ -38,9 +39,18 @@ class JWTCreatedListener
             if (null === $personData) {
                 $personsRepo = $this->entityManager->getRepository(Supervisor::class);
                 $personData = $personsRepo->findOneBy(['user' => $user->getId()]);
-            }else{
+                if(null !== $personData){
+                    $payload['projectIds'] = [];
+                    foreach ($personData->getProjects() as $project){
+                        /**
+                         * @var Project $project
+                         */
+                        $payload['projectIds'][] = $project->getId();
+                    }
+                }
+            } else {
                 // student
-                $payload['projectId'] = $personData->getProject()?->getId();
+                $payload['projectIds'] = [$personData->getProject()?->getId()];
             }
             $payload['fullName'] = null !== $personData ?
                 $personData->getFirstName() . ' ' . $personData->getLastName() :

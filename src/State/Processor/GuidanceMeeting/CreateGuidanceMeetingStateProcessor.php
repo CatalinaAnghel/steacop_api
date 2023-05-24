@@ -4,18 +4,18 @@ declare(strict_types=1);
 namespace App\State\Processor\GuidanceMeeting;
 
 use ApiPlatform\Metadata\Operation;
-use ApiPlatform\State\ProcessorInterface;
 use App\Dto\Meeting\Input\CreateMeetingInputDto;
 use App\Dto\Meeting\Output\GuidanceMeetingOutputDto;
 use App\Entity\GuidanceMeeting;
 use App\Entity\Project;
+use App\State\Processor\Contracts\AbstractGuidanceMeetingProcessor;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CreateGuidanceMeetingStateProcessor implements ProcessorInterface
+class CreateGuidanceMeetingStateProcessor extends AbstractGuidanceMeetingProcessor
 {
     public function __construct(private readonly EntityManagerInterface $entityManager,
                                 private readonly LoggerInterface        $logger)
@@ -51,12 +51,7 @@ class CreateGuidanceMeetingStateProcessor implements ProcessorInterface
                 $this->entityManager->persist($meeting);
                 $this->entityManager->flush();
 
-                $configOutput = new AutoMapperConfig();
-                $configOutput->registerMapping(
-                    GuidanceMeeting::class,
-                    GuidanceMeetingOutputDto::class
-                );
-                $mapper = new AutoMapper($configOutput);
+                $mapper = $this->getMapper();
 
                 /**
                  * @var GuidanceMeetingOutputDto $meetingDto

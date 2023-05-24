@@ -4,17 +4,15 @@ declare(strict_types=1);
 namespace App\State\Processor\GuidanceMeeting;
 
 use ApiPlatform\Metadata\Operation;
-use ApiPlatform\State\ProcessorInterface;
 use App\Dto\Meeting\Input\PatchGuidanceMeetingInputDto;
 use App\Dto\Meeting\Output\GuidanceMeetingOutputDto;
 use App\Entity\GuidanceMeeting;
+use App\State\Processor\Contracts\AbstractGuidanceMeetingProcessor;
 use App\Validator\Contracts\ValidatorInterface;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class PatchGuidanceMeetingStateProcessor implements ProcessorInterface
+class PatchGuidanceMeetingStateProcessor extends AbstractGuidanceMeetingProcessor
 {
     public function __construct(private readonly EntityManagerInterface $entityManager,
                                 private readonly LoggerInterface        $logger,
@@ -50,11 +48,7 @@ class PatchGuidanceMeetingStateProcessor implements ProcessorInterface
             try {
                 $this->entityManager->flush();
 
-                $configOutput = new AutoMapperConfig();
-                $configOutput->registerMapping(
-                    GuidanceMeeting::class,
-                    GuidanceMeetingOutputDto::class);
-                $mapper = new AutoMapper($configOutput);
+                $mapper = $this->getMapper();
                 /**
                  * @var GuidanceMeetingOutputDto $meetingDto
                  */
