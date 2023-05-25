@@ -5,6 +5,7 @@ namespace App\Dto\Meeting\Input;
 
 use App\Dto\Meeting\Contracts\AbstractCancellableMeetingInputDto;
 use App\Dto\Traits\IsCompletedTrait;
+use App\Dto\Traits\IsMissedTrait;
 use App\Dto\Traits\SchedulingTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 

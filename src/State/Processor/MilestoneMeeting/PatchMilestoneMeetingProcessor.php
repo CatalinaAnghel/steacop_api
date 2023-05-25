@@ -46,6 +46,10 @@ class PatchMilestoneMeetingProcessor extends AbstractMilestoneMeetingProcessor
                 $milestoneMeeting->setIsCanceled(true);
                 $milestoneMeeting->setCanceledAt(new \DateTimeImmutable('Now'));
             }
+
+            if ($data->getIsMissed()) {
+                $milestoneMeeting->setIsMissed(true);
+            }
             $this->entityManager->persist($milestoneMeeting);
 
             try {

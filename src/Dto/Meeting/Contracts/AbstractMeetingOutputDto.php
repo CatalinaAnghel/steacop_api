@@ -5,6 +5,7 @@ namespace App\Dto\Meeting\Contracts;
 
 use App\Dto\Traits\IdentityTrait;
 use App\Dto\Traits\IsCanceledTrait;
+use App\Dto\Traits\IsMissedTrait;
 use App\Dto\Traits\SchedulingTrait;
 
 class AbstractMeetingOutputDto
@@ -28,6 +29,8 @@ class AbstractMeetingOutputDto
     private string $studentFullName;
 
     private string $supervisorFullName;
+
+    use IsMissedTrait;
 
     use SchedulingTrait;
 
@@ -175,5 +178,21 @@ class AbstractMeetingOutputDto
     public function setSupervisorFullName(string $supervisorFullName): void
     {
         $this->supervisorFullName = $supervisorFullName;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsMissed(): bool
+    {
+        return $this->isMissed;
+    }
+
+    /**
+     * @param bool $isMissed
+     */
+    public function setIsMissed(bool $isMissed): void
+    {
+        $this->isMissed = $isMissed;
     }
 }

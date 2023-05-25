@@ -47,6 +47,7 @@ class CreateMilestoneMeetingStateProcessor extends AbstractMilestoneMeetingProce
                 $meeting->setCreatedAt(new \DateTimeImmutable('Now'));
                 $meeting->setIsCompleted(false);
                 $meeting->setIsCanceled(false);
+                $meeting->setIsMissed(false);
                 $meeting->setScheduledAt($data->getScheduledAt());
                 $this->entityManager->persist($meeting);
                 $this->entityManager->flush();

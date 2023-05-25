@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Dto\Meeting\Contracts;
 
+use App\Dto\Traits\IsMissedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class AbstractMeetingInputDto
@@ -11,6 +12,8 @@ abstract class AbstractMeetingInputDto
     private string $description;
 
     private ?string $link;
+
+    use IsMissedTrait;
 
     /**
      * @return string

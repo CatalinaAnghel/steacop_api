@@ -36,6 +36,9 @@ abstract class AbstractMeeting
     #[ORM\Column]
     private float $duration;
 
+    #[ORM\Column]
+    private ?bool $isMissed = null;
+
     #[Pure] public function __construct() {}
 
     use TimestampableTrait;
@@ -127,5 +130,17 @@ abstract class AbstractMeeting
     public function setDuration(float $duration): void
     {
         $this->duration = $duration;
+    }
+
+    public function isMissed(): ?bool
+    {
+        return $this->isMissed;
+    }
+
+    public function setIsMissed(bool $isMissed): self
+    {
+        $this->isMissed = $isMissed;
+
+        return $this;
     }
 }

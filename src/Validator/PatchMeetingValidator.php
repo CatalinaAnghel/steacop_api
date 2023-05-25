@@ -26,7 +26,13 @@ class PatchMeetingValidator implements ValidatorInterface
                 );
             }
 
-            if ($referencedObject->isCompleted() && $data->getIsCanceled()) {
+            if ($referencedObject->isMissed()) {
+                throw new UnprocessableEntityHttpException(
+                    MeetingValidationHelper::MissedMeetingErrorMessage->value
+                );
+            }
+
+            if ($referencedObject->isCompleted() && ($data->getIsCanceled() || $data->getIsMissed())) {
                 throw new UnprocessableEntityHttpException(
                     MeetingValidationHelper::CompletedMeetingErrorMessage->value
                 );

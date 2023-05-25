@@ -43,6 +43,10 @@ class PatchGuidanceMeetingStateProcessor extends AbstractGuidanceMeetingProcesso
                 $guidanceMeeting->setIsCanceled(true);
                 $guidanceMeeting->setCanceledAt(new \DateTimeImmutable('Now'));
             }
+
+            if ($data->getIsMissed()) {
+                $guidanceMeeting->setIsMissed(true);
+            }
             $this->entityManager->persist($guidanceMeeting);
 
             try {
