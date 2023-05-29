@@ -6,34 +6,19 @@ namespace App\Dto\Project\Output;
 class ProjectInformationOutputDto
 {
     /**
-     * @var int $numberOfGuidanceMeetings
+     * @var MeetingInformation $milestoneMeetingInformation
      */
-    private int $numberOfGuidanceMeetings;
+    private MeetingInformation $milestoneMeetingInformation;
 
     /**
-     * @var int $numberOfCompletedGuidanceMeetings
+     * @var MeetingInformation $guidanceMeetingInformation
      */
-    private int $numberOfCompletedGuidanceMeetings;
+    private MeetingInformation $guidanceMeetingInformation;
 
     /**
-     * @var int $numberOfMilestoneMeetings
+     * @var AssignmentInformation $assignmentInformation
      */
-    private int $numberOfMilestoneMeetings;
-
-    /**
-     * @var int $numberOfCompletedMilestoneMeetings
-     */
-    private int $numberOfCompletedMilestoneMeetings;
-
-    /**
-     * @var int $numberOfAssignments
-     */
-    private int $numberOfAssignments;
-
-    /**
-     * @var int $numberOfFinishedAssignments
-     */
-    private int $numberOfFinishedAssignments;
+    private AssignmentInformation $assignmentInformation;
 
     /**
      * @var string|null $title
@@ -50,106 +35,57 @@ class ProjectInformationOutputDto
      */
     private ?string $repositoryUrl;
 
-    public function __construct()
+    /**
+     * @var float|null $grade
+     */
+    private ?float $grade;
+
+    /**
+     * @return MeetingInformation
+     */
+    public function getMilestoneMeetingInformation(): MeetingInformation
     {
-        $this->numberOfGuidanceMeetings = 0;
-        $this->numberOfAssignments = 0;
+        return $this->milestoneMeetingInformation;
     }
 
     /**
-     * @return int
+     * @param MeetingInformation $milestoneMeetingInformation
      */
-    public function getNumberOfGuidanceMeetings(): int
+    public function setMilestoneMeetingInformation(MeetingInformation $milestoneMeetingInformation): void
     {
-        return $this->numberOfGuidanceMeetings;
+        $this->milestoneMeetingInformation = $milestoneMeetingInformation;
     }
 
     /**
-     * @param int $numberOfGuidanceMeetings
+     * @return MeetingInformation
      */
-    public function setNumberOfGuidanceMeetings(int $numberOfGuidanceMeetings): void
+    public function getGuidanceMeetingInformation(): MeetingInformation
     {
-        $this->numberOfGuidanceMeetings = $numberOfGuidanceMeetings;
+        return $this->guidanceMeetingInformation;
     }
 
     /**
-     * @return int
+     * @param MeetingInformation $guidanceMeetingInformation
      */
-    public function getNumberOfCompletedGuidanceMeetings(): int
+    public function setGuidanceMeetingInformation(MeetingInformation $guidanceMeetingInformation): void
     {
-        return $this->numberOfCompletedGuidanceMeetings;
+        $this->guidanceMeetingInformation = $guidanceMeetingInformation;
     }
 
     /**
-     * @param int $numberOfCompletedGuidanceMeetings
+     * @return AssignmentInformation
      */
-    public function setNumberOfCompletedGuidanceMeetings(int $numberOfCompletedGuidanceMeetings): void
+    public function getAssignmentInformation(): AssignmentInformation
     {
-        $this->numberOfCompletedGuidanceMeetings = $numberOfCompletedGuidanceMeetings;
+        return $this->assignmentInformation;
     }
 
     /**
-     * @return int
+     * @param AssignmentInformation $assignmentInformation
      */
-    public function getNumberOfMilestoneMeetings(): int
+    public function setAssignmentInformation(AssignmentInformation $assignmentInformation): void
     {
-        return $this->numberOfMilestoneMeetings;
-    }
-
-    /**
-     * @param int $numberOfMilestoneMeetings
-     */
-    public function setNumberOfMilestoneMeetings(int $numberOfMilestoneMeetings): void
-    {
-        $this->numberOfMilestoneMeetings = $numberOfMilestoneMeetings;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumberOfCompletedMilestoneMeetings(): int
-    {
-        return $this->numberOfCompletedMilestoneMeetings;
-    }
-
-    /**
-     * @param int $numberOfCompletedMilestoneMeetings
-     */
-    public function setNumberOfCompletedMilestoneMeetings(int $numberOfCompletedMilestoneMeetings): void
-    {
-        $this->numberOfCompletedMilestoneMeetings = $numberOfCompletedMilestoneMeetings;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumberOfAssignments(): int
-    {
-        return $this->numberOfAssignments;
-    }
-
-    /**
-     * @param int $numberOfAssignments
-     */
-    public function setNumberOfAssignments(int $numberOfAssignments): void
-    {
-        $this->numberOfAssignments = $numberOfAssignments;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumberOfFinishedAssignments(): int
-    {
-        return $this->numberOfFinishedAssignments;
-    }
-
-    /**
-     * @param int $numberOfFinishedAssignments
-     */
-    public function setNumberOfFinishedAssignments(int $numberOfFinishedAssignments): void
-    {
-        $this->numberOfFinishedAssignments = $numberOfFinishedAssignments;
+        $this->assignmentInformation = $assignmentInformation;
     }
 
     /**
@@ -198,5 +134,21 @@ class ProjectInformationOutputDto
     public function setRepositoryUrl(?string $repositoryUrl): void
     {
         $this->repositoryUrl = $repositoryUrl;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getGrade(): ?float
+    {
+        return $this->grade;
+    }
+
+    /**
+     * @param float|null $grade
+     */
+    public function setGrade(?float $grade): void
+    {
+        $this->grade = $grade;
     }
 }

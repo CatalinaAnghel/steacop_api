@@ -7,3 +7,8 @@ App\Entity\Project:
     ApiPlatform\Metadata\GetCollection:
       filters: ['project.search_filter']
       security: 'is_granted("ROLE_USER")'
+    ApiPlatform\Metadata\Patch:
+      input: App\Dto\Project\Input\PatchProjectInputDto
+      security: 'is_granted("PROJECT_EDIT", object)'
+      provider: App\State\Provider\PatchProjectItemProvider
+      processor: App\State\Processor\PatchProjectProcessor

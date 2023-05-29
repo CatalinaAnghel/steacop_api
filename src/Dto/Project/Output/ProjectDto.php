@@ -20,6 +20,11 @@ class ProjectDto
     private ?string $description;
 
     /**
+     * @var float|null $grade
+     */
+    private ?float $grade;
+
+    /**
      * @return string
      */
     public function getTitle(): string
@@ -49,5 +54,21 @@ class ProjectDto
     public function setDescription(string|null $description): void
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getGrade(): ?float
+    {
+        return $this->grade;
+    }
+
+    /**
+     * @param float|null $grade
+     */
+    public function setGrade(?float $grade): void
+    {
+        $this->grade = $grade;
     }
 }

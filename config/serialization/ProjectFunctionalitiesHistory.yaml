@@ -1,0 +1,10 @@
+App\Entity\ProjectFunctionalitiesHistory:
+  attributes:
+    id:
+      groups: [ 'history:output' ]
+    createdAt:
+      groups: [ 'history:output' ]
+    status:
+      groups: [ 'history:output' ]
+    numberOfFunctionalities:
+      groups: [ 'history:output' ]

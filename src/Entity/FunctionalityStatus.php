@@ -30,6 +30,9 @@ class FunctionalityStatus
     #[ORM\OneToMany(mappedBy: 'newStatus', targetEntity: FunctionalityStatusHistory::class, orphanRemoval: true)]
     private Collection $newHistories;
 
+    #[ORM\OneToMany(mappedBy: 'status', targetEntity: ProjectFunctionalitiesHistory::class, orphanRemoval: true)]
+    private Collection $projectFunctionalitiesHistories;
+
     use SortableTrait;
 
     public function __construct()
@@ -37,6 +40,7 @@ class FunctionalityStatus
         $this->functionalities = new ArrayCollection();
         $this->oldHistories = new ArrayCollection();
         $this->newHistories = new ArrayCollection();
+        $this->projectFunctionalitiesHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -136,6 +140,35 @@ class FunctionalityStatus
             $functionalityStatusHistory->getNewStatus() === $this) {
             $functionalityStatusHistory->setNewStatus(null);
 
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProjectFunctionalitiesHistory>
+     */
+    public function getProjectFunctionalitiesHistories(): Collection
+    {
+        return $this->projectFunctionalitiesHistories;
+    }
+
+    public function addProjectFunctionalitiesHistory(ProjectFunctionalitiesHistory $projectFunctionalitiesHistory): self
+    {
+        if (!$this->projectFunctionalitiesHistories->contains($projectFunctionalitiesHistory)) {
+            $this->projectFunctionalitiesHistories->add($projectFunctionalitiesHistory);
+            $projectFunctionalitiesHistory->setStatus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjectFunctionalitiesHistory(ProjectFunctionalitiesHistory $projectFunctionalitiesHistory): self
+    {
+        if ($this->projectFunctionalitiesHistories->removeElement($projectFunctionalitiesHistory) &&
+            $projectFunctionalitiesHistory->getStatus() === $this
+        ) {
+            $projectFunctionalitiesHistory->setStatus(null);
         }
 
         return $this;

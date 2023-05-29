@@ -6,7 +6,7 @@ App\Entity\Functionality:
       output: App\Dto\Functionality\Output\FunctionalityOutputDto
     ApiPlatform\Metadata\GetCollection:
       security: 'is_granted("ROLE_STUDENT")||is_granted("ROLE_TEACHER")'
-      filters: [ 'functionality.search_filter', 'functionality.date_filter' ]
+      filters: [ 'functionality.search_filter', 'functionality.date_filter', 'functionality.order_filter' ]
       provider: App\State\Provider\Functionality\GetFunctionalityCollectionProvider
       output: App\Dto\Functionality\Output\FunctionalityOutputDto
     ApiPlatform\Metadata\Post:

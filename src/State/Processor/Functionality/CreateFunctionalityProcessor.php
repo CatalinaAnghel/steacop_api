@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace App\State\Processor\Functionality;
 
 use ApiPlatform\Metadata\Operation;
-use ApiPlatform\State\ProcessorInterface;
 use App\Dto\Functionality\Input\CreateFunctionalityInputDto;
-use App\Dto\Functionality\Output\FunctionalityCharacteristicOutputDto;
 use App\Dto\Functionality\Output\FunctionalityOutputDto;
 use App\Entity\Functionality;
 use App\Entity\FunctionalityStatus;
@@ -14,6 +12,7 @@ use App\Entity\FunctionalityType;
 use App\Entity\Project;
 use App\Helper\FunctionalityStatusesHelper;
 use App\Message\Command\Functionality\CreateFunctionalityCommand;
+use App\State\Processor\Contracts\AbstractFunctionalityProcessor;
 use App\Validator\Contracts\ValidatorInterface;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
@@ -22,14 +21,17 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class CreateFunctionalityProcessor implements ProcessorInterface
+class CreateFunctionalityProcessor extends AbstractFunctionalityProcessor
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly LoggerInterface        $logger,
         private readonly MessageBusInterface    $commandBus,
         private readonly ValidatorInterface     $functionalityValidator
-    ) {}
+    )
+    {
+        parent::__construct($this->entityManager);
+    }
 
     /**
      * @inheritDoc
@@ -84,30 +86,12 @@ class CreateFunctionalityProcessor implements ProcessorInterface
                 $this->commandBus->dispatch(new CreateFunctionalityCommand($functionality, $project));
 
                 $configOutput = new AutoMapperConfig();
-                $configOutput->registerMapping(
+                $this->addCommonOutputMapping($configOutput->registerMapping(
                     Functionality::class,
                     FunctionalityOutputDto::class
                 )->forMember('functionalityAttachments', function (): array {
                     return [];
-                })->forMember('type', function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
-                    $typeConfig = new AutoMapperConfig();
-                    $typeConfig->registerMapping(
-                        FunctionalityType::class,
-                        FunctionalityCharacteristicOutputDto::class
-                    );
-                    return (new AutoMapper($typeConfig))
-                        ->map($functionality->getType(), FunctionalityCharacteristicOutputDto::class);
-                })->forMember('status', function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
-                    $statusConfig = new AutoMapperConfig();
-                    $statusConfig->registerMapping(
-                        FunctionalityStatus::class,
-                        FunctionalityCharacteristicOutputDto::class
-                    );
-                    return (new AutoMapper($statusConfig))
-                        ->map($functionality->getFunctionalityStatus(), FunctionalityCharacteristicOutputDto::class);
-                })->forMember('projectId', function (Functionality $functionality): int {
-                    return $functionality->getProject()?->getId();
-                });
+                }));
                 $mapper = new AutoMapper($configOutput);
 
                 /**

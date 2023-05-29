@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace App\State\Processor\Functionality;
 
 use ApiPlatform\Metadata\Operation;
-use ApiPlatform\State\ProcessorInterface;
 use App\Dto\Functionality\Input\PatchFunctionalityInputDto;
-use App\Dto\Functionality\Output\FunctionalityCharacteristicOutputDto;
 use App\Dto\Functionality\Output\FunctionalityOutputDto;
 use App\Dto\FunctionalityAttachment\Output\FunctionalityAttachmentOutputDto;
 use App\Entity\Functionality;
@@ -15,13 +13,14 @@ use App\Entity\FunctionalityStatus;
 use App\Entity\FunctionalityStatusHistory;
 use App\Entity\FunctionalityType;
 use App\Helper\FunctionalityTypesHelper;
+use App\State\Processor\Contracts\AbstractFunctionalityProcessor;
 use App\Validator\Contracts\ValidatorInterface;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class PatchFunctionalityStateProcessor implements ProcessorInterface
+class PatchFunctionalityStateProcessor extends AbstractFunctionalityProcessor
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
@@ -30,6 +29,7 @@ class PatchFunctionalityStateProcessor implements ProcessorInterface
     )
     {
         date_default_timezone_set('Europe/Bucharest');
+        parent::__construct($this->entityManager);
     }
 
     /**
@@ -54,12 +54,13 @@ class PatchFunctionalityStateProcessor implements ProcessorInterface
             }
             $statusRepo = $this->entityManager->getRepository(FunctionalityStatus::class);
             $status = $statusRepo->findOneBy(['id' => $data->getStatus()]);
+            $oldStatus = $functionality->getFunctionalityStatus();
             if (null !== $status && $functionality->getFunctionalityStatus()?->getId() !== $status->getId()) {
                 // log the update of the status of the functionality
                 $functionalityLog = new FunctionalityStatusHistory();
                 $functionalityLog->setCreatedAt(new \DateTimeImmutable('Now'))
                     ->setFunctionality($functionality)
-                    ->setOldStatus($functionality->getFunctionalityStatus())
+                    ->setOldStatus($oldStatus)
                     ->setNewStatus($status);
                 $this->entityManager->persist($functionalityLog);
 
@@ -86,8 +87,27 @@ class PatchFunctionalityStateProcessor implements ProcessorInterface
             try {
                 $this->entityManager->flush();
 
+                if(null !== $oldStatus){
+                    $historyDate = new \DateTime('Now');
+                    $oldStatusHistory = $this->createHistory(
+                        $oldStatus,
+                        $functionality->getProject(),
+                        $historyDate
+                    );
+                    $this->entityManager->persist($oldStatusHistory);
+
+                    $newStatusHistory = $this->createHistory(
+                        $status,
+                        $functionality->getProject(),
+                        $historyDate
+                    );
+                    $this->entityManager->persist($newStatusHistory);
+                    $this->entityManager->flush();
+                }
+
                 $configOutput = new AutoMapperConfig();
-                $configOutput->registerMapping(
+                $this->addCommonOutputMapping(
+                    $configOutput->registerMapping(
                     Functionality::class,
                     FunctionalityOutputDto::class)
                     ->forMember('functionalityAttachments', function (Functionality $source): array {
@@ -103,35 +123,7 @@ class PatchFunctionalityStateProcessor implements ProcessorInterface
                             $source->getFunctionalityAttachments(),
                             FunctionalityAttachmentOutputDto::class
                         );
-                    })
-                    ->forMember(
-                        'type',
-                        function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
-                            $typeConfig = new AutoMapperConfig();
-                            $typeConfig->registerMapping(
-                                FunctionalityType::class,
-                                FunctionalityCharacteristicOutputDto::class
-                            );
-                            return (new AutoMapper($typeConfig))
-                                ->map($functionality->getType(), FunctionalityCharacteristicOutputDto::class);
-                        })
-                    ->forMember(
-                        'status',
-                        function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
-                            $statusConfig = new AutoMapperConfig();
-                            $statusConfig->registerMapping(
-                                FunctionalityStatus::class,
-                                FunctionalityCharacteristicOutputDto::class
-                            );
-                            return (new AutoMapper($statusConfig))
-                                ->map(
-                                    $functionality->getFunctionalityStatus(),
-                                    FunctionalityCharacteristicOutputDto::class
-                                );
-                        })
-                    ->forMember('projectId', function (Functionality $functionality): int {
-                        return $functionality->getProject()?->getId();
-                    });
+                    }));
                 $mapper = new AutoMapper($configOutput);
                 /**
                  * @var FunctionalityOutputDto $functionalityDto

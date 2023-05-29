@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Traits\GradeTrait;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
 {
+    use GradeTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -49,12 +52,16 @@ class Project
     #[ORM\OneToOne(mappedBy: 'project', cascade: ['persist', 'remove'])]
     private ?Student $student = null;
 
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProjectFunctionalitiesHistory::class, orphanRemoval: true)]
+    private Collection $history;
+
     public function __construct()
     {
         $this->functionalities = new ArrayCollection();
         $this->milestoneMeetings = new ArrayCollection();
         $this->guidanceMeetings = new ArrayCollection();
         $this->assignments = new ArrayCollection();
+        $this->history = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -228,5 +235,35 @@ class Project
         }
 
         $this->student = $student;
+    }
+
+    /**
+     * @return Collection<int, ProjectFunctionalitiesHistory>
+     */
+    public function getHistories(): Collection
+    {
+        return $this->history;
+    }
+
+    public function addHistory(ProjectFunctionalitiesHistory $numberOfOpenItem): self
+    {
+        if (!$this->history->contains($numberOfOpenItem)) {
+            $this->history->add($numberOfOpenItem);
+            $numberOfOpenItem->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistory(ProjectFunctionalitiesHistory $numberOfOpenItem): self
+    {
+        if ($this->history->removeElement($numberOfOpenItem)) {
+            // set the owning side to null (unless already changed)
+            if ($numberOfOpenItem->getProject() === $this) {
+                $numberOfOpenItem->setProject(null);
+            }
+        }
+
+        return $this;
     }
 }

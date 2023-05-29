@@ -1,0 +1,6 @@
+App\Entity\ProjectFunctionalitiesHistory:
+  normalizationContext:
+    groups: [ 'history:output' ]
+  operations:
+    ApiPlatform\Metadata\GetCollection:
+      filters: [ 'history.search_filter', 'history:order_filter' ]

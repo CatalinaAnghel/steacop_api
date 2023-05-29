@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Functionality;
 use App\Entity\FunctionalityStatus;
-use App\Entity\FunctionalityType;
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -116,23 +115,11 @@ class FunctionalityRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder(self::ALIAS);
         $query = $qb->update()
             ->set(self::ALIAS . '.orderNumber', self::ALIAS . '.orderNumber + :offset')
-            ->innerJoin(
-                Project::class,
-                'project',
-                Join::WITH,
-                'project.id = ' . self::ALIAS . '.project'
-            )
-            ->innerJoin(
-                FunctionalityStatus::class,
-                'status',
-                Join::WITH,
-                'status.id = ' . self::ALIAS . '.status'
-            )
             ->where(
                 $qb->expr()->andX(
-                    $qb->expr()->eq('project.id', ':projectId'),
+                    $qb->expr()->eq(self::ALIAS . '.project', ':projectId'),
                     $qb->expr()->gt(self::ALIAS . '.orderNumber', ':startingOrderNumber'),
-                    $qb->expr()->eq('status.id', ':statusId')
+                    $qb->expr()->eq(self::ALIAS . '.functionalityStatus', ':statusId')
                 )
             )
             ->setParameter('offset', $positionOffset)
@@ -144,7 +131,6 @@ class FunctionalityRepository extends ServiceEntityRepository
         try {
             $query->execute();
         } catch (\Exception $exception) {
-            dd($exception->getMessage());
             $this->logger->error($exception->getMessage());
         }
     }
