@@ -21,7 +21,7 @@ class FutureDateTimeValidator extends ConstraintValidator
             return;
         }
 
-        $minDate = (new \DateTime('NOW'))?->modify('+1 day');
+        $minDate = (new \DateTime('today'))?->modify('+1 day');
         if ($value < $minDate) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value->format('Y-m-d H:i:s'))

@@ -54,7 +54,7 @@ class GetFunctionalityCollectionProvider implements ProviderInterface
                 $typeConfig->registerMapping(
                     FunctionalityType::class,
                     FunctionalityCharacteristicOutputDto::class
-                )->forMember('name', function(FunctionalityType $type): string{
+                )->forMember('name', function (FunctionalityType $type): string {
                     return $type->getName();
                 });
                 return (new AutoMapper($typeConfig))->map(
@@ -67,7 +67,7 @@ class GetFunctionalityCollectionProvider implements ProviderInterface
                 $statusConfig->registerMapping(
                     FunctionalityStatus::class,
                     FunctionalityCharacteristicOutputDto::class
-                )->forMember('name', function(FunctionalityStatus $status): string{
+                )->forMember('name', function (FunctionalityStatus $status): string {
                     return $status->getName();
                 });
                 return (new AutoMapper($statusConfig))->map(
@@ -77,6 +77,9 @@ class GetFunctionalityCollectionProvider implements ProviderInterface
             })
             ->forMember('projectId', function (Functionality $functionality): int {
                 return $functionality->getProject()?->getId();
+            })
+            ->forMember('code', function (Functionality $functionality): string {
+                return $functionality->getProject()?->getCode() . '-' . $functionality->getCode();
             });
         $mapper = new AutoMapper($config);
         $functionalitiesCollection = $mapper->mapMultiple($functionalities, FunctionalityOutputDto::class);

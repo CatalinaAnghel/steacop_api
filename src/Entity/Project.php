@@ -9,9 +9,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
+#[UniqueConstraint(name: "UC_project_code", columns: ["code"])]
 class Project
 {
     use GradeTrait;
@@ -54,6 +56,9 @@ class Project
 
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProjectFunctionalitiesHistory::class, orphanRemoval: true)]
     private Collection $history;
+
+    #[ORM\Column(length: 8)]
+    private ?string $code = null;
 
     public function __construct()
     {
@@ -263,6 +268,18 @@ class Project
                 $numberOfOpenItem->setProject(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

@@ -36,40 +36,44 @@ class GetFunctionalityItemProvider implements ProviderInterface
             $configOutput->registerMapping(
                 Functionality::class,
                 FunctionalityOutputDto::class
-            )->forMember('functionalityAttachments', function (Functionality $source): array {
-                $documentConfig = new AutoMapperConfig();
-                $documentConfig->registerMapping(
-                    FunctionalityAttachment::class,
-                    FunctionalityAttachmentOutputDto::class
-                )->forMember('contentUrl', function (FunctionalityAttachment $document) {
-                    return '/documents/functionalities/' . $document->getFunctionality()?->getId() .
-                        '/' . $document->getFilePath();
-                });
-                return (new AutoMapper($documentConfig))->mapMultiple(
-                    $source->getFunctionalityAttachments(),
-                    FunctionalityAttachmentOutputDto::class
-                );
-            })->forMember('type', function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
-                $typeConfig = new AutoMapperConfig();
-                $typeConfig->registerMapping(
-                    FunctionalityType::class,
-                    FunctionalityCharacteristicOutputDto::class
-                )->forMember('name', function (FunctionalityType $type): string {
-                    return $type->getName();
-                });
-                return (new AutoMapper($typeConfig))->map(
-                    $functionality->getType(),
-                    FunctionalityCharacteristicOutputDto::class
-                );
-            })
+            )
+                ->forMember('functionalityAttachments', function (Functionality $source): array {
+                    $documentConfig = new AutoMapperConfig();
+                    $documentConfig->registerMapping(
+                        FunctionalityAttachment::class,
+                        FunctionalityAttachmentOutputDto::class
+                    )->forMember('contentUrl', function (FunctionalityAttachment $document) {
+                        return '/documents/functionalities/' . $document->getFunctionality()?->getId() .
+                            '/' . $document->getFilePath();
+                    });
+                    return (new AutoMapper($documentConfig))->mapMultiple(
+                        $source->getFunctionalityAttachments(),
+                        FunctionalityAttachmentOutputDto::class
+                    );
+                })
+                ->forMember('type', function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
+                    $typeConfig = new AutoMapperConfig();
+                    $typeConfig->registerMapping(
+                        FunctionalityType::class,
+                        FunctionalityCharacteristicOutputDto::class
+                    )
+                        ->forMember('name', function (FunctionalityType $type): string {
+                            return $type->getName();
+                        });
+                    return (new AutoMapper($typeConfig))->map(
+                        $functionality->getType(),
+                        FunctionalityCharacteristicOutputDto::class
+                    );
+                })
                 ->forMember('status', function (Functionality $functionality): FunctionalityCharacteristicOutputDto {
                     $statusConfig = new AutoMapperConfig();
                     $statusConfig->registerMapping(
                         FunctionalityStatus::class,
                         FunctionalityCharacteristicOutputDto::class
-                    )->forMember('name', function (FunctionalityStatus $status): string {
-                        return $status->getName();
-                    });
+                    )
+                        ->forMember('name', function (FunctionalityStatus $status): string {
+                            return $status->getName();
+                        });
                     return (new AutoMapper($statusConfig))->map(
                         $functionality->getFunctionalityStatus(),
                         FunctionalityCharacteristicOutputDto::class
@@ -77,6 +81,9 @@ class GetFunctionalityItemProvider implements ProviderInterface
                 })
                 ->forMember('projectId', function (Functionality $functionality): int {
                     return $functionality->getProject()?->getId();
+                })
+                ->forMember('code', function (Functionality $functionality): string {
+                    return $functionality->getProject()?->getCode() . '-' . $functionality->getCode();
                 });
             $mapper = new AutoMapper($configOutput);
 
