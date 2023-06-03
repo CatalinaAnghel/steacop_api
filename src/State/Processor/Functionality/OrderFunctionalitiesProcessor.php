@@ -53,6 +53,7 @@ class OrderFunctionalitiesProcessor implements ProcessorInterface
                             }
                             $foundFunctionality->setFunctionalityStatus($foundStatus);
                             $foundFunctionality->setOrderNumber($key + 1);
+                            $foundFunctionality->setUpdatedAt(new \DateTime('Now'));
                         }
                     }
 

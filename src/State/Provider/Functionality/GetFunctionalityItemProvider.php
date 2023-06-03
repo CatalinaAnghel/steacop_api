@@ -5,6 +5,7 @@ namespace App\State\Provider\Functionality;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Dto\Functionality\Output\BaseFunctionalityOutputDto;
 use App\Dto\Functionality\Output\FunctionalityCharacteristicOutputDto;
 use App\Dto\Functionality\Output\FunctionalityOutputDto;
 use App\Dto\FunctionalityAttachment\Output\FunctionalityAttachmentOutputDto;
@@ -84,7 +85,20 @@ class GetFunctionalityItemProvider implements ProviderInterface
                 })
                 ->forMember('code', function (Functionality $functionality): string {
                     return $functionality->getProject()?->getCode() . '-' . $functionality->getCode();
-                });
+                })
+                ->forMember(
+                    'parent',
+                    function (Functionality $functionality): ?BaseFunctionalityOutputDto {
+                        $parentFunctionality = $functionality->getParentFunctionality();
+                        if (null !== $parentFunctionality) {
+                            $parent = new BaseFunctionalityOutputDto();
+                            $parent->setId($parentFunctionality->getId());
+                            $parent->setCode($functionality->getProject()?->getCode() . '-' .
+                                (string)$parentFunctionality->getCode());
+                            $parent->setTitle($parentFunctionality->getTitle());
+                        }
+                        return $parent ?? null;
+                    });
             $mapper = new AutoMapper($configOutput);
 
             try {

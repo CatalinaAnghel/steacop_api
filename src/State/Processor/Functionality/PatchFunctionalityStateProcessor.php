@@ -66,10 +66,12 @@ class PatchFunctionalityStateProcessor extends AbstractFunctionalityProcessor
 
                 // update the functionality
                 $functionality->setFunctionalityStatus($status);
-                $functionality->setOrderNumber($functionalityRepo->getNextOrderNumber(
-                    $functionality->getProject()?->getId(),
-                    $status->getId()
-                ));
+                if($functionality->getType()?->getName() !== FunctionalityTypesHelper::Epic->value){
+                    $functionality->setOrderNumber($functionalityRepo->getNextOrderNumber(
+                        $functionality->getProject()?->getId(),
+                        $status->getId()
+                    ));
+                }
             }
 
             $typeRepo = $this->entityManager->getRepository(FunctionalityType::class);

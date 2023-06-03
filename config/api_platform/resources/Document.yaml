@@ -20,4 +20,5 @@ App\Entity\Document:
                     format: binary
                   assignmentId:
                     type: string
-    ApiPlatform\Metadata\Delete: ~
+    ApiPlatform\Metadata\Delete:
+      provider: App\State\Provider\Assignment\GetDocumentItemProvider

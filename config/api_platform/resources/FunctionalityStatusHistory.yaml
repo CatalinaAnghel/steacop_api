@@ -1,0 +1,6 @@
+App\Entity\FunctionalityStatusHistory:
+  normalizationContext:
+    groups: [ 'status_history:output' ]
+  operations:
+    ApiPlatform\Metadata\GetCollection:
+      filters: [ 'status_history.search_filter', 'status_history:order_filter' ]

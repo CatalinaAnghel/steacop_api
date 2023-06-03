@@ -117,6 +117,7 @@ class FunctionalityRepository extends ServiceEntityRepository
             ->set(self::ALIAS . '.orderNumber', self::ALIAS . '.orderNumber + :offset')
             ->where(
                 $qb->expr()->andX(
+                    $qb->expr()->isNotNull(self::ALIAS . '.orderNumber'),
                     $qb->expr()->eq(self::ALIAS . '.project', ':projectId'),
                     $qb->expr()->gt(self::ALIAS . '.orderNumber', ':startingOrderNumber'),
                     $qb->expr()->eq(self::ALIAS . '.functionalityStatus', ':statusId')

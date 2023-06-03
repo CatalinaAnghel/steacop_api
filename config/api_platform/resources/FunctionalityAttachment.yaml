@@ -1,9 +1,13 @@
 App\Entity\FunctionalityAttachment:
-  normalizationContext:
-    groups: [ 'functionality_attachment_upload:output' ],
   types: [ 'https://schema.org/MediaObject' ]
   operations:
+    APiPlatform\Metadata\GetCollection:
+      filters: [ 'functionality_attachments.search_filter' ]
+      output: App\Dto\Document\Output\DocumentOutputDto
+      provider: App\State\Provider\Functionality\GetAttachmentCollectionProvider
     ApiPlatform\Metadata\Post:
+      normalizationContext:
+        groups: [ 'functionality_attachment_upload:output' ],
       security: 'is_granted("ROLE_STUDENT")||is_granted("ROLE_TEACHER")'
       processor: App\State\Processor\FunctionalityAttachmentStateProcessor
       validationContext:
@@ -20,4 +24,5 @@ App\Entity\FunctionalityAttachment:
                     format: binary
                   functionalityId:
                     type: string
-    ApiPlatform\Metadata\Delete: ~
+    ApiPlatform\Metadata\Delete:
+      provider: App\State\Provider\Functionality\GetAttachmentItemProvider

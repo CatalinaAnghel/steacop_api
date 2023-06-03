@@ -1,0 +1,10 @@
+App\Entity\FunctionalityStatusHistory:
+  attributes:
+    id:
+      groups: [ 'status_history:output' ]
+    createdAt:
+      groups: [ 'status_history:output' ]
+    oldStatus:
+      groups: [ 'status_history:output' ]
+    newStatus:
+      groups: [ 'status_history:output' ]

@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Traits\SortableTrait;
 use App\Repository\FunctionalityStatusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -33,7 +32,8 @@ class FunctionalityStatus
     #[ORM\OneToMany(mappedBy: 'status', targetEntity: ProjectFunctionalitiesHistory::class, orphanRemoval: true)]
     private Collection $projectFunctionalitiesHistories;
 
-    use SortableTrait;
+    #[ORM\Column]
+    private ?int $orderNumber = null;
 
     public function __construct()
     {
@@ -170,6 +170,18 @@ class FunctionalityStatus
         ) {
             $projectFunctionalitiesHistory->setStatus(null);
         }
+
+        return $this;
+    }
+
+    public function getOrderNumber(): ?int
+    {
+        return $this->orderNumber;
+    }
+
+    public function setOrderNumber(int $orderNumber): self
+    {
+        $this->orderNumber = $orderNumber;
 
         return $this;
     }

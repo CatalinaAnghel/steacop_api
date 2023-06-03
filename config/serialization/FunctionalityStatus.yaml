@@ -1,8 +1,8 @@
 App\Entity\FunctionalityStatus:
   attributes:
     id:
-      groups: [ 'status:output' ]
+      groups: [ 'status:output', 'status_history:output' ]
     name:
-      groups: [ 'status:output' ]
+      groups: [ 'status:output', 'status_history:output' ]
     orderNumber:
-      groups: [ 'status:output' ]
+      groups: [ 'status:output', 'status_history:output' ]

@@ -5,15 +5,9 @@ namespace App\Dto\Functionality\Output;
 
 use App\Dto\Traits\IdentityTrait;
 
-class FunctionalityOutputDto
+class FunctionalityOutputDto extends BaseFunctionalityOutputDto
 {
-    use IdentityTrait;
-
-    private string $code;
-
     private int $projectId;
-
-    private string $title;
 
     private ?string $description;
 
@@ -23,29 +17,13 @@ class FunctionalityOutputDto
 
     private FunctionalityCharacteristicOutputDto $type;
 
-    private ?self $parent;
+    private ?BaseFunctionalityOutputDto $parent;
 
     private ?\DateTimeImmutable $createdAt;
 
     private ?\DateTimeInterface $updatedAt;
 
-    private int $orderNumber;
-
-    /**
-     * @return string
-     */
-    public function getCode(): string
-    {
-        return $this->code;
-    }
-
-    /**
-     * @param string $code
-     */
-    public function setCode(string $code): void
-    {
-        $this->code = $code;
-    }
+    private ?int $orderNumber;
 
     /**
      * @return int
@@ -61,22 +39,6 @@ class FunctionalityOutputDto
     public function setProjectId(int $projectId): void
     {
         $this->projectId = $projectId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     */
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
     }
 
     /**
@@ -144,17 +106,17 @@ class FunctionalityOutputDto
     }
 
     /**
-     * @return FunctionalityOutputDto|null
+     * @return BaseFunctionalityOutputDto|null
      */
-    public function getParent(): ?FunctionalityOutputDto
+    public function getParent(): ?BaseFunctionalityOutputDto
     {
         return $this->parent;
     }
 
     /**
-     * @param FunctionalityOutputDto|null $parent
+     * @param BaseFunctionalityOutputDto|null $parent
      */
-    public function setParent(?FunctionalityOutputDto $parent): void
+    public function setParent(?BaseFunctionalityOutputDto $parent): void
     {
         $this->parent = $parent;
     }
@@ -192,17 +154,17 @@ class FunctionalityOutputDto
     }
 
     /**
-     * @return int
+     * @return ?int
      */
-    public function getOrderNumber(): int
+    public function getOrderNumber(): ?int
     {
         return $this->orderNumber;
     }
 
     /**
-     * @param int $orderNumber
+     * @param ?int $orderNumber
      */
-    public function setOrderNumber(int $orderNumber): void
+    public function setOrderNumber(?int $orderNumber): void
     {
         $this->orderNumber = $orderNumber;
     }

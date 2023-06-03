@@ -28,6 +28,26 @@ services:
         decorates: 'api_platform.openapi.factory'
         arguments: [ '@.inner' ]
 
+    # caching
+    api_platform.cache.metadata.property:
+        parent: cache.system
+        tags: [ cache.pool ]
+    api_platform.cache.metadata.resource:
+        parent: cache.system
+        tags: [ cache.pool ]
+    api_platform.cache.metadata.resource_collection:
+        parent: cache.system
+        tags: [ cache.pool ]
+    api_platform.cache.route_name_resolver:
+        parent: cache.system
+        tags: [ cache.pool ]
+    api_platform.cache.identifiers_extractor:
+        parent: cache.system
+        tags: [ cache.pool ]
+    api_platform.elasticsearch.cache.metadata.document:
+        parent: cache.system
+        tags: [ cache.pool ]
+
     # fixtures
     App\DataFixtures\AdminAccountFixture:
         bind:
@@ -162,6 +182,16 @@ services:
         autoconfigure: false
         public: false
 
+    functionality_attachments.search_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { functionality.id: 'exact' } ]
+        tags: [ 'api_platform.filter' ]
+        # The following are mandatory only if a _defaults section is defined with inverted values.
+        # You may want to isolate filters in a dedicated file to avoid adding the following lines (by adding them in the defaults section)
+        autowire: false
+        autoconfigure: false
+        public: false
+
     project.search_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { supervisor.user.id: 'exact', student.user.id: 'exact' } ]
@@ -183,6 +213,28 @@ services:
         public: false
 
     history.order_filter:
+        parent: 'api_platform.doctrine.orm.order_filter'
+        arguments:
+            $properties: { id: ~ }
+            $orderParameterName: order
+        tags: [ 'api_platform.filter' ]
+        # The following are mandatory only if a _defaults section is defined with inverted values.
+        # You may want to isolate filters in a dedicated file to avoid adding the following lines (by adding them in the defaults section)
+        autowire: false
+        autoconfigure: false
+        public: false
+
+    status_history.search_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { functionality.id: 'exact' } ]
+        tags: [ 'api_platform.filter' ]
+        # The following are mandatory only if a _defaults section is defined with inverted values.
+        # You may want to isolate filters in a dedicated file to avoid adding the following lines (by adding them in the defaults section)
+        autowire: false
+        autoconfigure: false
+        public: false
+
+    status_history.order_filter:
         parent: 'api_platform.doctrine.orm.order_filter'
         arguments:
             $properties: { id: ~ }
@@ -273,6 +325,10 @@ services:
         bind:
             $decoratedProvider: '@api_platform.doctrine.orm.state.item_provider'
 
+    App\State\Provider\Assignment\GetDocumentItemProvider:
+        bind:
+            $decoratedProvider: '@api_platform.doctrine.orm.state.item_provider'
+
     # functionalities
     App\State\Provider\Functionality\GetFunctionalityCollectionProvider:
         bind:
@@ -287,6 +343,14 @@ services:
             $decoratedProvider: '@api_platform.doctrine.orm.state.collection_provider'
 
     App\State\Provider\Functionality\GetTypeItemProvider:
+        bind:
+            $decoratedProvider: '@api_platform.doctrine.orm.state.item_provider'
+
+    App\State\Provider\Functionality\GetAttachmentCollectionProvider:
+        bind:
+            $decoratedProvider: '@api_platform.doctrine.orm.state.collection_provider'
+
+    App\State\Provider\Functionality\GetAttachmentItemProvider:
         bind:
             $decoratedProvider: '@api_platform.doctrine.orm.state.item_provider'
 

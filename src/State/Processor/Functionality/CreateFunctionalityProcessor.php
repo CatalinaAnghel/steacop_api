@@ -11,6 +11,7 @@ use App\Entity\FunctionalityStatus;
 use App\Entity\FunctionalityType;
 use App\Entity\Project;
 use App\Helper\FunctionalityStatusesHelper;
+use App\Helper\FunctionalityTypesHelper;
 use App\Message\Command\Functionality\CreateFunctionalityCommand;
 use App\State\Processor\Contracts\AbstractFunctionalityProcessor;
 use App\Validator\Contracts\ValidatorInterface;
@@ -62,14 +63,20 @@ class CreateFunctionalityProcessor extends AbstractFunctionalityProcessor
                         return $this->entityManager->getRepository(Functionality::class)
                             ->getNextAvailableCode($dto->getProjectId());
                     })
-                    ->forMember('functionalityParent', function (CreateFunctionalityInputDto $dto): ?Functionality {
+                    ->forMember('parentFunctionality', function (CreateFunctionalityInputDto $dto): ?Functionality {
                         if (null !== $dto->getParentFunctionalityId()) {
                             $parentFunctionality = $this->entityManager->getRepository(Functionality::class)
                                 ->findOneBy(['id' => $dto->getParentFunctionalityId()]);
                         }
                         return $parentFunctionality ?? null;
                     })
-                    ->forMember('orderNumber', function (CreateFunctionalityInputDto $source): int {
+                    ->forMember('orderNumber', function (CreateFunctionalityInputDto $source): ?int {
+                        $type = $this->entityManager->getRepository(FunctionalityType::class)
+                            ->findOneBy(['id' => $source->getType()]);
+                        if(null === $type || $type->getName() === FunctionalityTypesHelper::Epic->value){
+                            return null;
+                        }
+
                         return $this->entityManager->getRepository(Functionality::class)
                             ->getNextOrderNumber(
                                 $source->getProjectId(),

@@ -29,7 +29,7 @@ class FunctionalityAttachment
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    private string $functionalityId;
+    private string $functionalityId = "";
 
     /**
      * @var string|null $contentUrl

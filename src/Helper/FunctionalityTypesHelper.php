@@ -16,17 +16,15 @@ enum FunctionalityTypesHelper: string
      */
     public function getPossibleChildIssues(): array{
         return match ($this) {
-            self::Epic => [
+            self::Epic               => [
                 self::Story->value,
                 self::Task->value,
                 self::Bug->value
             ],
-            self::Story => [
-                self::Task->value,
-                self::Bug->value
+            self::Story, self::Task, self::Bug  => [
+                self::Subtask->value
             ],
-            self::Task => [self::Subtask->value],
-            self::Bug, self::Subtask => []
+            self::Subtask => []
         };
     }
 }

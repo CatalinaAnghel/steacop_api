@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Traits\SortableTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\FunctionalityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,7 +27,7 @@ class Functionality
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'functionalities')]
     private ?self $parentFunctionality = null;
 
-    #[ORM\OneToMany(mappedBy: 'parentFunctionality', targetEntity: self::class)]
+    #[ORM\OneToMany(mappedBy: 'parentFunctionality', targetEntity: self::class, orphanRemoval: true)]
     private Collection $functionalities;
 
     #[ORM\ManyToOne(inversedBy: 'functionalities')]
@@ -57,9 +56,10 @@ class Functionality
     #[ORM\OneToMany(mappedBy: 'functionality', targetEntity: FunctionalityStatusHistory::class, orphanRemoval: true)]
     private Collection $history;
 
-    use TimestampableTrait;
+    #[ORM\Column(nullable: true)]
+    private ?int $orderNumber = null;
 
-    use SortableTrait;
+    use TimestampableTrait;
 
     #[Pure] public function __construct()
     {
@@ -217,11 +217,9 @@ class Functionality
 
     public function removeFunctionalityAttachment(FunctionalityAttachment $functionalityAttachment): self
     {
-        if ($this->functionalityAttachments->removeElement($functionalityAttachment)) {
-            // set the owning side to null (unless already changed)
-            if ($functionalityAttachment->getFunctionality() === $this) {
-                $functionalityAttachment->setFunctionality(null);
-            }
+        if ($this->functionalityAttachments->removeElement($functionalityAttachment) &&
+            $functionalityAttachment->getFunctionality() === $this) {
+            $functionalityAttachment->setFunctionality(null);
         }
 
         return $this;
@@ -247,12 +245,28 @@ class Functionality
 
     public function removeHistory(FunctionalityStatusHistory $history): self
     {
-        if ($this->history->removeElement($history)) {
-            // set the owning side to null (unless already changed)
-            if ($history->getFunctionality() === $this) {
-                $history->setFunctionality(null);
-            }
+        if ($this->history->removeElement($history) && $history->getFunctionality() === $this) {
+            $history->setFunctionality(null);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getOrderNumber(): ?int
+    {
+        return $this->orderNumber;
+    }
+
+    /**
+     * @param int|null $orderNumber
+     * @return $this
+     */
+    public function setOrderNumber(?int $orderNumber): self
+    {
+        $this->orderNumber = $orderNumber;
 
         return $this;
     }
