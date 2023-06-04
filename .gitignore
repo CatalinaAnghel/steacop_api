@@ -24,3 +24,4 @@
 /public/documents/supervisors/*
 
 docker-compose.override.yml
+/public/documents/
