@@ -23,7 +23,9 @@ class OrderFunctionalitiesProcessor implements ProcessorInterface
         private readonly Security               $security,
         private readonly EntityManagerInterface $entityManager,
         private readonly LoggerInterface        $logger
-    ) {}
+    ) {
+        date_default_timezone_set('Europe/Bucharest');
+    }
 
     /**
      * @inheritDoc

@@ -32,6 +32,7 @@ class CreateFunctionalityProcessor extends AbstractFunctionalityProcessor
     )
     {
         parent::__construct($this->entityManager);
+        date_default_timezone_set('Europe/Bucharest');
     }
 
     /**
@@ -84,7 +85,9 @@ class CreateFunctionalityProcessor extends AbstractFunctionalityProcessor
                                     ->findOneBy(['name' => FunctionalityStatusesHelper::Open->value])?->getId()
                             );
                     });
+
                 $mapper = new AutoMapper($config);
+
                 /**
                  * @var Functionality $functionality
                  */

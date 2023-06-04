@@ -74,13 +74,13 @@ class FunctionalityRepository extends ServiceEntityRepository
      */
     public function getNextOrderNumber(int $projectId, int $statusId): int
     {
-        $qb = $this->createQueryBuilder('f');
-        $qb->select('MAX(f.orderNumber) as nextOrderNumber')
+        $qb = $this->createQueryBuilder(self::ALIAS);
+        $qb->select('MAX('.self::ALIAS.'.orderNumber) as nextOrderNumber')
             ->innerJoin(
                 Project::class,
                 'project',
                 Join::WITH,
-                'project.id = f.project'
+                'project.id = '.self::ALIAS.'.project'
             )
             ->innerJoin(
                 FunctionalityStatus::class,
@@ -90,9 +90,9 @@ class FunctionalityRepository extends ServiceEntityRepository
             )
             ->where('project.id = :projectId')
             ->andWhere('status.id = :statusId')
+            ->andWhere($qb->expr()->isNotNull(self::ALIAS . '.orderNumber'))
             ->setParameter('projectId', $projectId)
-            ->setParameter('statusId', $statusId)
-        ;
+            ->setParameter('statusId', $statusId);
         try {
             $result = $qb->getQuery()->getSingleResult();
         } catch (\Exception $exception) {

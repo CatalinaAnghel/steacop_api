@@ -34,13 +34,15 @@ class DeleteFunctionalityStateProcessor extends AbstractFunctionalityProcessor
             $projectId = $data->getProject()?->getId();
             $statusId = $data->getFunctionalityStatus()?->getId();
 
+            if(null === $data->getOrderNumber()){
+                $this->entityManager->getRepository(Functionality::class)->updateOrder(
+                    $data->getOrderNumber(),
+                    -1,
+                    $data->getProject()?->getId(),
+                    $data->getFunctionalityStatus()?->getId()
+                );
+            }
 
-            $this->entityManager->getRepository(Functionality::class)->updateOrder(
-                $data->getOrderNumber(),
-                -1,
-                $data->getProject()?->getId(),
-                $data->getFunctionalityStatus()?->getId()
-            );
             $this->decoratedProcessor->process($data, $operation, $uriVariables, $context);
 
             $project = $this->entityManager->getRepository(Project::class)->findOneBy([
