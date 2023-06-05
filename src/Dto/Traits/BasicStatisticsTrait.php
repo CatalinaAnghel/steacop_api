@@ -16,6 +16,11 @@ trait BasicStatisticsTrait
     private int $completed;
 
     /**
+     * @var int $scheduled
+     */
+    private int $scheduled;
+
+    /**
      * @return int
      */
     public function getTotal(): int
@@ -45,5 +50,21 @@ trait BasicStatisticsTrait
     public function setCompleted(int $completed): void
     {
         $this->completed = $completed;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScheduled(): int
+    {
+        return $this->scheduled;
+    }
+
+    /**
+     * @param int $scheduled
+     */
+    public function setScheduled(int $scheduled): void
+    {
+        $this->scheduled = $scheduled;
     }
 }

@@ -84,6 +84,13 @@ class GetProjectInformationProvider extends AbstractPlanProvider
                 return $milestoneMeeting->isCompleted();
             }, ARRAY_FILTER_USE_BOTH));
 
+        $numberOfScheduledMilestoneMeetings = count(array_filter($project->getMilestoneMeetings()->getValues(),
+            static function (MilestoneMeeting $milestoneMeeting, int $key) {
+                return !$milestoneMeeting->isCanceled() &&
+                    !$milestoneMeeting->isCompleted() &&
+                    !$milestoneMeeting->isMissed();
+            }, ARRAY_FILTER_USE_BOTH));
+
         $numberOfMissedMilestoneMeetings = count(array_filter($project->getMilestoneMeetings()->getValues(),
             static function (MilestoneMeeting $milestoneMeeting, int $key) {
                 return $milestoneMeeting->isMissed();
@@ -93,6 +100,7 @@ class GetProjectInformationProvider extends AbstractPlanProvider
         $milestoneMeetingInfo->setTotal($numberOfRequiredMilestoneMeetings);
         $milestoneMeetingInfo->setCompleted($numberOfCompletedMilestoneMeetings);
         $milestoneMeetingInfo->setMissed($numberOfMissedMilestoneMeetings);
+        $milestoneMeetingInfo->setScheduled($numberOfScheduledMilestoneMeetings);
 
         return $milestoneMeetingInfo;
     }
@@ -101,6 +109,13 @@ class GetProjectInformationProvider extends AbstractPlanProvider
         $numberOfCompletedGuidanceMeetings = count(array_filter($project->getGuidanceMeetings()->getValues(),
             static function (GuidanceMeeting $guidanceMeeting, int $key) {
                 return $guidanceMeeting->isCompleted();
+            }, ARRAY_FILTER_USE_BOTH));
+
+        $numberOfScheduledGuidanceMeetings = count(array_filter($project->getGuidanceMeetings()->getValues(),
+            static function (GuidanceMeeting $guidanceMeeting, int $key) {
+                return !$guidanceMeeting->isCanceled() &&
+                    !$guidanceMeeting->isMissed() &&
+                    !$guidanceMeeting->isCompleted();
             }, ARRAY_FILTER_USE_BOTH));
 
         $numberOfMissedGuidanceMeetings = count(array_filter($project->getGuidanceMeetings()->getValues(),
@@ -113,6 +128,7 @@ class GetProjectInformationProvider extends AbstractPlanProvider
         $guidanceMeetingInfo->setTotal($total);
         $guidanceMeetingInfo->setCompleted($numberOfCompletedGuidanceMeetings);
         $guidanceMeetingInfo->setMissed($numberOfMissedGuidanceMeetings);
+        $guidanceMeetingInfo->setScheduled($numberOfScheduledGuidanceMeetings);
 
         return $guidanceMeetingInfo;
     }
