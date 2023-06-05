@@ -40,12 +40,12 @@ class JWTCreatedListener
                 $personsRepo = $this->entityManager->getRepository(Supervisor::class);
                 $personData = $personsRepo->findOneBy(['user' => $user->getId()]);
                 if(null !== $personData){
-                    $payload['projectIds'] = [];
+                    $payload['projects'] = [];
                     foreach ($personData->getProjects() as $project){
                         /**
                          * @var Project $project
                          */
-                        $payload['projectIds'][] = $project->getId();
+                        $payload['projects'][] = ['id' => $project->getId()];
                     }
                 }
             } else {
