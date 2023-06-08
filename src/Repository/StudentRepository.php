@@ -2,11 +2,15 @@
 
 namespace App\Repository;
 
+use App\Entity\Project;
 use App\Entity\Student;
+use App\Entity\Supervisor;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
 
 /**
  * @extends ServiceEntityRepository<Student>
@@ -18,7 +22,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class StudentRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public const ALIAS = 'student';
+
+    public function __construct(ManagerRegistry $registry, private readonly LoggerInterface $logger)
     {
         parent::__construct($registry, Student::class);
     }
@@ -39,6 +45,44 @@ class StudentRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * @param string $supervisorEmail
+     * @return Student[]
+     */
+    public function findSupervisedStudents(string $supervisorEmail): array
+    {
+        $qb = $this->createQueryBuilder(self::ALIAS)
+            ->innerJoin(
+                Project::class,
+                'project',
+                Join::WITH,
+                'project.id = ' . self::ALIAS . '.project'
+            )
+            ->innerJoin(
+                Supervisor::class,
+                'supervisor',
+                Join::WITH,
+                'supervisor.id = project.supervisor'
+            )
+            ->innerJoin(
+                User::class,
+                'user',
+                Join::WITH,
+                'user.id = supervisor.user'
+            )
+            ->where('user.email = :email')
+            ->setParameter('email', $supervisorEmail);
+
+        try {
+            $results = $qb->getQuery()->getResult();
+        } catch (\Exception $exception) {
+            dd('here', $exception->getMessage());
+            $this->logger->error($exception->getMessage());
+        }
+
+        return $results ?? [];
     }
 
     //    /**

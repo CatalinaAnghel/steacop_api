@@ -1,0 +1,5 @@
+App\ApiResource\ProjectCollaborationScore:
+  operations:
+    ApiPlatform\Metadata\Get:
+      provider: App\State\Provider\Project\GetProjectCollaborationScoreProvider
+      uriTemplate: '/project-collaboration-scores/{projectId}'

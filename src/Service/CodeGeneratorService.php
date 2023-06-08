@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Project;
-use App\Entity\Student;
-use App\Entity\Supervisor;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CodeGeneratorService

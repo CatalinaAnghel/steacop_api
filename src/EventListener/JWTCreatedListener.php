@@ -50,7 +50,7 @@ class JWTCreatedListener
                 }
             } else {
                 // student
-                $payload['projectIds'] = [$personData->getProject()?->getId()];
+                $payload['projects'][] = ['id' => $personData->getProject()?->getId()];
             }
             $payload['fullName'] = null !== $personData ?
                 $personData->getFirstName() . ' ' . $personData->getLastName() :

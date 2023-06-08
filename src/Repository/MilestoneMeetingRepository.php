@@ -3,8 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\MilestoneMeeting;
+use App\Entity\Project;
+use App\Repository\Traits\GradeProviderTrait;
+use App\Repository\Traits\LoggerTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
 
 /**
  * @extends ServiceEntityRepository<MilestoneMeeting>
@@ -16,9 +21,15 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MilestoneMeetingRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public const ALIAS = 'milestone_meeting';
+
+    use GradeProviderTrait;
+    use LoggerTrait;
+
+    public function __construct(ManagerRegistry $registry, LoggerInterface $logger)
     {
         parent::__construct($registry, MilestoneMeeting::class);
+        $this->logger = $logger;
     }
 
     public function add(MilestoneMeeting $entity, bool $flush = false): void

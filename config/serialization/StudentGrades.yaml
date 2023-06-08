@@ -1,0 +1,4 @@
+App\ApiResource\StudentGrades:
+  attributes:
+    supervisorCode:
+      identifier: true

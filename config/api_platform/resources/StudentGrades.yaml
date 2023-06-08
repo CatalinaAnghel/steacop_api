@@ -1,0 +1,5 @@
+App\ApiResource\StudentGrades:
+  operations:
+    ApiPlatform\Metadata\GetCollection:
+      provider: App\State\Provider\GetStudentGradesProvider
+      security: 'is_granted("ROLE_TEACHER")'

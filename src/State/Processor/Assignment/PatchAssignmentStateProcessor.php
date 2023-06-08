@@ -37,11 +37,12 @@ class PatchAssignmentStateProcessor implements ProcessorInterface
             $assignment->setGrade($data->getGrade());
             $assignment->setTitle($data->getTitle());
             $assignment->setDescription($data->getDescription());
-            $turnInDate = $data->isTurnedIn() ? new \DateTime('Now') : null;
-            $assignment->setTurnedInDate($turnInDate);
+            if(null === $data->getGrade()){
+                $turnInDate = $data->isTurnedIn() ? new \DateTime('Now') : null;
+                $assignment->setTurnedInDate($turnInDate);
+            }
             $assignment->setDueDate($data->getDueDate());
             $assignment->setUpdatedAt(new \DateTime('Now'));
-            $this->entityManager->persist($assignment);
 
             try {
                 $this->entityManager->flush();
