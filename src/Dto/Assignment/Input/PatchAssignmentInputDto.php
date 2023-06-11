@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Dto\Assignment\Input;
 
-use App\Validator\FutureDateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class PatchAssignmentInputDto
@@ -12,7 +11,6 @@ class PatchAssignmentInputDto
      * @var ?\DateTime $dueDate
      */
     #[Assert\Type(\DateTimeInterface::class)]
-    #[FutureDateTime]
     private ?\DateTime $dueDate;
 
     /**

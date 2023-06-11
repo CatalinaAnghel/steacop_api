@@ -8,18 +8,22 @@ use App\Dto\Meeting\Input\CreateMeetingInputDto;
 use App\Dto\Meeting\Output\MilestoneMeetingOutputDto;
 use App\Entity\MilestoneMeeting;
 use App\Entity\Project;
+use App\Message\Command\MilestoneMeeting\CreateMilestoneMeetingCommand;
 use App\State\Processor\Contracts\AbstractMilestoneMeetingProcessor;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class CreateMilestoneMeetingStateProcessor extends AbstractMilestoneMeetingProcessor
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager,
-                                private readonly LoggerInterface        $logger)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MessageBusInterface $commandBus,
+        private readonly LoggerInterface $logger
+    ) {
         date_default_timezone_set('Europe/Bucharest');
     }
 
@@ -27,31 +31,27 @@ class CreateMilestoneMeetingStateProcessor extends AbstractMilestoneMeetingProce
      * @inheritDoc
      * @param CreateMeetingInputDto $data
      */
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
-    ?MilestoneMeetingOutputDto
-    {
+    public function process(
+        mixed $data, Operation $operation, array $uriVariables = [], array $context = []
+    ): ?MilestoneMeetingOutputDto {
         $projectRepo = $this->entityManager->getRepository(Project::class);
         $project = $projectRepo->findOneBy(['id' => $data->getProjectId()]);
         if (null !== $project) {
             try {
                 $config = new AutoMapperConfig();
-                $config->registerMapping(CreateMeetingInputDto::class,
-                    MilestoneMeeting::class);
+                $config->registerMapping(
+                    CreateMeetingInputDto::class,
+                    MilestoneMeeting::class
+                );
                 $mapper = new AutoMapper($config);
                 /**
                  * @var MilestoneMeeting $meeting
                  */
                 $meeting = $mapper->map($data, MilestoneMeeting::class);
-                $meeting->setProject($project);
-                $meeting->setUpdatedAt(new \DateTime('Now'));
-                $meeting->setCreatedAt(new \DateTimeImmutable('Now'));
-                $meeting->setIsCompleted(false);
-                $meeting->setIsCanceled(false);
-                $meeting->setIsMissed(false);
-                $meeting->setScheduledAt($data->getScheduledAt());
-                $this->entityManager->persist($meeting);
-                $this->entityManager->flush();
-
+                $this->commandBus->dispatch(new CreateMilestoneMeetingCommand(
+                    $meeting,
+                    $project
+                ));
                 $mapper = $this->getMapper();
 
                 /**

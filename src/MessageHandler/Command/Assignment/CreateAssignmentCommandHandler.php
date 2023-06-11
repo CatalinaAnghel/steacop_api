@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\MessageHandler\Command;
+namespace App\MessageHandler\Command\Assignment;
 
 use App\Entity\Student;
-use App\Message\Command\CreateAssignmentCommand;
-use App\Message\Event\AssignmentCreatedEvent;
+use App\Message\Command\Assignment\CreateAssignmentCommand;
+use App\Message\Event\Assignment\AssignmentCreatedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;

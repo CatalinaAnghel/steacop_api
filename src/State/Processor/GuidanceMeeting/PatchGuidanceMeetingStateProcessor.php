@@ -7,18 +7,21 @@ use ApiPlatform\Metadata\Operation;
 use App\Dto\Meeting\Input\PatchGuidanceMeetingInputDto;
 use App\Dto\Meeting\Output\GuidanceMeetingOutputDto;
 use App\Entity\GuidanceMeeting;
+use App\Message\Command\GuidanceMeeting\UpdateGuidanceMeetingCommand;
 use App\State\Processor\Contracts\AbstractGuidanceMeetingProcessor;
 use App\Validator\Contracts\ValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class PatchGuidanceMeetingStateProcessor extends AbstractGuidanceMeetingProcessor
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager,
-                                private readonly LoggerInterface        $logger,
-                                private readonly ValidatorInterface     $meetingValidator
-    )
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly LoggerInterface $logger,
+        private readonly MessageBusInterface $commandBus,
+        private readonly ValidatorInterface $meetingValidator
+    ) {
         date_default_timezone_set('Europe/Bucharest');
     }
 
@@ -26,30 +29,22 @@ class PatchGuidanceMeetingStateProcessor extends AbstractGuidanceMeetingProcesso
      * @inheritDoc
      * @param PatchGuidanceMeetingInputDto $data
      */
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
-    ?GuidanceMeetingOutputDto
-    {
+    public function process(
+        mixed $data, Operation $operation, array $uriVariables = [], array $context = []
+    ): ?GuidanceMeetingOutputDto {
         $guidanceMeetingRepo = $this->entityManager->getRepository(GuidanceMeeting::class);
         $guidanceMeeting = $guidanceMeetingRepo->findOneBy(['id' => $uriVariables['id']]);
         if (null !== $guidanceMeeting) {
             $this->meetingValidator->validate($data, $guidanceMeeting);
-            $guidanceMeeting->setDescription($data->getDescription());
-            $guidanceMeeting->setDuration($data->getDuration());
-            $guidanceMeeting->setScheduledAt($data->getScheduledAt());
-            $guidanceMeeting->setLink($data->getLink());
-            $guidanceMeeting->setUpdatedAt(new \DateTime('Now'));
-            $guidanceMeeting->setIsCompleted($data->getIsCompleted());
-            if ($data->getIsCanceled()) {
-                $guidanceMeeting->setIsCanceled(true);
-                $guidanceMeeting->setCanceledAt(new \DateTimeImmutable('Now'));
-            }
-
-            if ($data->getIsMissed()) {
-                $guidanceMeeting->setIsMissed(true);
-            }
-            $this->entityManager->persist($guidanceMeeting);
 
             try {
+                $this->commandBus->dispatch(
+                    new UpdateGuidanceMeetingCommand(
+                        $data,
+                        $guidanceMeeting,
+                        $guidanceMeeting->getProject()
+                    )
+                );
                 $this->entityManager->flush();
 
                 $mapper = $this->getMapper();

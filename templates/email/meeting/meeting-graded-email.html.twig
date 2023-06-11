@@ -1,0 +1,16 @@
+{% extends '/email/email-body.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <h3>A meeting has been graded</h3>
+        <hr/>
+        <p>The {{ meeting.type }} meeting ({{ meeting.description }}) for the <i>{{meeting.projectTitle}}</i> project, which was scheduled at <strong>{{meeting.scheduledAt}}</strong> has been graded. Check out the project's meetings calendar!</p>
+        <p><b>Grade:</b> {{meeting.grade}}/10</p>
+        {% if meeting.supervisorEmail is defined and meeting.supervisorEmail is not empty %}
+            <p>If you have questions or if you encounter issues, please contact 
+            <a href={{"mailto:#{meeting.supervisorEmail}"}}>your supervisor</a>.</p>
+        {% endif %}
+        <br/>
+        <p>The Steacop Team</p>
+    </div>
+{% endblock %}

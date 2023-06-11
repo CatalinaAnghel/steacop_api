@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        body {
+            font-family: Roboto, sans-serif;
+        }
+
+        table {
+            font-family: Roboto, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            text-align: left;
+            padding: 8px;
+        }
+
+        .container {
+            margin: auto;
+            width: 90%;
+        }
+
+        h3, th {
+            color: #00BFA5;
+        }
+
+        a {
+            color: #0091EA;
+        }
+
+        span {
+            color: gray;
+            font-size: 12px;
+        }
+
+        hr {
+            color: gray;
+            opacity: 0.3;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% block content %}
+    {% endblock %}
+
+    {% block noReplyContent %}
+    <div class="container">
+        <hr/>
+        <span>This is an auto-generated email. Please <strong>do not reply to this message</strong>. 
+        For enquiries, you can contact us at <a href="support@steacop.com">support@steacop.com</a>.</span>
+        </div>
+    {% endblock %}
+{% endblock %}

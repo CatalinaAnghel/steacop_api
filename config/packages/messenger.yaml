@@ -16,9 +16,29 @@ framework:
             sync: 'sync://'
 
         routing:
-            # Route your messages to the transports
-            'App\Message\Event\AssignmentCreatedEvent': async
-            'App\Message\Command\CreateAssignmentCommand': sync
+            # Route messages to the transports
+            'App\Message\Event\Assignment\AssignmentCreatedEvent': async
+            'App\Message\Event\Assignment\AssignmentGradedEvent': async
+            'App\Message\Event\Assignment\AssignmentUpdatedEvent': async
+            'App\Message\Event\Functionality\FunctionalityCreatedEvent': async
+            'App\Message\Event\GuidanceMeeting\GuidanceMeetingCreatedEvent': async
+            'App\Message\Event\GuidanceMeeting\GuidanceMeetingCanceledEvent': async
+            'App\Message\Event\GuidanceMeeting\GuidanceMeetingMissedEvent': async
+            'App\Message\Event\GuidanceMeeting\GuidanceMeetingUpdatedEvent': async
+            'App\Message\Event\MilestoneMeeting\MilestoneMeetingCreatedEvent': async
+            'App\Message\Event\MilestoneMeeting\MilestoneMeetingCanceledEvent': async
+            'App\Message\Event\MilestoneMeeting\MilestoneMeetingMissedEvent': async
+            'App\Message\Event\MilestoneMeeting\MilestoneMeetingUpdatedEvent': async
+            'App\Message\Event\MilestoneMeeting\MilestoneMeetingGradedEvent': async
+
+            'App\Message\Command\Assignment\CreateAssignmentCommand': sync
+            'App\Message\Command\Assignment\UpdateAssignmentCommand': sync
+            'App\Message\Command\Functionality\CreateFunctionalityCommand': sync
+            'App\Message\Command\GuidanceMeeting\CreateGuidanceMeetingCommand': sync
+            'App\Message\Command\GuidanceMeeting\UpdateGuidanceMeetingCommand': sync
+            'App\Message\Command\MilestoneMeeting\CreateMilestoneMeetingCommand': sync
+            'App\Message\Command\MilestoneMeeting\UpdateMilestoneMeetingCommand': sync
+
 
 # when@test:
 #    framework:

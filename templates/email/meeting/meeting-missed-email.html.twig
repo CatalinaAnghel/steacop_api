@@ -1,0 +1,15 @@
+{% extends '/email/email-body.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <h3>A {{ meeting.type }} meeting has been marked as missed</h3>
+        <hr/>
+        <p>The {{ meeting.type }} meeting ({{ meeting.description }}) for the <i>{{meeting.projectTitle}}</i> project, which was scheduled at <strong>{{meeting.scheduledAt}}</strong> has been marked as missed. Check out the project's meetings calendar!</p>
+        {% if showExtraMessage is defined and showExtraMessage == true %}
+            <p>Since this meeting has been missed, it cannot be rescheduled and it will affect the total collaboration score.</p>
+        {% endif %}
+        <br/>
+
+        <p>The Steacop Team</p>
+    </div>
+{% endblock %}

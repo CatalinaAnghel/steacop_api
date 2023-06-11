@@ -10,17 +10,20 @@ use App\Dto\Assignment\Output\AssignmentOutputDto;
 use App\Dto\Document\Output\DocumentOutputDto;
 use App\Entity\Assignment;
 use App\Entity\Document;
+use App\Message\Command\Assignment\UpdateAssignmentCommand;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class PatchAssignmentStateProcessor implements ProcessorInterface
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface        $logger)
-    {
+        private readonly LoggerInterface $logger,
+        private readonly MessageBusInterface $commandBus
+    ) {
         date_default_timezone_set('Europe/Bucharest');
     }
 
@@ -28,29 +31,26 @@ class PatchAssignmentStateProcessor implements ProcessorInterface
      * @inheritDoc
      * @param PatchAssignmentInputDto $data
      */
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
-    ?AssignmentOutputDto
-    {
+    public function process(
+        mixed $data, Operation $operation, array $uriVariables = [], array $context = []
+    ): ?AssignmentOutputDto {
         $assignmentRepo = $this->entityManager->getRepository(Assignment::class);
         $assignment = $assignmentRepo->findOneBy(['id' => $uriVariables['id']]);
         if (null !== $assignment) {
-            $assignment->setGrade($data->getGrade());
-            $assignment->setTitle($data->getTitle());
-            $assignment->setDescription($data->getDescription());
-            if(null === $data->getGrade()){
-                $turnInDate = $data->isTurnedIn() ? new \DateTime('Now') : null;
-                $assignment->setTurnedInDate($turnInDate);
-            }
-            $assignment->setDueDate($data->getDueDate());
-            $assignment->setUpdatedAt(new \DateTime('Now'));
-
             try {
-                $this->entityManager->flush();
+                $this->commandBus->dispatch(
+                    new UpdateAssignmentCommand(
+                        $data,
+                        $assignment,
+                        $assignment->getProject()
+                    )
+                );
 
                 $configOutput = new AutoMapperConfig();
                 $configOutput->registerMapping(
                     Assignment::class,
-                    AssignmentOutputDto::class)
+                    AssignmentOutputDto::class
+                )
                     ->forMember('documents', function (Assignment $source): array {
                         $documentConfig = new AutoMapperConfig();
                         $documentConfig->registerMapping(

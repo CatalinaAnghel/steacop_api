@@ -1,0 +1,27 @@
+{% extends '/email/email-body.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <h3>A new meeting has been scheduled</h3>
+        <hr/>
+        <p>A new meeting has been scheduled for the <i>{{meeting.projectTitle}}</i> project. Check out the project's meetings calendar!</p>
+        <br/>
+        <table>
+            <tr>
+                <th>Scheduled at</th>
+                <th>Type</th>
+                <th>Link</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>{{ meeting.scheduledAt }}</td>
+                <td>{{ meeting.type }}</td>
+                <td>{{ meeting.link }}</td>
+                <td>{{ meeting.description }}</td>
+            </tr>
+        </table>
+        <br/>
+
+        <p>The Steacop Team</p>
+    </div>
+{% endblock %}

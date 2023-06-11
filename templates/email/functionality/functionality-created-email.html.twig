@@ -1,0 +1,31 @@
+{% extends '/email/email-body.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <h3>A item has been created</h3>
+        <hr/>
+        <p>A new item has been added to the <i>{{project.projectTitle}}</i> project. Check out the project's Kanban board!</p>
+        <br/>
+        <table>
+            <tr>
+                <th>Title</th>
+                {% if project.dueDate is defined and project.dueDate is not empty %}
+                    <th>Due date</th>
+                {% endif %}
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>{{ project.title }}</td>
+                {% if project.dueDate is defined %}
+                    <td>{{ project.dueDate }}</td>
+                {% endif %}
+                <td>{{ project.type }}</td>
+                <td>{{ project.description }}</td>
+            </tr>
+        </table>
+        <br/>
+
+        <p>The Steacop Team</p>
+    </div>
+{% endblock %}

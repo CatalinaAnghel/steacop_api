@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Message\Event;
+namespace App\Message\Event\Assignment\Contracts;
 
 use App\Entity\Assignment;
-use App\Entity\User;
 
-class AssignmentCreatedEvent
+abstract class AbstractAssignmentEvent
 {
     public function __construct(private readonly Assignment $assignment, private readonly string $receiver) {}
 

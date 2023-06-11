@@ -5,29 +5,14 @@ namespace App\Message\Command\Functionality;
 
 use App\Entity\Functionality;
 use App\Entity\Project;
+use App\Message\Command\Functionality\Contracts\AbstractFunctionalityCommand;
 
-class CreateFunctionalityCommand
+class CreateFunctionalityCommand extends AbstractFunctionalityCommand
 {
     public function __construct(
-        private readonly Functionality $functionality,
-        private readonly Project    $project
-    ) {}
-
-    /**
-     * @return Functionality
-     */
-    public function getFunctionality(): Functionality
-    {
-        return $this->functionality;
-    }
-
-
-
-    /**
-     * @return Project
-     */
-    public function getProject(): Project
-    {
-        return $this->project;
+        Functionality $functionality,
+        Project    $project
+    ) {
+        parent::__construct($functionality, $project);
     }
 }

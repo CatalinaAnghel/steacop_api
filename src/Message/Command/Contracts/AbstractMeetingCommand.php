@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Message\Command;
+namespace App\Message\Command\Contracts;
 
-use App\Entity\Assignment;
+use App\Entity\Contracts\AbstractMeeting;
 use App\Entity\Project;
 
-class CreateAssignmentCommand
+abstract class AbstractMeetingCommand
 {
     public function __construct(
-        private readonly Assignment $assignment,
+        private readonly AbstractMeeting $meeting,
         private readonly Project    $project
     ) {}
 
     /**
-     * @return Assignment
+     * @return AbstractMeeting
      */
-    public function getAssignment(): Assignment
+    public function getMeeting(): AbstractMeeting
     {
-        return $this->assignment;
+        return $this->meeting;
     }
 
     /**

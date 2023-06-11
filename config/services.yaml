@@ -7,6 +7,7 @@ parameters:
     app.admin_email_address: '%env(APP_ADMIN_EMAIL_ADDRESS)%'
     app.admin_password: '%env(APP_ADMIN_PASSWORD)%'
     app.admin_code: '%env(APP_ADMIN_CODE)%'
+    app.sender_email_address: '%env(SENDER_EMAIL_ADDRESS)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -366,3 +367,54 @@ services:
 
     App\Validator\FunctionalityValidator: ~
     App\Validator\Contracts\ValidatorInterface $functionalityValidator: '@App\Validator\FunctionalityValidator'
+
+    # messenger handlers - bind params:
+    App\MessageHandler\Event\Assignment\CreateAssignmentHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'
+    App\MessageHandler\Event\Assignment\GradeAssignmentHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'
+    App\MessageHandler\Event\Assignment\UpdateAssignmentHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'
+
+    App\MessageHandler\Event\Functionality\CreateFunctionalityHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'
+        
+    App\MessageHandler\Event\GuidanceMeeting\CreateGuidanceMeetingHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'
+
+    App\MessageHandler\Event\GuidanceMeeting\MissGuidanceMeetingHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'
+
+    App\MessageHandler\Event\GuidanceMeeting\UpdateGuidanceMeetingHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'
+
+    App\MessageHandler\Event\GuidanceMeeting\CancelGuidanceMeetingHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'
+
+    App\MessageHandler\Event\MilestoneMeeting\CreateMilestoneMeetingHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'
+
+    App\MessageHandler\Event\MilestoneMeeting\MissMilestoneMeetingHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'
+
+    App\MessageHandler\Event\MilestoneMeeting\UpdateMilestoneMeetingHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'
+
+    App\MessageHandler\Event\MilestoneMeeting\CancelMilestoneMeetingHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'
+
+    App\MessageHandler\Event\MilestoneMeeting\GradeMilestoneMeetingHandler:
+        bind:
+            $senderEmail: '%app.sender_email_address%'

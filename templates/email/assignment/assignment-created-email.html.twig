@@ -1,38 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends '/email/email-body.html.twig' %}
 
-{% block stylesheets %}
-    <style>
-        body {
-            font-family: Roboto, sans-serif;
-        }
-
-        table {
-            font-family: Roboto, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td, th {
-            text-align: left;
-            padding: 8px;
-        }
-
-        th {
-            color: #00BFA5;
-        }
-
-        .container {
-            margin: auto;
-            width: 90%;
-        }
-
-        h3 {
-            color: #00BFA5;
-        }
-    </style>
-{% endblock %}
-
-{% block body %}
+{% block content %}
     <div class="container">
         <h3>New assignment available</h3>
         <hr/>

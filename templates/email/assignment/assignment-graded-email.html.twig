@@ -1,0 +1,15 @@
+{% extends '/email/email-body.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <h3>Your assignment has been graded</h3>
+        <hr/>
+        <p>Your supervisor has graded your assignment - {{ assignment.title }}.</p>
+        <p><b>Grade:</b> {{assignment.grade}}/10</p>
+        <p>If you have questions or if you encounter issues, please contact 
+        <a href={{"mailto:#{assignment.supervisorEmail}"}}>your supervisor</a>.</p>
+        <br/>
+        
+        <p>The Steacop Team</p>
+    </div>
+{% endblock %}

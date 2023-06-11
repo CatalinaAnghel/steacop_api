@@ -1,0 +1,27 @@
+{% extends '/email/email-body.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <h3>Your assignment has been updated</h3>
+        <hr/>
+        <p>Your supervisor has updated your assignment. Check out your project's assignment page!</p>
+        <br/>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Due date</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>{{ assignment.title }}</td>
+                <td>{{ assignment.dueDate }}</td>
+                <td>{{ assignment.description }}</td>
+            </tr>
+        </table>
+        <br/>
+        <p>If you have questions or if you encounter issues, please contact 
+        <a href={{"mailto:#{assignment.supervisorEmail}"}}>your supervisor</a>.</p>
+
+        <p>The Steacop Team</p>
+    </div>
+{% endblock %}
