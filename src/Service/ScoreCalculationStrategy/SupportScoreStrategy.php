@@ -21,11 +21,12 @@ class SupportScoreStrategy implements CalculationStrategyInterface
      */
     public function computeScore(Project $project): BaseScore
     {
+        $totalNumberOfMeetings = count($project->getGuidanceMeetings());
         return (new BaseScore())->setTotalScore(
             $this->computeMeetingsScore(
                 $project,
                 GuidanceMeeting::class,
-                count($project->getGuidanceMeetings())
+                $totalNumberOfMeetings > 0? $totalNumberOfMeetings: 1
             )
         );
     }
