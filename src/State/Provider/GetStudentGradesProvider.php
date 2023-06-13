@@ -19,8 +19,9 @@ class GetStudentGradesProvider implements ProviderInterface
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly Security               $security
-    ) {}
+        private readonly Security $security
+    ) {
+    }
 
 
     /**
@@ -42,21 +43,29 @@ class GetStudentGradesProvider implements ProviderInterface
                 ->setLastName($student->getLastName())
                 ->setFirstName($student->getFirstName());
 
+            $assignmentRepo = $this->entityManager->getRepository(Assignment::class);
             $assignmentGrade = $this->computeGrade(
-                $this->entityManager->getRepository(Assignment::class)
-                    ->getGrades($student->getProject()?->getId()));
+                $assignmentRepo
+                    ->getGrades($student->getProject()?->getId()),
+                $assignmentRepo->count([
+                    'project' => $student->getProject()?->getId()
+                    ])
+            );
 
+            $milestoneRepo = $this->entityManager->getRepository(MilestoneMeeting::class);
             $milestoneGrade = $this->computeGrade(
-                $this->entityManager->getRepository(MilestoneMeeting::class)
-                    ->getGrades($student->getProject()?->getId()));
-
+                $milestoneRepo->getGrades($student->getProject()?->getId()),
+                $milestoneRepo->count([
+                    'project' => $student->getProject()?->getId()
+                ])
+            );
 
             $totalGrade = $student->getProject()->getGrade();
             $grades[] = (new Grades())
                 ->setStudentData($studentData)
                 ->setAssignmentsGrade($assignmentGrade)
                 ->setMilestoneMeetingsGrade($milestoneGrade)
-                ->setTotalGrade($totalGrade?? 0);
+                ->setTotalGrade($totalGrade ?? 0);
         }
         $studentGrades->setGradesCollection($grades);
 
@@ -65,15 +74,18 @@ class GetStudentGradesProvider implements ProviderInterface
 
     /**
      * @param array $grades
+     * @param int|null $total
      * @return float
      */
-    private function computeGrade(array $grades): float
+    private function computeGrade(array $grades, ?int $total = null): float
     {
         $sum = 0.0;
         foreach ($grades as $grade) {
             $sum += $grade['grade'];
         }
 
-        return !empty($grades) ? $sum / count($grades) : 0;
+        $totalNumberOfMeetings = $total ?? count($grades);
+
+        return !empty($grades) ? $sum / $totalNumberOfMeetings : 0;
     }
 }
