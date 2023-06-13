@@ -9,10 +9,12 @@ use App\ApiResource\FunctionalitiesOrdering;
 use App\Entity\Functionality;
 use App\Entity\FunctionalityStatus;
 use App\Entity\FunctionalityStatusHistory;
+use App\Entity\FunctionalityType;
 use App\Entity\Project;
 use App\Entity\ProjectFunctionalitiesHistory;
 use App\Entity\Student;
 use App\Entity\User;
+use App\Helper\FunctionalityTypesHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -59,10 +61,12 @@ class OrderFunctionalitiesProcessor implements ProcessorInterface
                         }
                     }
 
+                    $epicType = $this->entityManager->getRepository(FunctionalityType::class)->findOneBy(['name' =>FunctionalityTypesHelper::Epic->value]);
                     $history = $this->createHistory(
                         $project,
                         $foundStatus,
-                        count($orderingCollection->getFunctionalities())
+                        count($orderingCollection->getFunctionalities()) + $this->entityManager
+                        ->getRepository(Functionality::class)->count(['type'=> $epicType, 'functionalityStatus' => $foundStatus])
                     );
                     $this->entityManager->persist($history);
                 }
