@@ -45,7 +45,7 @@ class UpdateMilestoneMeetingHandler
             $email = (new Email())
                 ->from($this->senderEmail)
                 ->to($receiver)
-                ->subject('Steacop - A milestone meeting has been updated')
+                ->subject('Thesico - A milestone meeting has been updated')
                 ->html($mailContent);
 
             $this->mailer->send($email);

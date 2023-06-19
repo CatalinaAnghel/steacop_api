@@ -45,7 +45,7 @@ class CreateGuidanceMeetingHandler
             $email = (new Email())
                 ->from($this->senderEmail)
                 ->to($receiver)
-                ->subject('Steacop - A guidance meeting has been scheduled')
+                ->subject('Thesico - A guidance meeting has been scheduled')
                 ->html($mailContent);
 
             $this->mailer->send($email);

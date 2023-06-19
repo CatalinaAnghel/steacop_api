@@ -45,7 +45,7 @@ class MissMilestoneMeetingHandler
             $email = (new Email())
                 ->from($this->senderEmail)
                 ->to($receiver)
-                ->subject('Steacop - Milestone meeting missed')
+                ->subject('Thesico - Milestone meeting missed')
                 ->html($mailContent);
 
             $this->mailer->send($email);

@@ -44,7 +44,7 @@ class CancelMilestoneMeetingHandler
             $email = (new Email())
                 ->from($this->senderEmail)
                 ->to($receiver)
-                ->subject('Steacop - A milestone meeting has been canceled')
+                ->subject('Thesico - A milestone meeting has been canceled')
                 ->html($mailContent);
 
             $this->mailer->send($email);

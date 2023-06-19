@@ -44,7 +44,7 @@ class MissGuidanceMeetingHandler
             $email = (new Email())
                 ->from($this->senderEmail)
                 ->to($receiver)
-                ->subject('Steacop - Guidance meeting missed')
+                ->subject('Thesico - Guidance meeting missed')
                 ->html($mailContent);
 
             $this->mailer->send($email);

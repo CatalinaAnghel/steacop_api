@@ -39,7 +39,7 @@ class UpdateAssignmentHandler
         $email = (new Email())
             ->from($this->senderEmail)
             ->to($event->getReceiver())
-            ->subject('Steacop - An assignment has been edited')
+            ->subject('Thesico - An assignment has been edited')
             ->html($mailContent);
 
         $this->mailer->send($email);

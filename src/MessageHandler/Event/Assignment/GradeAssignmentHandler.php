@@ -38,7 +38,7 @@ class GradeAssignmentHandler
         $email = (new Email())
             ->from($this->senderEmail)
             ->to($event->getReceiver())
-            ->subject('Steacop - Your assignment has been graded')
+            ->subject('Thesico - Your assignment has been graded')
             ->html($mailContent);
 
         $this->mailer->send($email);

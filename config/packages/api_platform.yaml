@@ -1,4 +1,5 @@
 api_platform:
+  title: 'Thesico API'
   mapping:
     paths: [ '%kernel.project_dir%/config/api_platform/resources', '%kernel.project_dir%/src/ApiResource']
   formats:

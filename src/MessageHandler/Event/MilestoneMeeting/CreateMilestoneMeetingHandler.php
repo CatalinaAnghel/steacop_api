@@ -45,7 +45,7 @@ class CreateMilestoneMeetingHandler
             $email = (new Email())
                 ->from($this->senderEmail)
                 ->to($receiver)
-                ->subject('Steacop - A milestone meeting has been scheduled')
+                ->subject('Thesico - A milestone meeting has been scheduled')
                 ->html($mailContent);
 
             $this->mailer->send($email);

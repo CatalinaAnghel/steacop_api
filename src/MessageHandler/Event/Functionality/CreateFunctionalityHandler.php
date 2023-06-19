@@ -41,7 +41,7 @@ class CreateFunctionalityHandler
             $email = (new Email())
                 ->from($this->senderEmail)
                 ->to($receiver)
-                ->subject('Steacop - A new functionality has been created')
+                ->subject('Thesico - A new functionality has been created')
                 ->html($mailContent);
 
             $this->mailer->send($email);

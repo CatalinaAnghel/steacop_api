@@ -48,7 +48,7 @@ class GradeMilestoneMeetingHandler
             $email = (new Email())
                 ->from($this->senderEmail)
                 ->to($receiver)
-                ->subject('Steacop - A milestone meeting has been graded')
+                ->subject('Thesico - A milestone meeting has been graded')
                 ->html($mailContent);
 
             $this->mailer->send($email);

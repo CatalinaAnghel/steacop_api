@@ -45,7 +45,7 @@ class UpdateGuidanceMeetingHandler
             $email = (new Email())
                 ->from($this->senderEmail)
                 ->to($receiver)
-                ->subject('Steacop - A guidance meeting has been updated')
+                ->subject('Thesico - A guidance meeting has been updated')
                 ->html($mailContent);
 
             $this->mailer->send($email);

@@ -44,7 +44,7 @@ class CancelGuidanceMeetingHandler
             $email = (new Email())
                 ->from($this->senderEmail)
                 ->to($receiver)
-                ->subject('Steacop - Guidance meeting canceled')
+                ->subject('Thesico - Guidance meeting canceled')
                 ->html($mailContent);
 
             $this->mailer->send($email);

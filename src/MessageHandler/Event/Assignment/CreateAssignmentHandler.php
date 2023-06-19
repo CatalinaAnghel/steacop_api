@@ -37,7 +37,7 @@ class CreateAssignmentHandler
         $email = (new Email())
             ->from($this->senderEmail)
             ->to($event->getReceiver())
-            ->subject('Steacop - A new assignment has been added')
+            ->subject('Thesico - A new assignment has been added')
             ->html($mailContent);
 
         $this->mailer->send($email);
