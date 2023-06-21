@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Command\Contracts\AbstractUsersCommand;
+use App\Command\Contracts\PasswordGeneratorTrait;
 use App\Entity\Project;
 use App\Entity\Specialization;
 use App\Entity\Student;
@@ -30,6 +31,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 )]
 class ImportStudentsCommand extends AbstractUsersCommand
 {
+    use PasswordGeneratorTrait;
     public const IMPORT_FILE_PATH = '\\..\\..\\..\\public\\documents\\students\\';
     protected const DETAILED_DESCRIPTION = 'This command allows you to import the students';
 
@@ -135,7 +137,7 @@ class ImportStudentsCommand extends AbstractUsersCommand
             $user = new User();
             $user->setEmail($data['Email']);
             $user->setCode($data['Code']);
-            $user->setPassword($this->userPasswordHasher->hashPassword($user, explode('@', $data['Email'])[0]));
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, $this->createPassword($data['Email'], $data['Code'])));
             $user->setRoles(['ROLE_STUDENT']);
             $this->entityManager->persist($user);
             $this->entityManager->flush();

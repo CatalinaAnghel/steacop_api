@@ -22,32 +22,32 @@ final class SupervisoryPlanFixture extends Fixture implements FixtureGroupInterf
         $laissezFairePlan->setName('Laissez-faire');
         $laissezFairePlan->setHasLowStructure(true);
         $laissezFairePlan->setHasLowSupport(true);
-        $laissezFairePlan->setNumberOfAssignments(0);
-        $laissezFairePlan->setNumberOfGuidanceMeetings(0);
+        $laissezFairePlan->setNumberOfAssignments(2);
+        $laissezFairePlan->setNumberOfGuidanceMeetings(2);
         $manager->persist($laissezFairePlan);
 
         $pastoralPlan = new SupervisoryPlan();
         $pastoralPlan->setName('Pastoral');
         $pastoralPlan->setHasLowSupport(false);
         $pastoralPlan->setHasLowStructure(true);
-        $pastoralPlan->setNumberOfAssignments(0);
-        $pastoralPlan->setNumberOfGuidanceMeetings(0);
+        $pastoralPlan->setNumberOfAssignments(2);
+        $pastoralPlan->setNumberOfGuidanceMeetings(6);
         $manager->persist($pastoralPlan);
 
         $directorialPlan = new SupervisoryPlan();
         $directorialPlan->setName('Directorial');
         $directorialPlan->setHasLowSupport(true);
         $directorialPlan->setHasLowStructure(false);
-        $directorialPlan->setNumberOfAssignments(0);
-        $directorialPlan->setNumberOfGuidanceMeetings(0);
+        $directorialPlan->setNumberOfAssignments(6);
+        $directorialPlan->setNumberOfGuidanceMeetings(2);
         $manager->persist($directorialPlan);
 
         $contractualPlan = new SupervisoryPlan();
         $contractualPlan->setName('Contractual');
         $contractualPlan->setHasLowSupport(false);
         $contractualPlan->setHasLowStructure(false);
-        $contractualPlan->setNumberOfAssignments(0);
-        $contractualPlan->setNumberOfGuidanceMeetings(0);
+        $contractualPlan->setNumberOfAssignments(6);
+        $contractualPlan->setNumberOfGuidanceMeetings(6);
         $manager->persist($contractualPlan);
         $manager->flush();
     }

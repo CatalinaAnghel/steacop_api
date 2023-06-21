@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Command\Contracts\AbstractUsersCommand;
+use App\Command\Contracts\PasswordGeneratorTrait;
 use App\Entity\Department;
 use App\Entity\Supervisor;
 use App\Entity\SupervisorImportFile;
@@ -13,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,6 +28,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 )]
 class ImportSupervisorsCommand extends AbstractUsersCommand
 {
+    use PasswordGeneratorTrait;
     public const IMPORT_FILE_PATH = '\\..\\..\\..\\public\\documents\\supervisors\\';
     protected const DETAILED_DESCRIPTION = 'This command allows you to import the supervisors';
 
@@ -50,12 +53,15 @@ class ImportSupervisorsCommand extends AbstractUsersCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $progressBar = new ProgressBar($output);
+        $progressBar->start();
         if ($input->getArgument('fileName') === null) {
             $supervisorImportFileRepo = $this->entityManager->getRepository(SupervisorImportFile::class);
             try {
                 $fileInfo = $supervisorImportFileRepo->findMostRecentFile();
             } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
+                return Command::FAILURE;
             }
 
             if (isset($fileInfo)) {
@@ -79,7 +85,7 @@ class ImportSupervisorsCommand extends AbstractUsersCommand
                     $user = new User();
                     $user->setEmail($data['Email']);
                     $user->setCode($data['Code']);
-                    $user->setPassword($this->userPasswordHasher->hashPassword($user, explode('@', $data['Email'])[0]));
+                    $user->setPassword($this->userPasswordHasher->hashPassword($user, $this->createPassword($data['Email'], $data['Code'])));
                     $user->setRoles(['ROLE_TEACHER']);
                     $this->entityManager->persist($user);
                     $this->entityManager->flush();
@@ -93,10 +99,12 @@ class ImportSupervisorsCommand extends AbstractUsersCommand
                     $supervisor->setUser($user);
                     $this->entityManager->persist($supervisor);
                     $this->entityManager->flush();
+                    $progressBar->advance();
                 }
             }
             return Command::SUCCESS;
         }
+        $progressBar->finish();
         return Command::FAILURE;
     }
 }
