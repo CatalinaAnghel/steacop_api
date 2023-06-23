@@ -26,11 +26,10 @@ class CreateFunctionalityProcessor extends AbstractFunctionalityProcessor
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface        $logger,
-        private readonly MessageBusInterface    $commandBus,
-        private readonly ValidatorInterface     $functionalityValidator
-    )
-    {
+        private readonly LoggerInterface $logger,
+        private readonly MessageBusInterface $commandBus,
+        private readonly ValidatorInterface $functionalityValidator
+    ) {
         parent::__construct($this->entityManager);
         date_default_timezone_set('Europe/Bucharest');
     }
@@ -39,9 +38,9 @@ class CreateFunctionalityProcessor extends AbstractFunctionalityProcessor
      * @inheritDoc
      * @param CreateFunctionalityInputDto $data
      */
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []):
-    ?FunctionalityOutputDto
-    {
+    public function process(
+        mixed $data, Operation $operation, array $uriVariables = [], array $context = []
+    ): ?FunctionalityOutputDto {
         $projectRepo = $this->entityManager->getRepository(Project::class);
         $project = $projectRepo->findOneBy(['id' => $data->getProjectId()]);
 
@@ -74,7 +73,7 @@ class CreateFunctionalityProcessor extends AbstractFunctionalityProcessor
                     ->forMember('orderNumber', function (CreateFunctionalityInputDto $source): ?int {
                         $type = $this->entityManager->getRepository(FunctionalityType::class)
                             ->findOneBy(['id' => $source->getType()]);
-                        if(null === $type || $type->getName() === FunctionalityTypesHelper::Epic->value){
+                        if (null === $type || $type->getName() === FunctionalityTypesHelper::Epic->value) {
                             return null;
                         }
 
@@ -96,12 +95,16 @@ class CreateFunctionalityProcessor extends AbstractFunctionalityProcessor
                 $this->commandBus->dispatch(new CreateFunctionalityCommand($functionality, $project));
 
                 $configOutput = new AutoMapperConfig();
-                $this->addCommonOutputMapping($configOutput->registerMapping(
-                    Functionality::class,
-                    FunctionalityOutputDto::class
-                )->forMember('functionalityAttachments', function (): array {
-                    return [];
-                }));
+                $this->addCommonOutputMapping(
+                    $configOutput->registerMapping(
+                        Functionality::class,
+                        FunctionalityOutputDto::class
+                    )->forMember('functionalityAttachments', function (): array {
+                        return [];
+                    })->forMember('code', function (Functionality $functionality): string {
+                    return $functionality->getProject()?->getCode() . '-' . $functionality->getCode();
+                })
+                );
                 $mapper = new AutoMapper($configOutput);
 
                 /**

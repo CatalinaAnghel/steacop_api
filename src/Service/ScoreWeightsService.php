@@ -26,10 +26,10 @@ class ScoreWeightsService implements Contract\ScoreWeightsServiceInterface
         $total = 0.0;
         $ratingScore = null;
         foreach ($weights as $weight) {
-            $methodName = 'get' . lcfirst($weight->getName());
+            $methodName = 'get' . ucfirst($weight->getName());
             if (method_exists($scoreWeightDto, $methodName)) {
                 $weight->setWeight($scoreWeightDto->$methodName());
-                if($scoreWeightDto->$methodName() !== 'SupervisorRatingWeight'){
+                if($methodName !== 'getSupervisorRatingWeight'){
                     $total += $scoreWeightDto->$methodName();
                 }
                 $repository->add($weight, true);

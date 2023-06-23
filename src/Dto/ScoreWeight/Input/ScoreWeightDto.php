@@ -16,7 +16,7 @@ class ScoreWeightDto
     protected float $structureWeight;
 
     /**
-     * @var float float $supervisorRatingWeight
+     * @var float $supervisorRatingWeight
      */
     protected float $supervisorRatingWeight;
 
