@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class AbstractMeetingInputDto
 {
-    #[Assert\Length(min: 16, minMessage: "The description should have more than 16 characters")]
+    #[Assert\Length(min: 16, max:255, minMessage: "The description should at least 16 characters", maxMessage: "The description should have at most 255 characters")]
     private string $description;
 
     private ?string $link;
