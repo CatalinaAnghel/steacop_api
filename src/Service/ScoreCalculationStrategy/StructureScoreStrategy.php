@@ -55,7 +55,9 @@ class StructureScoreStrategy implements CalculationStrategyInterface
         $latePenaltyValue = $this->entityManager->getRepository(SystemSetting::class)
             ->findOneBy(['name' => SystemSettingsHelper::AssignmentPenalization->getName()]);
         $latePenalty = null !== $latePenaltyValue ? (float)$latePenaltyValue->getValue() : 0.0;
-        $assignments = $project->getAssignments();
+        $assignments = $project->getAssignments()->filter(function(Assignment $assignment){
+            return $assignment->getDueDate() <= new \DateTime('Now');
+        });
         if (count($assignments)) {
             $assignmentSum = 0.0;
             foreach ($assignments as $assignment) {
@@ -65,15 +67,18 @@ class StructureScoreStrategy implements CalculationStrategyInterface
                     $assignmentSum += 100;
                 } elseif (null !== $assignment->getTurnedInDate()) {
                     $numberOfDaysFromDueDate = $assignment->getTurnedInDate()->diff($assignment->getDueDate())->days?? 1;
-                    $assignmentSum += 100 - (float)$latePenalty * $numberOfDaysFromDueDate;
+                    $partialScore = (float)$latePenalty * $numberOfDaysFromDueDate;
+                    if($partialScore < 100){
+                        $assignmentSum += 100 - $partialScore;
+                    }
                 }
             }
+            
             /**
              * @var AssignmentRepository $assignmentRepo
              */
             $assignmentRepo = $this->entityManager->getRepository(Assignment::class);
             $numberOfPassedAssignments = $assignmentRepo->countPassedAssignments($project->getId());
-
             $score = $assignmentSum / $numberOfPassedAssignments;
         }
 
