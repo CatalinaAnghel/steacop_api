@@ -27,18 +27,22 @@ class RatingScoreStrategy implements CalculationStrategyInterface
      */
     public function computeScore(Project $project): BaseScore
     {
+        $totalScore = 0.0;
         $studentRatings = $project->getStudent()?->getUser()?->getRatings();
-        $supervisorRatings = $project->getSupervisor()?->getUser()?->getRatings();
+        $supervisorRatings = $project->getSupervisor()?->getUser()?->getRatings()
+            ->filter(function (Rating $rating) use ($project) {
+                return $rating->getMeeting()->getProject()->getId() === $project->getId();
+            });
 
         $studentRatingScore = $this->computePartialRatingScore($studentRatings);
         $supervisorRatingScore = $this->computePartialRatingScore($supervisorRatings);
-
         $supervisorWeight = $this->entityManager->getRepository(ScoreWeight::class)
             ->findOneBy(['name' => WeightsHelper::SupervisorRatingWeight->name]);
-        $weight = null !== $supervisorWeight? (float)$supervisorWeight->getWeight(): 50.0;
+        $weight = null !== $supervisorWeight ? (float) $supervisorWeight->getWeight() : 50.0;
 
         $totalScore = $supervisorRatingScore * $weight / 100 +
             $studentRatingScore * (100 - $weight) / 100;
+
         return (new BaseScore())->setTotalScore($totalScore);
     }
 
@@ -49,15 +53,16 @@ class RatingScoreStrategy implements CalculationStrategyInterface
     private function computePartialRatingScore(Collection $ratings): float
     {
         $score = 0.0;
-        $numberOfRatings = count($ratings);
-        if ($numberOfRatings) {
+        $numberOfRatings = $ratings->count();
+        if ($numberOfRatings > 0) {
             $ratingValue = 0.0;
             foreach ($ratings as $rating) {
                 $ratingValue += $rating->getValue() / self::MAX_RATING * 10;
-                
+
             }
             $score = $ratingValue / $numberOfRatings * 10;
         }
+
         return $score;
     }
 }
