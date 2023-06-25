@@ -6,6 +6,7 @@ namespace App\State\Provider\Project;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\ApiResource\ProjectCollaborationScore;
+use App\ApiResource\StudentData;
 use App\Entity\Project;
 use App\Entity\ScoreWeight;
 use App\Helper\WeightsHelper;
@@ -33,8 +34,13 @@ class GetProjectCollaborationScoreProvider implements ProviderInterface
             $supportScore = (new SupportScoreStrategy($this->entityManager))->computeScore($project);
             $structureScore = (new StructureScoreStrategy($this->entityManager))->computeScore($project);
 
+            $studentData = new StudentData();
+            $studentData->setFirstName($project->getStudent()?->getFirstName());
+            $studentData->setLastName($project->getStudent()?->getLastName());
+
             $collaborationScore = new ProjectCollaborationScore();
             $collaborationScore->setProjectId((int) $uriVariables['projectId'])
+                ->setStudentData($studentData)
                 ->setStructureScore($structureScore)
                 ->setRatingScore($ratingScore)
                 ->setSupportScore($supportScore);

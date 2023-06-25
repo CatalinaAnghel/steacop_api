@@ -13,6 +13,11 @@ class ProjectCollaborationScore
     private int $projectId;
 
     /**
+     * @var StudentData|null $studentData
+     */
+    private ?StudentData $studentData;
+
+    /**
      * @var BaseScore $ratingScore
      */
     private BaseScore $ratingScore;
@@ -49,6 +54,8 @@ class ProjectCollaborationScore
         $this->projectId = $projectId;
         return $this;
     }
+
+    
 
     /**
      * @return BaseScore
@@ -119,6 +126,29 @@ class ProjectCollaborationScore
     public function setScore(float $score): ProjectCollaborationScore
     {
         $this->score = $score;
+        return $this;
+    }
+
+    /**
+     *
+     * @return  StudentData|null
+     */ 
+    public function getStudentData()
+    {
+        return $this->studentData;
+    }
+
+    /**
+     * Set $studentFullName
+     *
+     * @param  StudentData|null  $studentData
+     *
+     * @return  ProjectCollaborationScore
+     */ 
+    public function setStudentData(StudentData $studentData)
+    {
+        $this->studentData = $studentData;
+
         return $this;
     }
 }
