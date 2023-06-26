@@ -58,15 +58,21 @@ class OrderFunctionalitiesProcessor implements ProcessorInterface
                             $foundFunctionality->setFunctionalityStatus($foundStatus);
                             $foundFunctionality->setOrderNumber($key + 1);
                             $foundFunctionality->setUpdatedAt(new \DateTime('Now'));
+                            
                         }
                     }
+                    $this->entityManager->flush();
 
                     $epicType = $this->entityManager->getRepository(FunctionalityType::class)->findOneBy(['name' =>FunctionalityTypesHelper::Epic->value]);
                     $history = $this->createHistory(
                         $project,
                         $foundStatus,
                         count($orderingCollection->getFunctionalities()) + $this->entityManager
-                        ->getRepository(Functionality::class)->count(['type'=> $epicType, 'functionalityStatus' => $foundStatus])
+                        ->getRepository(Functionality::class)->count([
+                            'project' => $project,
+                            'type'=> $epicType, 
+                            'functionalityStatus' => $foundStatus
+                            ])
                     );
                     $this->entityManager->persist($history);
                 }
