@@ -3,4 +3,5 @@ App\Entity\ProjectFunctionalitiesHistory:
     groups: [ 'history:output' ]
   operations:
     ApiPlatform\Metadata\GetCollection:
+      security: 'is_granted("ROLE_TEACHER")||is_granted("ROLE_STUDENT")'
       filters: [ 'history.search_filter', 'history:order_filter' ]

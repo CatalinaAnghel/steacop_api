@@ -3,4 +3,5 @@ App\Entity\FunctionalityStatusHistory:
     groups: [ 'status_history:output' ]
   operations:
     ApiPlatform\Metadata\GetCollection:
+      security: 'is_granted("ROLE_TEACHER")||is_granted("ROLE_STUDENT")'
       filters: [ 'status_history.search_filter', 'status_history:order_filter' ]

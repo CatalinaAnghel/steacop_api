@@ -13,6 +13,7 @@ use App\Helper\WeightsHelper;
 use App\Service\ScoreCalculationStrategy\RatingScoreStrategy;
 use App\Service\ScoreCalculationStrategy\StructureScoreStrategy;
 use App\Service\ScoreCalculationStrategy\SupportScoreStrategy;
+use App\Service\ScoreCalculatorService;
 use Doctrine\ORM\EntityManagerInterface;
 
 class GetProjectCollaborationScoreProvider implements ProviderInterface
@@ -30,9 +31,14 @@ class GetProjectCollaborationScoreProvider implements ProviderInterface
         $projectRepo = $this->entityManager->getRepository(Project::class);
         $project = $projectRepo->findOneBy(['id' => (int) $uriVariables['projectId']]);
         if (null !== $project) {
-            $ratingScore = (new RatingScoreStrategy($this->entityManager))->computeScore($project);
-            $supportScore = (new SupportScoreStrategy($this->entityManager))->computeScore($project);
-            $structureScore = (new StructureScoreStrategy($this->entityManager))->computeScore($project);
+            $context = new ScoreCalculatorService(new RatingScoreStrategy($this->entityManager));
+            $ratingScore = $context->computeScore($project);
+
+            $context->setStrategy(new SupportScoreStrategy($this->entityManager));
+            $supportScore = $context->computeScore($project);
+            
+            $context->setStrategy(new StructureScoreStrategy($this->entityManager));
+            $structureScore = $context->computeScore($project);
 
             $studentData = new StudentData();
             $studentData->setFirstName($project->getStudent()?->getFirstName());

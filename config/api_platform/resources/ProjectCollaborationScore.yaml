@@ -1,5 +1,6 @@
 App\ApiResource\ProjectCollaborationScore:
   operations:
     ApiPlatform\Metadata\Get:
+      security: 'is_granted("ROLE_TEACHER")||is_granted("ROLE_STUDENT")'
       provider: App\State\Provider\Project\GetProjectCollaborationScoreProvider
       uriTemplate: '/project-collaboration-scores/{projectId}'
